@@ -2,6 +2,8 @@
 // nerveBall web version Jaakko Prättälä 2024, use as you wish.
 
 //globals
+var canvas_width = 800;
+var canvas_height = 800;
 var mouse_x = 0;
 var mouse_y = 0;
 var mouse_down = false;
@@ -140,8 +142,22 @@ function checkCollision() {
         }
     }
 }
+//check collision with a wall
+function checkWallCollision() {
+    for (var i = 0; i < ball_amount; i++) {
+        if (ball_x[i] < 0 || ball_x[i] > canvas_width) {
+            ball_x_speed[i] *= -1;
+        }
+        if (ball_y[i] < 0 || ball_y[i] > canvas_height) {
+            ball_y_speed[i] *= -1;
+        }
+    }
+}
 
-nerveBall = function() {
+//main loop
+function nerveBall() {
+    //clear canvas
+    background(0);
     //update ball neural activations
     for (var i = 0; i < ball_amount; i++) {
         ball_na[i] = countBallNA(i);
@@ -156,11 +172,11 @@ nerveBall = function() {
     }
     //check collision
     checkCollision();
+    //check wall collision
+    checkWallCollision();
+
     //backpropagate
     for (var i = 0; i < ball_amount; i++) {
         backPropagate(i);
     }
 }
-
-canvas.addEventListener('mousemove', updateMousePos, false);
-canvas.addEventListener('mousedown', updateMouseDown, false);
