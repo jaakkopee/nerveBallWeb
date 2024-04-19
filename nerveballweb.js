@@ -21,12 +21,12 @@ for (var i = 0; i < ball_amount; i++) {
 //ball x position
 var ball_x = [];
 for (var i = 0; i < ball_amount; i++) {
-    ball_x.push(nbhelper_randomInt(0, canvas_width));
+    ball_x.push(nbhelper_randomInt(50, canvas_width-50));
 }
 //ball y position
 var ball_y = [];
 for (var i = 0; i < ball_amount; i++) {
-    ball_y.push(nbhelper_randomInt(0, canvas_height));
+    ball_y.push(nbhelper_randomInt(50, canvas_height-50));
 }
 //ball x speed
 var ball_x_speed = [];
@@ -198,12 +198,12 @@ function checkCollision() {
 function checkWallCollision() {
     for (var i = 0; i < ball_amount; i++) {
         // Check for collision with left and right walls
-        if (ball_x[i] - ball_size[i] / 2 < 0) {
+        if (ball_x[i] - ball_size[i] / 2 < 5) {
             // Ball hits the left wall
             ball_direction[i] = Math.PI - ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
             ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
-        } else if (ball_x[i] + ball_size[i] / 2 > canvas_width) {
+        } else if (ball_x[i] + ball_size[i] / 2 > canvas_width - 5) {
             // Ball hits the right wall
             ball_direction[i] = Math.PI - ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
@@ -211,12 +211,12 @@ function checkWallCollision() {
         }
 
         // Check for collision with top and bottom walls
-        if (ball_y[i] - ball_size[i] / 2 < 0) {
+        if (ball_y[i] - ball_size[i] / 2 < 5) {
             // Ball hits the top wall
             ball_direction[i] = -ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
             ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
-        } else if (ball_y[i] + ball_size[i] / 2 > canvas_height) {
+        } else if (ball_y[i] + ball_size[i] / 2 > canvas_height - 5) {
             // Ball hits the bottom wall
             ball_direction[i] = -ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
