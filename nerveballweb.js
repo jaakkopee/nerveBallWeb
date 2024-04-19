@@ -11,6 +11,10 @@ var mouse_down = false;
 var mouse_down_x = 0;
 var mouse_down_y = 0;
 
+//player variables
+var player_points = 0;
+var player_time = 120000;//2 minutes
+
 //current ball amount
 var ball_amount = 3
 //ball neural activation array
@@ -258,6 +262,7 @@ function splitBall(i) {
 
     if (oldSize < 10) {
         deleteBall(i);
+        addToTime(60000);
         return;
     }
     addBall(i, oldSize, oldColor);
@@ -282,4 +287,23 @@ function addBall(i, oldSize, oldColor) {
     for (var j = 0; j < ball_amount; j++) {
         weights[j].push(1.0);
     }
+}
+
+//timed loop for keeping track of player time
+setInterval(function() {
+    player_time -= 1000;
+    displayTime();
+}, 1000);
+
+function displayTime() {
+    var time = player_time / 1000;
+    var minutes = Math.floor(time / 60);
+    var seconds = time % 60;
+    var timeString = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    document.getElementById("time").innerHTML = timeString;
+}
+
+function addToTime(time) {
+    player_time += time;
+    displayTime();
 }
