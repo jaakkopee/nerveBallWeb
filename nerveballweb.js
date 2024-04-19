@@ -89,16 +89,31 @@ function getMousePos(evt) {
         y: evt.clientY - rect.top
     };
 }
+function scaleActivationSigmoid(x) {
+    return 1 / (1 + Math.exp(-x));
+}
 
 function moveBall(i) {
     //modulate ball speed with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        ball_x_speed[i] += ball_na[j] * 0.0001;
-        ball_y_speed[i] += ball_na[j] * 0.0001;
+        ball_x_speed[i] += ball_na[j] * 0.00008;
+        ball_y_speed[i] += ball_na[j] * 0.00008;
+        if (ball_x_speed[i] > 10) {
+            ball_x_speed[i] = 10;
+        }
+        if (ball_y_speed[i] > 10) {
+            ball_y_speed[i] = 10;
+        }
+        if (ball_x_speed[i] < -10) {
+            ball_x_speed[i] = -10;
+        }
+        if (ball_y_speed[i] < -10) {
+            ball_y_speed[i] = -10;
+        }
     }
     //modulate ball direction with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        ball_direction[i] += ball_na[j] * 0.0001;
+        ball_direction[i] += ball_na[j] * 0.00005;
     }  
     ball_x[i] = nbhelper_getX(ball_direction[i]);
     ball_y[i] = nbhelper_getY(ball_direction[i]);
@@ -108,19 +123,19 @@ function moveBall(i) {
 }
 
 
-function countBallNA(ball_index) {
-    var sum = 0;
+function countActivations() {
     for (var i = 0; i < ball_amount; i++) {
-        sum += ball_na[i] * weights[i][ball_index];
+        for (var j = 0; j < ball_amount; j++) {
+            ball_na[i] += scaleActivationSigmoid(ball_na[j])*weights[i][j];
+        }
     }
-    return sum;
 }
 
 function backPropagate(ball_index) {
     var error = 0.0;
     var target = 0.0;
     var delta = 0.0;
-    var lr = 0.000001;
+    var lr = 0.000333;
     for (var i = 0; i < ball_amount; i++) {
         error = target - ball_na[i];
         delta = error * lr;

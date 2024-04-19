@@ -20,29 +20,31 @@
             function draw() {
                 //clear canvas
                 background(0);
-                //move balls
-                for (var i = 0; i < ball_amount; i++) {
-                    moveBall(i);
-                }
+
                 //update ball neural activations
-                for (var i = 0; i < ball_amount; i++) {
-                    ball_na[i] = countBallNA(i);
-                }
+                countActivations();
 
                 //backpropagate
                 for (var i = 0; i < ball_amount; i++) {
                     backPropagate(i);
                 }
 
+                //move balls
+                for (var i = 0; i < ball_amount; i++) {
+                    moveBall(i);
+                }
+
                 //check collision
                 checkCollision();
                 //check wall collision
                 checkWallCollision();
+                
                 //draw balls
                 fill(255, 255, 255)
                 for (var i = 0; i < ball_amount; i++) {
                     ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
                 }
+                
                 //draw neural activations
                 fill(0, 255, 0)
                 for (var i = 0; i < ball_amount; i++) {
