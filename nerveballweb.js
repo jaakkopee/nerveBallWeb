@@ -115,7 +115,7 @@ function moveBall(i) {
 
     //modulate ball direction with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        ball_direction[i] += ball_na[j] * 0.0005;
+        ball_direction[i] += ball_na[j] * 0.0003;
     }  
     ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
     ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
@@ -163,7 +163,7 @@ function updateMouseDown(evt) {
     mouse_down_x = mousePos.x;
     mouse_down_y = mousePos.y;
     for (var i = 0; i < ball_amount; i++) {
-        if (nbhelper_getDistance(mouse_down_x, mouse_down_y, ball_x[i], ball_y[i]) < ball_size[i] / 2) {
+        if (nbhelper_getDistance(mouse_down_x, mouse_down_y, ball_x[i], ball_y[i]) < ball_size[i] / 2 + 5) {
             splitBall(i);
         }
     }
@@ -253,23 +253,30 @@ function splitBall(i) {
     var oldSize = ball_size[i];
     var oldColor = ball_color[i];
 
-    addBall(oldSize, oldColor);
-    addBall(oldSize, oldColor);
+    addBall(i, oldSize, oldColor);
+    addBall(i, oldSize, oldColor);
     deleteBall(i);
 }
 
-function addBall(oldSize, oldColor) {
+function addBall(i, oldSize, oldColor) {
+    if (oldSize < 10) {
+        deleteBall(i);
+        return;
+    }
+    ball_amount += 1;
     ball_na.push(0.03);
     ball_x.push(nbhelper_randomInt(50, canvas_width-50));
     ball_y.push(nbhelper_randomInt(50, canvas_height-50));
     ball_x_speed.push(10);
     ball_y_speed.push(10);
     ball_direction.push(0);
-    ball_size.push(oldSize-10);
-    ball_color.push((255-oldSize));
+    ball_size.push(oldSize / 2);
+    ball_color.push(oldColor);
     weights.push([]);
-    for (var i = 0; i < ball_amount; i++) {
-        weights[ball_amount].push(0.1);
+    for (var j = 0; j < ball_amount; j++) {
+        weights[ball_amount-1].push(1.0);
     }
-    ball_amount += 1;
+    for (var j = 0; j < ball_amount; j++) {
+        weights[j].push(1.0);
+    }
 }
