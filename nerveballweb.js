@@ -176,12 +176,13 @@ function checkCollision() {
                     ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
                     ball_x_speed[j] = nbhelper_getX(ball_direction[j]);
                     ball_y_speed[j] = nbhelper_getY(ball_direction[j]);
-                    
+                    /*
                     // Adjust the position of the balls to prevent them from getting stuck
                     ball_x[i] += nbhelper_getX(angle) * 0.1; // Move i slightly away from j
                     ball_y[i] += nbhelper_getY(angle) * 0.1; // Move i slightly away from j
                     ball_x[j] -= nbhelper_getX(angle) * 0.1; // Move j slightly away from i
                     ball_y[j] -= nbhelper_getY(angle) * 0.1; // Move j slightly away from i
+                    */ 
                 }
             }
         }
