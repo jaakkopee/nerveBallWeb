@@ -91,6 +91,22 @@ function getMousePos(evt) {
 }
 
 function moveBall(i) {
+    //modulate ball speed with neural activation
+    for (var j = 0; j < ball_amount; j++) {
+        for (var k = 0; k < ball_amount; k++) {
+            ball_x_speed[j] += ball_na[k] * weights[j][k];
+            ball_y_speed[j] += ball_na[k] * weights[j][k];
+        }
+    }
+    //modulate ball direction with neural activation
+    for (var j = 0; j < ball_amount; j++) {
+        for (var k = 0; k < ball_amount; k++) {
+            ball_direction[j] += ball_na[k] * weights[j][k];
+        }
+    }  
+    ball_x[i] = nbhelper_getX(ball_direction[i]);
+    ball_y[i] = nbhelper_getY(ball_direction[i]);
+
     ball_x[i] += ball_x_speed[i];
     ball_y[i] += ball_y_speed[i];
 }
@@ -105,10 +121,14 @@ function countBallNA(ball_index) {
 }
 
 function backPropagate(ball_index) {
-    target = 0.0;
-    error = target - ball_na[ball_index];
-    delta = error * ball_na[ball_index];
+    var error = 0.0;
+    var target = 0.0;
+    var delta = 0.0;
+    var lr = 0.01;
     for (var i = 0; i < ball_amount; i++) {
+        target = ball_na[i];
+        error = target - ball_na[i];
+        delta = error * lr;
         weights[i][ball_index] += delta;
     }
 }
