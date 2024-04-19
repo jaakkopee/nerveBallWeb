@@ -105,6 +105,8 @@ function moveBall(i) {
     if (total_activation < 0) {
         total_activation = -total_activation;
     }
+    //avg over ball amount
+    total_activation = total_activation / ball_amount;
     //modulate ball speed with total neural activation
     ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * 0.1;
     ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * 0.1;
@@ -160,6 +162,11 @@ function updateMouseDown(evt) {
     var mousePos = getMousePos(canvas, evt);
     mouse_down_x = mousePos.x;
     mouse_down_y = mousePos.y;
+    for (var i = 0; i < ball_amount; i++) {
+        if (nbhelper_getDistance(mouse_down_x, mouse_down_y, ball_x[i], ball_y[i]) < ball_size[i] / 2) {
+            splitBall(i);
+        }
+    }
 }
 
 function checkCollision() {
@@ -224,6 +231,46 @@ function checkWallCollision() {
         }
 
     }
+}
+
+function deleteBall(i) {
+    ball_amount -= 1;
+    ball_na.splice(i, 1);
+    ball_x.splice(i, 1);
+    ball_y.splice(i, 1);
+    ball_x_speed.splice(i, 1);
+    ball_y_speed.splice(i, 1);
+    ball_direction.splice(i, 1);
+    ball_size.splice(i, 1);
+    ball_color.splice(i, 1);
+    weights.splice(i, 1);
+    for (var j = 0; j < ball_amount; j++) {
+        weights[j].splice(i, 1);
+    }
+}
+
+function splitBall(i) {
+    var oldSize = ball_size[i];
+    var oldColor = ball_color[i];
+    addBall(oldSize, oldColor);
+    addBall(oldSize, oldColor);
+    deleteBall(i);
+}
+
+function addBall(oldSize, oldColor) {
+    ball_na.push(0.03);
+    ball_x.push(nbhelper_randomInt(50, canvas_width-50));
+    ball_y.push(nbhelper_randomInt(50, canvas_height-50));
+    ball_x_speed.push(10);
+    ball_y_speed.push(10);
+    ball_direction.push(0);
+    ball_size.push(oldSize-10);
+    ball_color.push(oldColor-50);
+    weights.push([]);
+    for (var i = 0; i < ball_amount; i++) {
+        weights[i].push(1.0);
+    }
+    ball_amount += 1;
 }
 
 

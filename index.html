@@ -46,9 +46,16 @@
                 for (var i = 0; i < ball_amount; i++) {
                     text(ball_na[i], ball_x[i], ball_y[i]);
                 }*/
-            
+                //handle mouse input
+                if (mouseIsPressed) {
+                    for (var i = 0; i < ball_amount; i++) {
+                        if (dist(mouseX, mouseY, ball_x[i], ball_y[i]) < ball_size[i] / 2) {
+                            splitBall(i);
+                        }
+                    }
+                }
             }
-
+            
         </script>
     </body>
 </html>
