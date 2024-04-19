@@ -1,5 +1,5 @@
 
-// nerveBall web version Jaakko Prättälä 2024, use as you wish.
+// nerveBall web version, copymiddle 2024 Jaakko Prättälä
 
 //globals
 var mode = 0;
@@ -96,26 +96,24 @@ function scaleActivationSigmoid(x) {
 function moveBall(i) {
     checkCollision();
     checkWallCollision();
-    //modulate ball speed with neural activation
+    //get total activation
+    var total_activation = 0.0;
     for (var j = 0; j < ball_amount; j++) {
-        ball_x_speed[i] += ball_na[j] * 0.00008;
-        ball_y_speed[i] += ball_na[j] * 0.00008;
-        if (ball_x_speed[i] > 10) {
-            ball_x_speed[i] = 10;
-        }
-        if (ball_y_speed[i] > 10) {
-            ball_y_speed[i] = 10;
-        }
-        if (ball_x_speed[i] < -10) {
-            ball_x_speed[i] = -10;
-        }
-        if (ball_y_speed[i] < -10) {
-            ball_y_speed[i] = -10;
-        }
+        total_activation += ball_na[j];
     }
+    //absolute value
+    if (total_activation < 0) {
+        total_activation = -total_activation;
+    }
+    //modulate ball speed with total neural activation
+    ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * 0.1;
+    ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * 0.1;
+    ball_x[i] += ball_x_speed[i];
+    ball_y[i] += ball_y_speed[i];
+
     //modulate ball direction with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        ball_direction[i] += ball_na[j] * 0.00005;
+        ball_direction[i] += ball_na[j] * 0.0005;
     }  
     ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
     ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
@@ -129,6 +127,12 @@ function countActivations() {
     for (var i = 0; i < ball_amount; i++) {
         for (var j = 0; j < ball_amount; j++) {
             ball_na[i] += scaleActivationSigmoid(ball_na[j])*weights[i][j];
+            if (ball_na[i] > 32) {
+                ball_na[i] = 32;
+            }
+            if (ball_na[i] < -32) {
+                ball_na[i] = -32;
+            }
         }
     }
 }
