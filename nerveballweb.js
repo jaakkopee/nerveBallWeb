@@ -252,6 +252,7 @@ function deleteBall(i) {
 function splitBall(i) {
     var oldSize = ball_size[i];
     var oldColor = ball_color[i];
+
     addBall(oldSize, oldColor);
     addBall(oldSize, oldColor);
     deleteBall(i);
@@ -265,12 +266,10 @@ function addBall(oldSize, oldColor) {
     ball_y_speed.push(10);
     ball_direction.push(0);
     ball_size.push(oldSize-10);
-    ball_color.push(oldColor-50);
+    ball_color.push((255-oldSize));
     weights.push([]);
     for (var i = 0; i < ball_amount; i++) {
-        weights[i].push(1.0);
+        weights[ball_amount].push(0.1);
     }
     ball_amount += 1;
 }
-
-
