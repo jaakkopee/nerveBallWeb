@@ -39,9 +39,16 @@
                 //check wall collision
                 checkWallCollision();
                 //draw balls
+                fill(255, 255, 255)
                 for (var i = 0; i < ball_amount; i++) {
                     ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
                 }
+                //draw neural activations
+                fill(0, 255, 0)
+                for (var i = 0; i < ball_amount; i++) {
+                    text(ball_na[i], ball_x[i], ball_y[i]);
+                }
+            
             }
 
         </script>

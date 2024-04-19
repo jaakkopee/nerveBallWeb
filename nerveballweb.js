@@ -16,7 +16,7 @@ var ball_amount = 3
 //ball neural activation array
 var ball_na = [];
 for (var i = 0; i < ball_amount; i++) {
-    ball_na.push(0.3);
+    ball_na.push(0.0003);
 }
 //ball x position
 var ball_x = [];
@@ -58,7 +58,7 @@ var weights = [];
 for (var i = 0; i < ball_amount; i++) {
     weights.push([]);
     for (var j = 0; j < ball_amount; j++) {
-        weights[i].push(0.1);
+        weights[i].push(0.001);
     }
 }
 
@@ -93,16 +93,12 @@ function getMousePos(evt) {
 function moveBall(i) {
     //modulate ball speed with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        for (var k = 0; k < ball_amount; k++) {
-            ball_x_speed[j] += ball_na[k] * weights[j][k];
-            ball_y_speed[j] += ball_na[k] * weights[j][k];
-        }
+        ball_x_speed[i] += ball_na[j] * 0.0001;
+        ball_y_speed[i] += ball_na[j] * 0.0001;
     }
     //modulate ball direction with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        for (var k = 0; k < ball_amount; k++) {
-            ball_direction[j] += ball_na[k] * weights[j][k];
-        }
+        ball_direction[i] += ball_na[j] * 0.0001;
     }  
     ball_x[i] = nbhelper_getX(ball_direction[i]);
     ball_y[i] = nbhelper_getY(ball_direction[i]);
@@ -122,9 +118,9 @@ function countBallNA(ball_index) {
 
 function backPropagate(ball_index) {
     var error = 0.0;
-    var target = 0.0;
+    var target = 0.001;
     var delta = 0.0;
-    var lr = 0.01;
+    var lr = 0.000001;
     for (var i = 0; i < ball_amount; i++) {
         target = ball_na[i];
         error = target - ball_na[i];
