@@ -16,36 +16,34 @@
                 fill(255);
                 frameRate(60);
             }
-            
+
             function draw() {
-                while (mode == 0) {
-                    //clear canvas
-                    background(0);
-                    //move balls
-                    for (var i = 0; i < ball_amount; i++) {
-                        moveBall(i);
-                    }
-                    //draw balls
-                    for (var i = 0; i < ball_amount; i++) {
-                        drawBall(i);
-                    }
-                    //update ball neural activations
-                    for (var i = 0; i < ball_amount; i++) {
-                        ball_na[i] = countBallNA(i);
-                    }
+                //clear canvas
+                background(0);
+                //move balls
+                for (var i = 0; i < ball_amount; i++) {
+                    moveBall(i);
+                }
+                //update ball neural activations
+                for (var i = 0; i < ball_amount; i++) {
+                    ball_na[i] = countBallNA(i);
+                }
 
-                    //backpropagate
-                    for (var i = 0; i < ball_amount; i++) {
-                        backPropagate(i);
-                    }
+                //backpropagate
+                for (var i = 0; i < ball_amount; i++) {
+                    backPropagate(i);
+                }
 
-                    //check collision
-                    checkCollision();
-                    //check wall collision
-                    checkWallCollision();
-
+                //check collision
+                checkCollision();
+                //check wall collision
+                checkWallCollision();
+                //draw balls
+                for (var i = 0; i < ball_amount; i++) {
+                    ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
                 }
             }
+
         </script>
     </body>
 </html>

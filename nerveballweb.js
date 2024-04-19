@@ -51,7 +51,7 @@ for (var i = 0; i < ball_amount; i++) {
 //ball color
 var ball_color = [];
 for (var i = 0; i < ball_amount; i++) {
-    ball_color.push(rgb(50, 50, 255));
+    ball_color.push(255);
 }
 //weights (ball_amount x ball_amount)
 var weights = [];
@@ -82,7 +82,7 @@ function nbhelper_getY(angle) {
     return Math.sin(angle);
 }
 
-function getMousePos(canvas, evt) {
+function getMousePos(evt) {
     var rect = canvas.getBoundingClientRect();
     return {
         x: evt.clientX - rect.left,
@@ -95,9 +95,6 @@ function moveBall(i) {
     ball_y[i] += ball_y_speed[i];
 }
 
-function drawBall(i) {
-    ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i], ball_color[i]);
-}
 
 function countBallNA(ball_index) {
     var sum = 0;
@@ -135,16 +132,16 @@ function checkCollision() {
             if (i != j) {
                 if (nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]) < ball_size[i] + ball_size[j]) {
                     //change direction
-                    angle = nbhelper_getAngle(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
-                    angle += Math.PI;
-                    angle%=2*Math.PI;
-                    ball_x_speed[i] = nbhelper_getX(angle);
-                    ball_y_speed[i] = nbhelper_getY(angle);
+                    ball_x_speed[i] *= -1;
+                    ball_y_speed[i] *= -1;
+                    ball_x_speed[j] *= -1;
+                    ball_y_speed[j] *= -1;
                 }
             }
         }
     }
 }
+
 //check collision with a wall
 function checkWallCollision() {
     for (var i = 0; i < ball_amount; i++) {
