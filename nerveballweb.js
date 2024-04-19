@@ -115,11 +115,13 @@ function moveBall(i) {
     for (var j = 0; j < ball_amount; j++) {
         ball_direction[i] += ball_na[j] * 0.00005;
     }  
-    ball_x[i] = nbhelper_getX(ball_direction[i]);
-    ball_y[i] = nbhelper_getY(ball_direction[i]);
+    ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
+    ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
 
     ball_x[i] += ball_x_speed[i];
     ball_y[i] += ball_y_speed[i];
+    checkCollision();
+    checkWallCollision();
 }
 
 
@@ -160,26 +162,59 @@ function checkCollision() {
     for (var i = 0; i < ball_amount; i++) {
         for (var j = 0; j < ball_amount; j++) {
             if (i != j) {
-                if (nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]) < ball_size[i] + ball_size[j]) {
-                    //change direction
-                    ball_x_speed[i] *= -1;
-                    ball_y_speed[i] *= -1;
-                    ball_x_speed[j] *= -1;
-                    ball_y_speed[j] *= -1;
+                var distance = nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
+                if (distance < ball_size[i] + ball_size[j]) {
+                    // Calculate the angle of collision
+                    var angle = nbhelper_getAngle(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
+                    
+                    // Calculate the new direction for each ball
+                    ball_direction[i] = angle;
+                    ball_direction[j] = angle + Math.PI; // Assuming j is the ball that was hit
+                    
+                    // Update the speed based on the new direction
+                    ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
+                    ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+                    ball_x_speed[j] = nbhelper_getX(ball_direction[j]);
+                    ball_y_speed[j] = nbhelper_getY(ball_direction[j]);
+                    
+                    // Adjust the position of the balls to prevent them from getting stuck
+                    ball_x[i] += nbhelper_getX(angle) * 0.1; // Move i slightly away from j
+                    ball_y[i] += nbhelper_getY(angle) * 0.1; // Move i slightly away from j
+                    ball_x[j] -= nbhelper_getX(angle) * 0.1; // Move j slightly away from i
+                    ball_y[j] -= nbhelper_getY(angle) * 0.1; // Move j slightly away from i
                 }
             }
         }
     }
 }
 
-//check collision with a wall
+
 function checkWallCollision() {
     for (var i = 0; i < ball_amount; i++) {
-        if (ball_x[i] < 0 || ball_x[i] > canvas_width) {
-            ball_x_speed[i] *= -1;
+        // Check for collision with left and right walls
+        if (ball_x[i] - ball_size[i] / 2 < 0) {
+            // Ball hits the left wall
+            ball_direction[i] = Math.PI - ball_direction[i];
+            ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
+            ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+        } else if (ball_x[i] + ball_size[i] / 2 > canvas_width) {
+            // Ball hits the right wall
+            ball_direction[i] = Math.PI - ball_direction[i];
+            ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
+            ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
         }
-        if (ball_y[i] < 0 || ball_y[i] > canvas_height) {
-            ball_y_speed[i] *= -1;
+
+        // Check for collision with top and bottom walls
+        if (ball_y[i] - ball_size[i] / 2 < 0) {
+            // Ball hits the top wall
+            ball_direction[i] = -ball_direction[i];
+            ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
+            ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+        } else if (ball_y[i] + ball_size[i] / 2 > canvas_height) {
+            // Ball hits the bottom wall
+            ball_direction[i] = -ball_direction[i];
+            ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
+            ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
         }
     }
 }
