@@ -16,7 +16,7 @@ var ball_amount = 3
 //ball neural activation array
 var ball_na = [];
 for (var i = 0; i < ball_amount; i++) {
-    ball_na.push(0.0003);
+    ball_na.push(0.03);
 }
 //ball x position
 var ball_x = [];
