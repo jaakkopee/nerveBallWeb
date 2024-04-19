@@ -13,13 +13,37 @@
             function setup() {
                 createCanvas(800, 800);
                 background(0);
-                noStroke();
                 fill(255);
                 frameRate(60);
             }
+            
             function draw() {
                 while (mode == 0) {
-                    nerveBall();
+                    //clear canvas
+                    background(0);
+                    //move balls
+                    for (var i = 0; i < ball_amount; i++) {
+                        moveBall(i);
+                    }
+                    //draw balls
+                    for (var i = 0; i < ball_amount; i++) {
+                        drawBall(i);
+                    }
+                    //update ball neural activations
+                    for (var i = 0; i < ball_amount; i++) {
+                        ball_na[i] = countBallNA(i);
+                    }
+
+                    //backpropagate
+                    for (var i = 0; i < ball_amount; i++) {
+                        backPropagate(i);
+                    }
+
+                    //check collision
+                    checkCollision();
+                    //check wall collision
+                    checkWallCollision();
+
                 }
             }
         </script>
