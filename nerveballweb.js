@@ -94,6 +94,8 @@ function scaleActivationSigmoid(x) {
 }
 
 function moveBall(i) {
+    checkCollision();
+    checkWallCollision();
     //modulate ball speed with neural activation
     for (var j = 0; j < ball_amount; j++) {
         ball_x_speed[i] += ball_na[j] * 0.00008;
@@ -120,8 +122,6 @@ function moveBall(i) {
 
     ball_x[i] += ball_x_speed[i];
     ball_y[i] += ball_y_speed[i];
-    checkCollision();
-    checkWallCollision();
 }
 
 
@@ -163,26 +163,27 @@ function checkCollision() {
         for (var j = 0; j < ball_amount; j++) {
             if (i != j) {
                 var distance = nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
-                if (distance < ball_size[i] + ball_size[j]) {
+                if (distance < ball_size[i] / 2 + ball_size[j] / 2) {
+                    var overlap = ball_size[i] + ball_size[j] - distance + 0.2;
+                    
                     // Calculate the angle of collision
                     var angle = nbhelper_getAngle(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
                     
                     // Calculate the new direction for each ball
                     ball_direction[i] = angle;
-                    ball_direction[j] = angle + Math.PI; // Assuming j is the ball that was hit
+                    ball_direction[j] = angle + Math.PI;
                     
                     // Update the speed based on the new direction
                     ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
                     ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
                     ball_x_speed[j] = nbhelper_getX(ball_direction[j]);
                     ball_y_speed[j] = nbhelper_getY(ball_direction[j]);
-                    /*
+                    
                     // Adjust the position of the balls to prevent them from getting stuck
-                    ball_x[i] += nbhelper_getX(angle) * 0.1; // Move i slightly away from j
-                    ball_y[i] += nbhelper_getY(angle) * 0.1; // Move i slightly away from j
-                    ball_x[j] -= nbhelper_getX(angle) * 0.1; // Move j slightly away from i
-                    ball_y[j] -= nbhelper_getY(angle) * 0.1; // Move j slightly away from i
-                    */ 
+                    ball_x[i] += nbhelper_getX(angle) * overlap; // Move i away from j by the overlap
+                    ball_y[i] += nbhelper_getY(angle) * overlap; // Move i away from j by the overlap
+                    ball_x[j] -= nbhelper_getX(angle) * overlap; // Move j away from i by the overlap
+                    ball_y[j] -= nbhelper_getY(angle) * overlap; // Move j away from i by the overlap
                 }
             }
         }
