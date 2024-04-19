@@ -256,16 +256,16 @@ function splitBall(i) {
     var oldSize = ball_size[i];
     var oldColor = ball_color[i];
 
+    if (oldSize < 10) {
+        deleteBall(i);
+        return;
+    }
     addBall(i, oldSize, oldColor);
     addBall(i, oldSize, oldColor);
     deleteBall(i);
 }
 
 function addBall(i, oldSize, oldColor) {
-    if (oldSize < 10) {
-        deleteBall(i);
-        return;
-    }
     ball_amount += 1;
     ball_na.push(0.03);
     ball_x.push(ball_x[i]); // New ball is placed at the same x position as the old ball
