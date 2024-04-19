@@ -210,11 +210,13 @@ function checkWallCollision() {
             ball_direction[i] = Math.PI - ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
             ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+            ball_x[i] = 10 + ball_size[i] / 2; // Reposition the ball
         } else if (ball_x[i] + ball_size[i] / 2 > canvas_width - 10) {
             // Ball hits the right wall
             ball_direction[i] = Math.PI - ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
             ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+            ball_x[i] = canvas_width - 10 - ball_size[i] / 2; // Reposition the ball
         }
 
         // Check for collision with top and bottom walls
@@ -223,13 +225,14 @@ function checkWallCollision() {
             ball_direction[i] = -ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
             ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+            ball_y[i] = 10 + ball_size[i] / 2; // Reposition the ball
         } else if (ball_y[i] + ball_size[i] / 2 > canvas_height - 10) {
             // Ball hits the bottom wall
             ball_direction[i] = -ball_direction[i];
             ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
             ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+            ball_y[i] = canvas_height - 10 - ball_size[i] / 2; // Reposition the ball
         }
-
     }
 }
 
@@ -265,8 +268,8 @@ function addBall(i, oldSize, oldColor) {
     }
     ball_amount += 1;
     ball_na.push(0.03);
-    ball_x.push(nbhelper_randomInt(50, canvas_width-50));
-    ball_y.push(nbhelper_randomInt(50, canvas_height-50));
+    ball_x.push(ball_x[i]); // New ball is placed at the same x position as the old ball
+    ball_y.push(ball_y[i]); // New ball is placed at the same y position as the old ball
     ball_x_speed.push(10);
     ball_y_speed.push(10);
     ball_direction.push(0);
