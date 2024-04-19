@@ -58,7 +58,7 @@ var weights = [];
 for (var i = 0; i < ball_amount; i++) {
     weights.push([]);
     for (var j = 0; j < ball_amount; j++) {
-        weights[i].push(0.001);
+        weights[i].push(1.0);
     }
 }
 
@@ -118,11 +118,10 @@ function countBallNA(ball_index) {
 
 function backPropagate(ball_index) {
     var error = 0.0;
-    var target = 0.001;
+    var target = 0.0;
     var delta = 0.0;
     var lr = 0.000001;
     for (var i = 0; i < ball_amount; i++) {
-        target = ball_na[i];
         error = target - ball_na[i];
         delta = error * lr;
         weights[i][ball_index] += delta;
