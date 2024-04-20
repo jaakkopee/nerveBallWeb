@@ -51,7 +51,7 @@ for (var i = 0; i < ball_amount; i++) {
 //ball size
 var ball_size = [];
 for (var i = 0; i < ball_amount; i++) {
-    ball_size.push(50);
+    ball_size.push(100);
 }
 //ball color
 var ball_color = [];
