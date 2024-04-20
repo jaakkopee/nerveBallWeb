@@ -3,18 +3,22 @@
     color: #008822;
     background-color: #000000;
     font-weight: bold;
-    text-align: center;
+
     margin-top: 10px;
     margin-bottom: 10px;
+    width: 800px;
+    height: 100px;
 }
 .points {
     font-size: 60px;
     color: #aa0066;
     background-color: #000000;
     font-weight: bold;
-    text-align: center;
+
     margin-top: 10px;
     margin-bottom: 10px;
+    width: 800px;
+    height: 100px;
 }
 body {
     font-family: 'Roboto Mono', monospace;
