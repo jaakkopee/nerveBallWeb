@@ -113,14 +113,14 @@ function moveBall(i) {
     //avg over ball amount
     total_activation = total_activation / ball_amount;
     //modulate ball speed with total neural activation
-    ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * 0.25;
-    ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * 0.25;
+    ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * 0.333;
+    ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * 0.333;
     ball_x[i] += ball_x_speed[i];
     ball_y[i] += ball_y_speed[i];
 
     //modulate ball direction with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        ball_direction[i] += ball_na[j] * 0.0003;
+        ball_direction[i] += ball_na[j] * 0.00025;
     }  
     ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
     ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
