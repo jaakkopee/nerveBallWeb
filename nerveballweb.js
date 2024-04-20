@@ -243,7 +243,7 @@ function checkWallCollision() {
 }
 
 function deleteBall(i) {
-    player_points += 10000 - ball_size[i] + ball_x_speed[i] * ball_y_speed[i];
+    player_points += 50000 - ball_size[i]*0.8 + ball_x_speed[i] * ball_y_speed[i];
     displayPoints();
     ball_amount -= 1;
     ball_na.splice(i, 1);
