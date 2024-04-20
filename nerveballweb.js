@@ -2,7 +2,7 @@
 // nerveBall web version, copymiddle 2024 Jaakko Prättälä
 
 //globals
-var mode = 0;
+var lane = 0;
 var canvas_width = 800;
 var canvas_height = 800;
 var mouse_x = 0;
@@ -241,6 +241,8 @@ function checkWallCollision() {
 }
 
 function deleteBall(i) {
+    player_points += 10000 - ball_size[i] + ball_x_speed[i] * ball_y_speed[i];
+    displayPoints();
     ball_amount -= 1;
     ball_na.splice(i, 1);
     ball_x.splice(i, 1);
@@ -293,6 +295,9 @@ function addBall(i, oldSize, oldColor) {
 setInterval(function() {
     player_time -= 1000;
     displayTime();
+    if (player_time <= 0) {
+        timeOut();
+    }
 }, 1000);
 
 function displayTime() {
@@ -303,7 +308,15 @@ function displayTime() {
     document.getElementById("time").innerHTML = timeString;
 }
 
+function displayPoints() {
+    document.getElementById("points").innerHTML = Math.round(player_points);
+}
+
 function addToTime(time) {
     player_time += time;
     displayTime();
+}
+
+function timeOut() {
+    lane = 1;
 }

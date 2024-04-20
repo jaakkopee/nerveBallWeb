@@ -9,8 +9,12 @@
     </head>
     <body> 
         <script type="text/javascript">
-            var mode = 0;
+            let cnv, cnvElt;
+
             function setup() {
+                cnv = createCanvas(800, 800);
+                cnvElt = cnv.elt;
+                cnvElt.id = "nerveball";
                 createCanvas(800, 800);
                 background(0);
                 fill(255);
@@ -18,39 +22,56 @@
             }
 
             function draw() {
-                //clear canvas
-                background(0);
-
-                //update ball neural activations
-                countActivations();
-
-                //backpropagate
-                for (var i = 0; i < ball_amount; i++) {
-                    backPropagate(i);
+                if (lane==1){
+                    //handle time out
+                    background(0);
+                    //delete balls
+                    ball_amount = 0;
+                    //draw text
+                    fill(255);
+                    textSize(32);
+                    text("Time out!", 10, 30);
+                    text("Points: " + player_points, 10, 60);
+                    //wait for space key
+                    if (keyIsDown(32)) {
+                        document.location.reload();
+                    }
                 }
+                else if (lane == 0){
+                    //clear canvas
+                    background(0);
 
-                //move balls
-                for (var i = 0; i < ball_amount; i++) {
-                    moveBall(i);
-                }
-                
-                //draw balls
-                for (var i = 0; i < ball_amount; i++) {
-                    fill(255-ball_size[i]*2, 255-ball_size[i]*3, 255);
-                    ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
-                }
-                
-                /* DEBUG
-                //draw neural activations
-                fill(0, 255, 0)
-                for (var i = 0; i < ball_amount; i++) {
-                    text(ball_na[i], ball_x[i], ball_y[i]);
-                }*/
-                //handle mouse input
-                if (mouseIsPressed) {
+                    //update ball neural activations
+                    countActivations();
+
+                    //backpropagate
                     for (var i = 0; i < ball_amount; i++) {
-                        if (dist(mouseX, mouseY, ball_x[i], ball_y[i]) < ball_size[i] / 2) {
-                            splitBall(i);
+                        backPropagate(i);
+                    }
+
+                    //move balls
+                    for (var i = 0; i < ball_amount; i++) {
+                        moveBall(i);
+                    }
+                    
+                    //draw balls
+                    for (var i = 0; i < ball_amount; i++) {
+                        fill(255-ball_size[i]*2, 255-ball_size[i]*3, 255);
+                        ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
+                    }
+                    
+                    /* DEBUG
+                    //draw neural activations
+                    fill(0, 255, 0)
+                    for (var i = 0; i < ball_amount; i++) {
+                        text(ball_na[i], ball_x[i], ball_y[i]);
+                    }*/
+                    //handle mouse input
+                    if (mouseIsPressed) {
+                        for (var i = 0; i < ball_amount; i++) {
+                            if (dist(mouseX, mouseY, ball_x[i], ball_y[i]) < ball_size[i] / 2) {
+                                splitBall(i);
+                            }
                         }
                     }
                 }
