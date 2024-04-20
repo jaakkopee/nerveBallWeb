@@ -1,5 +1,5 @@
 .time {
-    font-size: 1.5em;
+    font-size: 60px;
     color: #008822;
     background-color: #000000;
     font-weight: bold;
@@ -8,7 +8,7 @@
     margin-bottom: 10px;
 }
 .points {
-    font-size: 1.5em;
+    font-size: 60px;
     color: #aa0066;
     background-color: #000000;
     font-weight: bold;
