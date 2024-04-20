@@ -292,7 +292,7 @@ function addBall(i, oldSize, oldColor) {
     } else if (oldSize == 32) {
         newSize = 16;
     } else if (oldSize == 16) {
-        newSize = 8;
+        newSize = 9;
     }
     ball_size.push(newSize);
     ball_color.push(oldColor);
