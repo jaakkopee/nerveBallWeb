@@ -74,7 +74,7 @@
                     
                     //draw balls
                     for (var i = 0; i < ball_amount; i++) {
-                        fill(255-ball_size[i]*2, 255-ball_size[i]*3, 255);
+                        fill(255-ball_size[i]*2, 255-ball_size[i]*3, Math.abs(Math.round(255-ball_na[i]*255))%255);
                         ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
                     }
                     
