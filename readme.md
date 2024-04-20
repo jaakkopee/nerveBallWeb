@@ -7,7 +7,6 @@ An addicting ballgame with a neural network guiding system modulating the trajec
 - the smaller the ball, the bigger the score.
 - the smallest ball does not divide, but disappears and player gains one minute play time.
 - the game ends when the time runs out or the balls all disappear.
-- the speed of the balls is controlled by the mouse wheel.
 - the faster the ball, the bigger the score.
 - misses cause a time penalty.
 
