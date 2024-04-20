@@ -120,7 +120,7 @@ function moveBall(i) {
 
     //modulate ball direction with neural activation
     for (var j = 0; j < ball_amount; j++) {
-        ball_direction[i] += ball_na[j] * 0.00025;
+        ball_direction[i] += ball_na[j] * 0.000125;
     }  
     ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
     ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
