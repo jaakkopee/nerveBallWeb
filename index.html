@@ -22,7 +22,24 @@
             }
 
             function draw() {
-                if (lane==1){
+                if (lane==2){
+                    timeStopped = true;
+                    //handle game over
+                    background(0);
+                    //draw text
+                    fill(255);
+                    textSize(32);
+                    text("Game over!", 10, 30);
+                    text("Points: " + player_points, 10, 60);
+                    text("Time bonus: " + player_time, 10, 90);
+                    text("Total points: " + (player_points + player_time), 10, 120);
+
+                    //wait for space key
+                    if (keyIsDown(32)) {
+                        document.location.reload();
+                    }
+
+                } else if (lane==1){
                     //handle time out
                     background(0);
                     //delete balls
@@ -36,8 +53,7 @@
                     if (keyIsDown(32)) {
                         document.location.reload();
                     }
-                }
-                else if (lane == 0){
+                } else if (lane == 0){
                     //clear canvas
                     background(0);
 
@@ -68,14 +84,18 @@
                     }*/
                     //handle mouse input
                     if (mouseIsPressed) {
-                        for (var i = 0; i < ball_amount; i++) {
-                            if (dist(mouseX, mouseY, ball_x[i], ball_y[i]) < ball_size[i] / 2) {
-                                splitBall(i);
+                        if (ball_amount == 0 && lane == 0){
+                            lane = 2;
+                        } else {
+                            for (var i = 0; i < ball_amount; i++) {
+                                if (dist(mouseX, mouseY, ball_x[i], ball_y[i]) < ball_size[i] / 2 + 7) {
+                                    splitBall(i);
+                                }
                             }
-                        }
                     }
                 }
             }
+        }
 
         </script>
         <div id="time" class="time"></div>

@@ -10,6 +10,7 @@ var mouse_y = 0;
 var mouse_down = false;
 var mouse_down_x = 0;
 var mouse_down_y = 0;
+var timeStopped = false;
 
 //player variables
 var player_points = 0;
@@ -167,11 +168,12 @@ function updateMouseDown(evt) {
     mouse_down_x = mousePos.x;
     mouse_down_y = mousePos.y;
     for (var i = 0; i < ball_amount; i++) {
-        if (nbhelper_getDistance(mouse_down_x, mouse_down_y, ball_x[i], ball_y[i]) < ball_size[i] / 2 + 5) {
+        if (nbhelper_getDistance(mouse_down_x, mouse_down_y, ball_x[i], ball_y[i]) < ball_size[i] / 2 + 7) {
             splitBall(i);
         }
     }
 }
+
 
 function checkCollision() {
     for (var i = 0; i < ball_amount; i++) {
@@ -293,6 +295,9 @@ function addBall(i, oldSize, oldColor) {
 
 //timed loop for keeping track of player time
 setInterval(function() {
+    if (timeStopped) {
+        return;
+    }
     player_time -= 1000;
     displayTime();
     if (player_time <= 0) {
