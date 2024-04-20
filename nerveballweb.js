@@ -113,8 +113,8 @@ function moveBall(i) {
     //avg over ball amount
     total_activation = total_activation / ball_amount;
     //modulate ball speed with total neural activation
-    ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * 0.125;
-    ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * 0.125;
+    ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * 0.25;
+    ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * 0.25;
     ball_x[i] += ball_x_speed[i];
     ball_y[i] += ball_y_speed[i];
 
@@ -282,7 +282,19 @@ function addBall(i, oldSize, oldColor) {
     ball_x_speed.push(10);
     ball_y_speed.push(10);
     ball_direction.push(0);
-    ball_size.push(oldSize / 2);
+    var newSize = 0;
+    if (oldSize == 100) {
+        newSize = 64;
+    } else if (oldSize == 64) {
+        newSize = 48;
+    } else if (oldSize == 48) {
+        newSize = 32;
+    } else if (oldSize == 32) {
+        newSize = 16;
+    } else if (oldSize == 16) {
+        newSize = 8;
+    }
+    ball_size.push(newSize);
     ball_color.push(oldColor);
     weights.push([]);
     for (var j = 0; j < ball_amount; j++) {
