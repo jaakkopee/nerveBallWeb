@@ -16,3 +16,8 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #000000;
+}
+   

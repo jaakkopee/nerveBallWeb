@@ -4,14 +4,24 @@
     <head>
         <title>nerveBall</title>
         <link rel="stylesheet" type="text/css" href="nerveballweb.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
         <script src="nerveballweb.js"></script>
     </head>
     
     <body> 
+
         <script type="text/javascript">
             let cnv, cnvElt;
             var bgcolor = 0;
+
+            var body = document.getElementsByTagName("body")[0];
+            body.style.backgroundColor = "rgb(0, 0, 0)";
+            //timed loop for changing background color of the body
+            setInterval(function() {
+                //modulate background color blue channel with a sine wave
+                body.style.backgroundColor = "rgb(0, 0, " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))) + ")";
+            }, 10);
 
             function setup() {
                 cnv = createCanvas(800, 800);
