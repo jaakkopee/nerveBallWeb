@@ -333,12 +333,12 @@ function addBigBall() {
         weights[j].push(1.0);
     }
 }
-var secondsToBigBall = 300;
+var secondsToBigBall = 100;
 setInterval(function() {
     secondsToBigBall--;
     if (lane == 0 && secondsToBigBall == 0) {
         addBigBall();
-        secondsToBigBall = 300;
+        secondsToBigBall = 100;
     }
 }, 1000);
 
