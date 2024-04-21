@@ -28,6 +28,17 @@
     z-index: 1000;
 }
 
+.start {
+    font-size: 30px;
+    color: #ff0000;
+    background-color: #000000;
+    font-weight: bold;
+    display: block;
+    margin: auto;
+    width: 800px;
+    height: 50px;
+}
+
 body {
     font-family: 'Roboto Mono', monospace;
     background-color: #000000;

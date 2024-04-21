@@ -17,7 +17,7 @@
                 smallest balls do not split, but disappear and you lose points. <br>
                 The game ends when you run out of time or all balls are gone. <br>
             </p>
-            <button onclick="window.location.href='game.html'">Play nerveBall</button>
+            <button id="start" class="start" onclick="window.location.href='game.html'">Play nerveBall</button>
             <div id="bsa" class="bsa"></div>
             <div id="dmbgoyn" class="dmbgoyn"></div>
         </div>
@@ -28,15 +28,27 @@
             }, 10);
             var bsa = document.getElementById("bsa");
             bsa.innerHTML = "Ball Splitting Action!";
+            bsa.style.position = "fixed";
+            bsa.style.bottom = "0";
+            bsa.style.right = "0";
+
             var dmbgoyn = document.getElementById("dmbgoyn");
             dmbgoyn.innerHTML = "Do my balls get on your nerves?";
+            dmbgoyn.style.position = "fixed";
+            dmbgoyn.style.bottom = "0";
+            dmbgoyn.style.left = "0";
+
             setInterval(function() {
                 //modulate text color red, green and blue channels with sine waves
-                bsa.style.color = "rgb(" + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))) + ", " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))) + ", " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))) + ")";
+                bsa.style.color = "rgb(" + Math.round(255 - 255 * Math.abs(Math.sin(Date.now() / 1000))) + ", " + Math.round(255 - 255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))) + ", " + Math.round(255 - 255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))) + ")";
+                //modulate vertical position with sine wave
+                bsa.style.bottom = Math.round(100 * Math.abs(Math.sin(Date.now() / 1024))) + "px";
             }, 10);
             setInterval(function() {
                 //modulate text color red, green and blue channels with sine waves
                 dmbgoyn.style.color = "rgb(" + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))) + ", " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))) + ", " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))) + ")";
+                //modulate vertical position with sine wave
+                dmbgoyn.style.bottom = Math.round(100 * Math.abs(Math.sin(Date.now() / 512))) + "px";
             }, 10);
         </script>
     </body>
