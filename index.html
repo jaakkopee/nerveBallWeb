@@ -114,7 +114,7 @@
                         } else {
                             for (var i = 0; i < ball_amount; i++) {
                                 var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
-                                if (ball_size[i] < 10 && distance < 16) {
+                                if (ball_size[i] < 10 && distance < ball_size[i] / 2 + 7) {
                                     nbaudio_playSample_timegain01();
                                 }
                                 if (distance < ball_size[i] / 2 + 7) {
