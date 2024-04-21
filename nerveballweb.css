@@ -3,7 +3,8 @@
     color: #008822;
     background-color: #000000;
     font-weight: bold;
-    margin-left: 5%;
+    display: block;
+    margin: auto;
     width: 800px;
     height: 50px;
 }
@@ -12,15 +13,16 @@
     color: #aa0066;
     background-color: #000000;
     font-weight: bold;
-    margin-left: 5%;
+    display: block;
+    margin: auto;
     width: 800px;
     height: 50px;
 }
 
 .fullscreen {
     position: fixed;
-    top: 30px;
-    left: 30px;
+    top: 5px;
+    left: 5px;
     background-color: #000000;
     color: #0055aa;
     z-index: 1000;
