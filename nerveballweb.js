@@ -244,9 +244,12 @@ function checkWallCollision() {
 }
 
 function deleteBall(i) {
-    player_points += 50000 - ball_size[i]*0.8 + ball_x_speed[i] * ball_y_speed[i];
-    lastSplitPoints = 50000 - ball_size[i]*0.8 + ball_x_speed[i] * ball_y_speed[i];
+    //add points
+    lastSplitPoints = 32768 - ball_size[i]*128 + ball_x_speed[i] * ball_y_speed[i] * 1024;
+    player_points += lastSplitPoints;
     displayPoints();
+
+    //delete ball
     ball_amount -= 1;
     ball_na.splice(i, 1);
     ball_x.splice(i, 1);
