@@ -54,9 +54,11 @@ see LICENSE file for details.
                 nbaudio_bgmusic01.setVolume(0.3);
                 nbaudio_bgmusic01.play();
                 setInterval(() => {
-                    nbaudio_bgmusic01.play();
+                    if (gameOn){nbaudio_bgmusic01.play();}
                 }, 288000) // Delay in milliseconds, 4 minutes 48 seconds
             }
+
+ 
 
             function draw() {
                 if (lane==2){
