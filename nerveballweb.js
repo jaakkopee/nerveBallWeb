@@ -312,6 +312,8 @@ function addBall(i, oldSize, oldColor) {
 }
 
 function addBigBall() {
+    //score penalty of 1000000 points
+    player_points -= 1000000;
     ball_amount += 1;
     ball_na.push(0.03);
     ball_x.push(nbhelper_randomInt(50, canvas_width-50));
