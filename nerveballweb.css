@@ -23,8 +23,8 @@
 
 .fullscreen {
     position: fixed;
-    top: 0;
-    left: 660px;
+    top: 30px;
+    left: 640px;
     background-color: #000000;
     color: #0055aa;
     z-index: 1000;

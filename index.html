@@ -26,6 +26,7 @@ see LICENSE file for details.
                 nbaudio_ballsplit01 = loadSound('ballsplit01.wav');
                 nbaudio_scoregain01 = loadSound('scoregain01.wav');
                 nbaudio_timegain01 = loadSound('timegain01.wav');
+                nbaudio_bgmusic01 = loadSound('bgmusic01.wav');
             }
 
 
@@ -49,6 +50,12 @@ see LICENSE file for details.
                 background(0);
                 fill(255);
                 frameRate(60);
+                //play bg music
+                nbaudio_bgmusic01.setVolume(0.3);
+                nbaudio_bgmusic01.play();
+                setInterval(() => {
+                    nbaudio_bgmusic01.play();
+                }, 288000) // Delay in milliseconds, 4 minutes 48 seconds
             }
 
             function draw() {

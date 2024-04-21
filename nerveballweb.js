@@ -388,6 +388,7 @@ function timeOut() {
 let nbaudio_ballsplit01;
 let nbaudio_scoregain01;
 let nbaudio_timegain01;
+let nbaudio_bgmusic01;
 
 function nbaudio_playSample_ballsplit01() {
     nbaudio_ballsplit01.play();
