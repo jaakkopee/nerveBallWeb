@@ -6,12 +6,26 @@
         <link rel="stylesheet" type="text/css" href="nerveballweb.css">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
         <script src="nerveballweb.js"></script>
     </head>
     
     <body> 
 
-        <script type="text/javascript">
+        <script type="text/javascript">            
+            //audio stuff
+
+            let nbaudio_ballsplit01;
+
+            function preload() {
+                nbaudio_ballsplit01 = loadSound('ballsplit01.wav');
+            }
+
+            function nbaudio_playSample_ballsplit01() {
+                nbaudio_ballsplit01.play();
+            }
+
+            //game stuff
             let cnv, cnvElt;
             var bgcolor = 0;
 
@@ -103,6 +117,7 @@
                         } else {
                             for (var i = 0; i < ball_amount; i++) {
                                 if (dist(mouseX, mouseY, ball_x[i], ball_y[i]) < ball_size[i] / 2 + 7) {
+                                    nbaudio_playSample_ballsplit01();
                                     splitBall(i);
                                 }
                             }
