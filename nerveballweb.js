@@ -315,8 +315,10 @@ function addBigBall() {
     //score penalty of 1000000 points
     player_points -= 1000000;
     player_lastSplitPoints = -1000000;
-    //reset player time
-    player_time = 120000;
+    //time penalty of 1 minute
+    player_time -= 60000;
+    displayPoints();
+    displayTime();
     ball_amount += 1;
     ball_na.push(0.03);
     ball_x.push(nbhelper_randomInt(50, canvas_width-50));
@@ -365,7 +367,7 @@ function displayTime() {
 
 function displayPoints() {
     totalscore = player_points + player_lastSplitPoints;
-    document.getElementById("points").innerHTML = "Points: " + Math.round(totalscore) + " (+" + Math.round(player_lastSplitPoints) + ")"; 
+    document.getElementById("points").innerHTML = "Points: " + Math.round(totalscore) + " (" + Math.round(player_lastSplitPoints) + ")"; 
 }
 
 function addToTime(time) {
