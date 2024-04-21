@@ -29,7 +29,7 @@
             //timed loop for changing background color of the body
             setInterval(function() {
                 //modulate background color blue channel with a sine wave
-                body.style.backgroundColor = "rgb(0, 0, " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))) + ")";
+                body.style.backgroundColor = "rgb(0, 0, " + Math.round(64 * Math.abs(Math.sin(Date.now() / 1000))) + ")";
             }, 10);
 
             function setup() {
