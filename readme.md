@@ -1,3 +1,8 @@
+nerveBall - a simple game made with p5.js
+by Jaakko Prättälä 2024.
+Licensed under GPL v3.
+see LICENSE file for details.
+
 Nerve wrecking, ball splitting action!
 
 Nerve Ball -- "Do my balls get on your nerves?"
@@ -11,9 +16,4 @@ An addicting ballgame with a neural network guiding system modulating the trajec
 - misses cause a time penalty.
 
 will be online soon...
-
-nerveBall - a simple game made with p5.js
-by Jaakko Prättälä 2024.
-Licensed under GPL v3.
-see LICENSE file for details.
 
