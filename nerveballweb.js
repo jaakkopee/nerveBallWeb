@@ -345,7 +345,7 @@ function addBigBall() {
         weights[j].push(1.0);
     }
 }
-var secondsToBigBall = 100;
+var secondsToBigBall = 156;
 setInterval(function() {
     if (timeStopped) {
         return;
@@ -354,7 +354,7 @@ setInterval(function() {
         secondsToBigBall--;
         if (lane == 0 && secondsToBigBall == 0) {
             addBigBall();
-            secondsToBigBall = 100;
+            secondsToBigBall = 156;
         }
     }
 }, 1000);
@@ -394,7 +394,7 @@ function addToTime(time) {
 function timeOut() {
     timeStopped = true;
     lane = 1;
-    displayTime();
+    displayPoints();
 }
 
 //audio department
