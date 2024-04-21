@@ -394,6 +394,7 @@ function addToTime(time) {
 function timeOut() {
     timeStopped = true;
     lane = 1;
+    displayTime();
 }
 
 //audio department
