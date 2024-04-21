@@ -342,10 +342,15 @@ function addBigBall() {
 }
 var secondsToBigBall = 100;
 setInterval(function() {
-    secondsToBigBall--;
-    if (lane == 0 && secondsToBigBall == 0) {
-        addBigBall();
-        secondsToBigBall = 100;
+    if (timeStopped) {
+        return;
+    }
+    if (gameOn) {
+        secondsToBigBall--;
+        if (lane == 0 && secondsToBigBall == 0) {
+            addBigBall();
+            secondsToBigBall = 100;
+        }
     }
 }, 1000);
 
@@ -354,10 +359,12 @@ setInterval(function() {
     if (timeStopped) {
         return;
     }
-    player_time -= 1000;
-    displayTime();
-    if (player_time <= 0) {
-        timeOut();
+    if (gameOn) {
+        player_time -= 1000;
+        displayTime();
+        if (player_time <= 0) {
+            timeOut();
+        }
     }
 }, 1000);
 
