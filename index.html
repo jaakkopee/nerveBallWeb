@@ -47,6 +47,7 @@
             function draw() {
                 if (lane==2){
                     timeStopped = true;
+                    gameOn = false;
                     //handle game over
                     background(0);
                     //draw text
@@ -64,6 +65,7 @@
 
                 } else if (lane==1){
                     timeStopped = true;
+                    gameOn = false;
                     //handle time out
                     background(0);
                     //delete balls
@@ -78,7 +80,7 @@
                         document.location.reload();
                     }
                 } else if (lane == 0){
-
+                    gameOn = true;
                     //clear canvas
                     background(0);
 

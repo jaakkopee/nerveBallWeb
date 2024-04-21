@@ -11,6 +11,7 @@ var mouse_down = false;
 var mouse_down_x = 0;
 var mouse_down_y = 0;
 var timeStopped = false;
+var gameOn = false;
 
 //player variables
 var player_points = 0;
@@ -18,7 +19,7 @@ var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
 
 //current ball amount
-var ball_amount = 3
+var ball_amount = 1
 //ball neural activation array
 var ball_na = [];
 for (var i = 0; i < ball_amount; i++) {
@@ -310,6 +311,33 @@ function addBall(i, oldSize, oldColor) {
     }
 }
 
+function addBigBall() {
+    ball_amount += 1;
+    ball_na.push(0.03);
+    ball_x.push(nbhelper_randomInt(50, canvas_width-50));
+    ball_y.push(nbhelper_randomInt(50, canvas_height-50));
+    ball_x_speed.push(10);
+    ball_y_speed.push(10);
+    ball_direction.push(0);
+    ball_size.push(100);
+    ball_color.push(255);
+    weights.push([]);
+    for (var j = 0; j < ball_amount; j++) {
+        weights[ball_amount-1].push(1.0);
+    }
+    for (var j = 0; j < ball_amount; j++) {
+        weights[j].push(1.0);
+    }
+}
+var secondsToBigBall = 300;
+setInterval(function() {
+    secondsToBigBall--;
+    if (lane == 0 && secondsToBigBall == 0) {
+        addBigBall();
+        secondsToBigBall = 300;
+    }
+}, 1000);
+
 //timed loop for keeping track of player time
 setInterval(function() {
     if (timeStopped) {
@@ -326,7 +354,7 @@ function displayTime() {
     var time = player_time / 1000;
     var minutes = Math.floor(time / 60);
     var seconds = time % 60;
-    var timeString = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    var timeString ="Time: " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds + " Big Ball Spawn in: " + secondsToBigBall + "s";
     document.getElementById("time").innerHTML = timeString;
 }
 
