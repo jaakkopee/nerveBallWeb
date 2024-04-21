@@ -56,3 +56,14 @@ body {
     width: 800px;
     height: 800px;
 }
+
+.copyright {
+    font-size: 16px;
+    color: #00aa99;
+    background-color: #000000;
+    font-weight: bold;
+    display: block;
+    margin: auto;
+    width: 800px;
+    height: 50px;
+}

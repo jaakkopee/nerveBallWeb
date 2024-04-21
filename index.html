@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>nerveBall</title>
         <link rel="stylesheet" type="text/css" href="nerveballweb.css">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -17,9 +18,18 @@
                 The smallest balls do not split, but disappear and you gain play time.
                 The game ends when you run out of time or all balls are gone.
             </p>
-            <button id="start" class="start" onclick="window.location.href='game.html'">Play nerveBall</button>
-            <div id="bsa" class="bsa"></div>
-            <div id="dmbgoyn" class="dmbgoyn"></div>
+            <p>
+                nerveBall has a neural network that modulates the balls' behavior.
+                The network is one layered, fully connected and oscillates in real time.
+            </p>
+        </div>
+        <button id="start" class="start" onclick="window.location.href='game.html'">Play nerveBall</button>
+        <div id="bsa" class="bsa"></div>
+        <div id="dmbgoyn" class="dmbgoyn"></div>
+        <div id="copyright" class="copyright">
+            <p>
+                nerveBall by Jaakko Prättälä 2024. Licensed under GPL v3.
+            </p>
         </div>
         <script type="text/javascript">
             setInterval(function() {
@@ -31,12 +41,14 @@
             bsa.style.position = "fixed";
             bsa.style.bottom = "0";
             bsa.style.right = "0";
+            bsa.style.fontSize = "24px";
 
             var dmbgoyn = document.getElementById("dmbgoyn");
             dmbgoyn.innerHTML = "Do my balls get on your nerves?";
             dmbgoyn.style.position = "fixed";
             dmbgoyn.style.bottom = "0";
             dmbgoyn.style.left = "0";
+            dmbgoyn.style.fontSize = "24px";
 
             setInterval(function() {
                 //modulate text color red, green and blue channels with sine waves
