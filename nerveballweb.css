@@ -22,7 +22,7 @@
 .fullscreen {
     position: fixed;
     top: 5px;
-    left: 5px;
+    right: 5px;
     background-color: #000000;
     color: #0055aa;
     z-index: 1000;
