@@ -17,6 +17,8 @@
 
             function preload() {
                 nbaudio_ballsplit01 = loadSound('ballsplit01.wav');
+                nbaudio_scoregain01 = loadSound('scoregain01.wav');
+                nbaudio_timegain01 = loadSound('timegain01.wav');
             }
 
 
@@ -111,15 +113,28 @@
                             lane = 2;
                         } else {
                             for (var i = 0; i < ball_amount; i++) {
-                                if (dist(mouseX, mouseY, ball_x[i], ball_y[i]) < ball_size[i] / 2 + 7) {
+                                var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
+                                if (ball_size[i] < 10 && distance < 16) {
+                                    nbaudio_playSample_timegain01();
+                                }
+                                if (distance < ball_size[i] / 2 + 7) {
                                     nbaudio_playSample_ballsplit01();
                                     splitBall(i);
+                                    if (player_lastSplitPoints > 0){
+                                        var scoreSoundPlayTimes = player_lastSplitPoints / 10000;
+                                        setInterval(function() {
+                                                if (scoreSoundPlayTimes > 0){
+                                                    nbaudio_playSample_scoregain01();
+                                                    scoreSoundPlayTimes--;
+                                                }
+                                            }, 100); // Delay in milliseconds
+                                    }
                                 }
                             }
+                        }
                     }
                 }
             }
-        }
 
         </script>
         <div id="time" class="time">Time</div>

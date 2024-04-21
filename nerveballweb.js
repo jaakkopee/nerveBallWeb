@@ -15,7 +15,7 @@ var timeStopped = false;
 //player variables
 var player_points = 0;
 var player_time = 120000;//2 minutes
-var lastSplitPoints = 0;
+var player_lastSplitPoints = 0;
 
 //current ball amount
 var ball_amount = 3
@@ -245,8 +245,8 @@ function checkWallCollision() {
 
 function deleteBall(i) {
     //add points
-    lastSplitPoints = 32768 - ball_size[i]*128 + ball_x_speed[i] * ball_y_speed[i] * 1024;
-    player_points += lastSplitPoints;
+    player_lastSplitPoints = 32768 - ball_size[i]*128 + ball_x_speed[i] * ball_y_speed[i] * 1024;
+    player_points += player_lastSplitPoints;
     displayPoints();
 
     //delete ball
@@ -331,8 +331,8 @@ function displayTime() {
 }
 
 function displayPoints() {
-    totalscore = player_points + lastSplitPoints;
-    document.getElementById("points").innerHTML = "Points: " + Math.round(totalscore) + " (+" + Math.round(lastSplitPoints) + ")"; 
+    totalscore = player_points + player_lastSplitPoints;
+    document.getElementById("points").innerHTML = "Points: " + Math.round(totalscore) + " (+" + Math.round(player_lastSplitPoints) + ")"; 
 }
 
 function addToTime(time) {
@@ -344,8 +344,20 @@ function timeOut() {
     timeStopped = true;
     lane = 1;
 }
+
+//audio department
 let nbaudio_ballsplit01;
+let nbaudio_scoregain01;
+let nbaudio_timegain01;
 
 function nbaudio_playSample_ballsplit01() {
     nbaudio_ballsplit01.play();
+}
+
+function nbaudio_playSample_scoregain01() {
+    nbaudio_scoregain01.play();
+}
+
+function nbaudio_playSample_timegain01() {
+    nbaudio_timegain01.play();
 }
