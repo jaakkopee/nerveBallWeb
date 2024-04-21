@@ -338,3 +338,8 @@ function timeOut() {
     timeStopped = true;
     lane = 1;
 }
+let nbaudio_ballsplit01;
+
+function nbaudio_playSample_ballsplit01() {
+    nbaudio_ballsplit01.play();
+}
