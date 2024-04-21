@@ -187,7 +187,6 @@ function checkCollision() {
             if (i != j) {
                 var distance = nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
                 if (distance < ball_size[i] / 2 + ball_size[j] / 2) {
-                    var overlap = ball_size[i] + ball_size[j] - distance + 0.2;
                     
                     // Calculate the angle of collision
                     var angle = nbhelper_getAngle(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
@@ -201,12 +200,13 @@ function checkCollision() {
                     ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
                     ball_x_speed[j] = nbhelper_getX(ball_direction[j]);
                     ball_y_speed[j] = nbhelper_getY(ball_direction[j]);
+
+                    // Move the balls away from each other
+                    ball_x[i] += ball_size[i] / 2 * nbhelper_getX(angle);
+                    ball_y[i] += ball_size[i] / 2 * nbhelper_getY(angle);
+                    ball_x[j] += ball_size[j] / 2 * nbhelper_getX(angle + Math.PI);
+                    ball_y[j] += ball_size[j] / 2 * nbhelper_getY(angle + Math.PI);
                     
-                    // Adjust the position of the balls to prevent them from getting stuck
-                    ball_x[i] += nbhelper_getX(angle) * overlap; // Move i away from j by the overlap
-                    ball_y[i] += nbhelper_getY(angle) * overlap; // Move i away from j by the overlap
-                    ball_x[j] -= nbhelper_getX(angle) * overlap; // Move j away from i by the overlap
-                    ball_y[j] -= nbhelper_getY(angle) * overlap; // Move j away from i by the overlap
                 }
             }
         }
@@ -313,6 +313,11 @@ function addBall(i, oldSize, oldColor) {
     for (var j = 0; j < ball_amount; j++) {
         weights[j].push(1.0);
     }
+    //move ball away from each other
+    ball_x[i] -= newSize + 10;
+    ball_x[ball_amount-1] += newSize + 10;
+    ball_y[i] -= newSize + 10;
+    ball_y[ball_amount-1] += newSize + 10;
 }
 
 function addBigBall() {
