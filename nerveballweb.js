@@ -202,10 +202,10 @@ function checkCollision() {
                     ball_y_speed[j] = nbhelper_getY(ball_direction[j]);
 
                     // Move the balls away from each other
-                    ball_x[i] += ball_size[i] / 2 * nbhelper_getX(angle);
-                    ball_y[i] += ball_size[i] / 2 * nbhelper_getY(angle);
-                    ball_x[j] += ball_size[j] / 2 * nbhelper_getX(angle + Math.PI);
-                    ball_y[j] += ball_size[j] / 2 * nbhelper_getY(angle + Math.PI);
+                    ball_x[i] += ball_size[i] / 2 * nbhelper_getX(angle) * 1.2
+                    ball_y[i] += ball_size[i] / 2 * nbhelper_getY(angle) * 1.2;
+                    ball_x[j] += ball_size[j] / 2 * nbhelper_getX(angle + Math.PI) * 1.2
+                    ball_y[j] += ball_size[j] / 2 * nbhelper_getY(angle + Math.PI) * 1.2;
                     
                 }
             }
