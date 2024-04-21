@@ -32,4 +32,14 @@ body {
     font-family: 'Roboto Mono', monospace;
     background-color: #000000;
 }
-   
+
+.welcome {
+    font-size: 30px;
+    color: #0088cc;
+    background-color: #000000;
+    font-weight: bold;
+    display: block;
+    margin: auto;
+    width: 800px;
+    height: 800px;
+}

@@ -1,0 +1,166 @@
+<!--
+nerveBall - a simple game made with p5.js
+by Jaakko Prättälä 2024.
+Licensed under GPL v3.
+see LICENSE file for details.
+
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>nerveBall</title>
+        <link rel="stylesheet" type="text/css" href="nerveballweb.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+        <script src="nerveballweb.js"></script>
+    </head>
+    
+    <body> 
+
+        <script type="text/javascript">
+
+            //audio stuff
+
+            function preload() {
+                nbaudio_ballsplit01 = loadSound('ballsplit01.wav');
+                nbaudio_scoregain01 = loadSound('scoregain01.wav');
+                nbaudio_timegain01 = loadSound('timegain01.wav');
+                nbaudio_bgmusic01 = loadSound('bgmusic01.wav');
+            }
+
+
+            //game stuff
+            let cnv, cnvElt;
+            var bgcolor = 0;
+
+            var body = document.getElementsByTagName("body")[0];
+            body.style.backgroundColor = "rgb(0, 0, 0)";
+            //timed loop for changing background color of the body
+            setInterval(function() {
+                //modulate background color blue channel with a sine wave
+                body.style.backgroundColor = "rgb(0, 0, " + Math.round(64 * Math.abs(Math.sin(Date.now() / 1000))) + ")";
+            }, 10);
+
+            function setup() {
+                cnv = createCanvas(800, 800);
+                cnvElt = cnv.elt;
+                cnvElt.id = "nerveball";
+                cnvElt.style.display = "block";
+                cnvElt.style.margin = "auto";
+                cnvElt.style.marginTop = "50px";
+
+                createCanvas(800, 800);
+                background(0);
+                fill(255);
+                frameRate(60);
+                //play bg music
+                nbaudio_bgmusic01.setVolume(0.3);
+                nbaudio_bgmusic01.play();
+                setInterval(() => {
+                    if (gameOn){nbaudio_bgmusic01.play();}
+                }, 260000); //every 4:20 minutes
+            }
+
+ 
+
+            function draw() {
+                if (lane==2){
+                    timeStopped = true;
+                    gameOn = false;
+                    //handle game over
+                    background(0);
+                    //draw text
+                    fill(255);
+                    textSize(32);
+                    text("Game over!", 10, 30);
+                    text("Points: " + player_points, 10, 60);
+                    text("Time bonus: " + player_time, 10, 90);
+                    text("Total points: " + (player_points + player_time), 10, 120);
+
+                    //wait for space key
+                    if (keyIsDown(32)) {
+                        document.location.reload();
+                    }
+
+                } else if (lane==1){
+                    timeStopped = true;
+                    gameOn = false;
+                    //handle time out
+                    background(0);
+                    //delete balls
+                    ball_amount = 0;
+                    //draw text
+                    fill(255);
+                    textSize(32);
+                    text("Time out!", 10, 30);
+                    text("Points: " + player_points, 10, 60);
+                    //wait for space key
+                    if (keyIsDown(32)) {
+                        document.location.reload();
+                    }
+                } else if (lane == 0){
+                    gameOn = true;
+                    //clear canvas
+                    background(0);
+
+                    //update ball neural activations
+                    countActivations();
+
+                    //backpropagate
+                    for (var i = 0; i < ball_amount; i++) {
+                        backPropagate(i);
+                    }
+
+                    //move balls
+                    for (var i = 0; i < ball_amount; i++) {
+                        moveBall(i);
+                    }
+                    
+                    //draw balls
+                    for (var i = 0; i < ball_amount; i++) {
+                        fill(255-ball_size[i]*2, 255-ball_size[i]*3, Math.abs(Math.round(ball_na[i]/32*255)));
+                        ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
+                    }
+                    
+                    /* DEBUG
+                    //draw neural activations
+                    fill(0, 255, 0)
+                    for (var i = 0; i < ball_amount; i++) {
+                        text(ball_na[i], ball_x[i], ball_y[i]);
+                    }*/
+                    //handle mouse input
+                    if (mouseIsPressed) {
+                        if (ball_amount == 0 && lane == 0){
+                            lane = 2;
+                        } else {
+                            for (var i = 0; i < ball_amount; i++) {
+                                var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
+                                if (ball_size[i] < 10 && distance < ball_size[i] / 2 + 7) {
+                                    nbaudio_playSample_timegain01();
+                                }
+                                if (distance < ball_size[i] / 2 + 7) {
+                                    nbaudio_playSample_ballsplit01();
+                                    splitBall(i);
+                                    if (player_lastSplitPoints > 0){
+                                        var scoreSoundPlayTimes = player_lastSplitPoints / 10000;
+                                        setInterval(function() {
+                                                if (scoreSoundPlayTimes > 0){
+                                                    nbaudio_playSample_scoregain01();
+                                                    scoreSoundPlayTimes--;
+                                                }
+                                            }, 100); // Delay in milliseconds
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        </script>
+        <div id="time" class="time">Time</div>
+        <div id="points" class="points">Points</div>
+        <button id="fullscreen" class="fullscreen" onclick="toggleFullScreen()"> Toggle Fullscreen mode</button>
+    </body>
+</html>
