@@ -15,6 +15,7 @@ var timeStopped = false;
 //player variables
 var player_points = 0;
 var player_time = 120000;//2 minutes
+var lastSplitPoints = 0;
 
 //current ball amount
 var ball_amount = 3
@@ -244,6 +245,7 @@ function checkWallCollision() {
 
 function deleteBall(i) {
     player_points += 50000 - ball_size[i]*0.8 + ball_x_speed[i] * ball_y_speed[i];
+    lastSplitPoints = 50000 - ball_size[i]*0.8 + ball_x_speed[i] * ball_y_speed[i];
     displayPoints();
     ball_amount -= 1;
     ball_na.splice(i, 1);
@@ -326,7 +328,8 @@ function displayTime() {
 }
 
 function displayPoints() {
-    document.getElementById("points").innerHTML = Math.round(player_points);
+    totalscore = player_points + lastSplitPoints;
+    document.getElementById("points").innerHTML = "Points: " + Math.round(totalscore) + " (+" + Math.round(lastSplitPoints) + ")"; 
 }
 
 function addToTime(time) {

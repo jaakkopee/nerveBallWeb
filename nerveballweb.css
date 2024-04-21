@@ -1,5 +1,5 @@
 .time {
-    font-size: 60px;
+    font-size: 30px;
     color: #008822;
     background-color: #000000;
     font-weight: bold;
@@ -7,10 +7,10 @@
     margin-top: 10px;
     margin-bottom: 10px;
     width: 800px;
-    height: 100px;
+    height: 50px;
 }
 .points {
-    font-size: 60px;
+    font-size: 30px;
     color: #aa0066;
     background-color: #000000;
     font-weight: bold;
@@ -18,7 +18,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     width: 800px;
-    height: 100px;
+    height: 50px;
 }
 body {
     font-family: 'Roboto Mono', monospace;
