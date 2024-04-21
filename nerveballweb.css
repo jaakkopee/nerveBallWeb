@@ -20,6 +20,16 @@
     width: 800px;
     height: 50px;
 }
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 660px;
+    background-color: #000000;
+    color: #0055aa;
+    z-index: 1000;
+}
+
 body {
     font-family: 'Roboto Mono', monospace;
     background-color: #000000;

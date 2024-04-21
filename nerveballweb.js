@@ -1,5 +1,9 @@
-
-// nerveBall web version, copymiddle 2024 Jaakko Prättälä
+/*
+nerveBall - a simple game made with p5.js
+by Jaakko Prättälä 2024.
+Licensed under GPL v3.
+see LICENSE file for details.
+*/
 
 //globals
 var lane = 0;
@@ -396,3 +400,38 @@ function nbaudio_playSample_scoregain01() {
 function nbaudio_playSample_timegain01() {
     nbaudio_timegain01.play();
 }
+
+function goFullScreen() {
+    var elem = document.documentElement;
+
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+    }
+}
+
+function exitFullScreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+    }
+}
+
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        goFullScreen();
+    } else {
+        exitFullScreen();
+    }
+}
+
