@@ -70,36 +70,56 @@ see LICENSE file for details.
                     gameOn = false;
                     //handle game over
                     background(0);
+                    //delete balls
+                    ball_amount = 0;
                     //draw text
-                    fill(255);
+                    fill(10, 255, 10);
                     textSize(32);
-                    text("Game over!", 10, 30);
-                    text("Points: " + player_points, 10, 60);
-                    text("Time bonus: " + player_time, 10, 90);
-                    text("Total points: " + (player_points + player_time), 10, 120);
-
+                    //font courier new
+                    textFont('Courier New');
+                    text("Game Over, Balls Destroyed.", 100, 30);
+                    //
+                    var timeBonus = Math.round(player_time);
+                    var score = player_points + timeBonus;
+                    text("Points: " + player_points, 200, 60);
+                    text("Time bonus: " + timeBonus, 200, 90);
+                    text("Score: " + score, 200, 120);
                     //wait for space key
                     if (keyIsDown(32)) {
                         document.location.reload();
                     }
-
                 } else if (lane==1){
                     timeStopped = true;
                     gameOn = false;
-                    //handle time out
+                    //handle game over
                     background(0);
                     //delete balls
                     ball_amount = 0;
                     //draw text
-                    fill(255);
+                    fill(10, 255, 10);
                     textSize(32);
-                    text("Time out!", 10, 30);
-                    text("Points: " + player_points, 10, 60);
+                    //font courier new
+                    textFont('Courier New');
+                    text("Game Over, Out of Time.", 100, 30);
+                    //
+                    var timeBonus = Math.round(player_time);
+                    var score = player_points + timeBonus;
+                    text("Points: " + player_points, 200, 60);
+                    text("Time bonus: " + timeBonus, 200, 90);
+                    text("Score: " + score, 200, 120);
+
                     //wait for space key
                     if (keyIsDown(32)) {
                         document.location.reload();
                     }
                 } else if (lane == 0){
+                    //DEBUG and TESTING
+                    //wait for number 1 or 2 key for lane selection
+                    if (keyIsDown(49)) {
+                        lane = 1;
+                    } else if (keyIsDown(50)) {
+                        lane = 2;
+                    }
                     gameOn = true;
                     //clear canvas
                     background(0);
