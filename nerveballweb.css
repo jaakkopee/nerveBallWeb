@@ -39,6 +39,9 @@
     margin: auto;
     width: 800px;
     height: 50px;
+    top: 10px;
+    left: 10px;
+    position: absolute;
 }
 
 body {
@@ -47,7 +50,7 @@ body {
 }
 
 .welcome {
-    font-size: 30px;
+    font-size: 22px;
     color: #0088cc;
     background-color: #000000;
     font-weight: bold;
