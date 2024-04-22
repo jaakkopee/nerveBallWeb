@@ -285,7 +285,7 @@ function splitBall(i) {
 }
 
 function addBall(i, oldSize, oldColor) {
-    if (ball_amount >= 48) {
+    if (ball_amount >= 32) {
         return;
     }
     ball_amount += 1;
@@ -386,7 +386,7 @@ function displayTime() {
 
 function displayPoints() {
     totalscore = player_points + player_lastSplitPoints;
-    document.getElementById("points").innerHTML = "Points: " + Math.round(totalscore) + "Points gained: (" + Math.round(player_lastSplitPoints) + ") Balls: " + ball_amount;
+    document.getElementById("points").innerHTML = Math.round(totalscore) + "(" + Math.round(player_lastSplitPoints) + ") Balls:" + ball_amount;
 }
 
 function addToTime(time) {
