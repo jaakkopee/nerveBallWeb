@@ -13,17 +13,22 @@
                 Click to split the ball and gain points.
                 The smaller the ball, the more points you get.
                 The faster the ball, the more points you get.
-                Every 156 seconds a Big Ball appears.
+                Every 156 seconds The Big Ball appears.
                 and you lose points and time.
                 The smallest balls do not split, but disappear and you gain play time.
                 The game ends when you run out of time or all balls are gone.
             </p>
             <p>
                 nerveBall has a neural network that modulates the balls' behavior.
-                The network is one layered, fully connected and oscillates in real time.
+                The network is one layered, fully connected, expands and shrinks dynamically, and oscillates in real time.
+            </p>
+            <p>
+                There are maximum of sixteen balls on the play field at the same time. The regeneration of balls, when split,
+                is restricted by this rule. So if you want small balls (more points, possibility of gaining time), you have
+                to keep the amount of balls low. 
             </p>
         </div>
-        <button id="start" class="start" onclick="window.location.href = 'game.html'">Start</button>
+        <button id="start" class="start" onclick="window.location.href='game.html'">Start Game</button>
         <div id="bsa" class="bsa"></div>
         <div id="dmbgoyn" class="dmbgoyn"></div>
         <div id="copyright" class="copyright">
