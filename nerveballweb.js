@@ -325,7 +325,6 @@ function addBall(i, oldSize, oldColor) {
 
 function addBigBall() {
     //score penalty of 1000000 points
-    player_points -= 1000000;
     player_lastSplitPoints = -1000000;
     //time penalty of 1 minute
     player_time -= 60000;
