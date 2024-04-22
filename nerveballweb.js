@@ -285,7 +285,7 @@ function splitBall(i) {
 }
 
 function addBall(i, oldSize, oldColor) {
-    if (ball_amount >= 64) {
+    if (ball_amount >= 48) {
         return;
     }
     ball_amount += 1;
