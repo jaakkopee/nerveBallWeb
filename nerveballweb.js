@@ -397,7 +397,6 @@ function addToTime(time) {
 function timeOut() {
     timeStopped = true;
     lane = 1;
-    displayPoints();
 }
 
 //audio department
