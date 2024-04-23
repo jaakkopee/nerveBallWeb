@@ -16,7 +16,7 @@ var mouse_down_x = 0;
 var mouse_down_y = 0;
 var timeStopped = false;
 var gameOn = false;
-
+var theBigBall = false;
 //player variables
 var player_points = 0;
 var player_time = 120000;//2 minutes
@@ -324,6 +324,7 @@ function addBall(i, oldSize, oldColor) {
 }
 
 function addBigBall() {
+    theBigBall = true;
     //score penalty of 1000000 points
     player_lastSplitPoints = -1000000;
     player_points += player_lastSplitPoints;
@@ -408,6 +409,7 @@ let nbaudio_ballsplit01;
 let nbaudio_scoregain01;
 let nbaudio_timegain01;
 let nbaudio_bgmusic01;
+let nbaudio_TheBigBall;
 
 function nbaudio_playSample_ballsplit01() {
     nbaudio_ballsplit01.play();
@@ -421,6 +423,11 @@ function nbaudio_playSample_timegain01() {
     nbaudio_timegain01.play();
 }
 
+function nbaudio_playSample_TheBigBall() {
+    nbaudio_TheBigBall.play();
+}
+
+//full screen
 function goFullScreen() {
     var elem = document.documentElement;
 

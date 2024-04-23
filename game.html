@@ -27,6 +27,7 @@ see LICENSE file for details.
                 nbaudio_scoregain01 = loadSound('scoregain01.wav');
                 nbaudio_timegain01 = loadSound('timegain01.wav');
                 nbaudio_bgmusic01 = loadSound('bgmusic01.wav');
+                nbaudio_TheBigBall = loadSound('TheBigBall.wav');
             }
 
 
@@ -63,6 +64,8 @@ see LICENSE file for details.
  
 
             function draw() {
+                if (theBigBall){nbaudio_TheBigBall.play();theBigBall = false;}
+
                 if (lane == 3){
                     gameOn = false;
                     timeStopped = true;
@@ -203,6 +206,7 @@ see LICENSE file for details.
                                 if (ball_size[i] < 10 && distance < ball_size[i] / 2 + 7) {
                                     nbaudio_playSample_timegain01();
                                 }
+
                                 if (distance < ball_size[i] / 2 + 7) {
                                     nbaudio_playSample_ballsplit01();
                                     splitBall(i);
