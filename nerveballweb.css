@@ -81,7 +81,7 @@ body {
     width: 120px;
     height: 60px;
     position: fixed;
-    top:80%;
-    left: 5%;
+    top: 10px;
+    right: 5px;
     border: none;
 }
