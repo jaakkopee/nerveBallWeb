@@ -285,7 +285,7 @@ function splitBall(i) {
 }
 
 function addBall(i, oldSize, oldColor) {
-    if (ball_amount >= 16) {
+    if (ball_amount >= 24) {
         return;
     }
     ball_amount += 1;
@@ -349,7 +349,7 @@ function addBigBall() {
         weights[j].push(1.0);
     }
 }
-var secondsToBigBall = 156;
+var secondsToBigBall = 93;
 setInterval(function() {
     if (timeStopped) {
         return;
@@ -358,7 +358,7 @@ setInterval(function() {
         secondsToBigBall--;
         if (lane == 0 && secondsToBigBall == 0) {
             addBigBall();
-            secondsToBigBall = 156;
+            secondsToBigBall = 93;
         }
     }
 }, 1000);
