@@ -385,8 +385,7 @@ function displayTime() {
 }
 
 function displayPoints() {
-    totalscore = player_points + player_lastSplitPoints;
-    document.getElementById("points").innerHTML = Math.round(totalscore) + " (" + Math.round(player_lastSplitPoints) + ")";
+    document.getElementById("points").innerHTML = Math.round(player_points) + " (" + Math.round(player_lastSplitPoints) + ")";
 }
 
 function addToTime(time) {
