@@ -398,6 +398,11 @@ function timeOut() {
     lane = 1;
 }
 
+function sirRobinOut() {
+    timeStopped = true;
+    lane = 3;
+}
+
 //audio department
 let nbaudio_ballsplit01;
 let nbaudio_scoregain01;
