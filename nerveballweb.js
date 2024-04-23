@@ -250,7 +250,7 @@ function checkWallCollision() {
 
 function deleteBall(i) {
     //add points
-    player_lastSplitPoints = 32768 - ball_size[i]*128 + ball_x_speed[i] * ball_y_speed[i] * 1024;
+    player_lastSplitPoints = 32768 - ball_size[i]*256 + ball_x_speed[i] * ball_y_speed[i] * 1024;
     player_points += player_lastSplitPoints;
     displayPoints();
 
