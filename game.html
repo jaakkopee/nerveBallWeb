@@ -78,6 +78,10 @@ see LICENSE file for details.
                     text("Points: " + player_points, 200, 60);
                     text("Time bonus: " + timeBonus, 200, 90);
                     text("Score: " + score, 200, 120);
+
+                    if (player_points >= 0){player_points-=10000;}
+                    if (player_time >= 0){player_time-=10000;}
+
                     //wait for space key
                     if (keyIsDown(32)) {
                         document.location.reload();
