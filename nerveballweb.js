@@ -400,7 +400,7 @@ function timeOut() {
 
 function sirRobinOut() {
     timeStopped = true;
-    lane = 3;
+    lane = 3; //sir robin
 }
 
 //audio department

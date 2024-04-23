@@ -33,7 +33,7 @@ see LICENSE file for details.
             //game stuff
             let cnv, cnvElt;
             var bgcolor = 0;
-
+            
             var body = document.getElementsByTagName("body")[0];
             body.style.backgroundColor = "rgb(0, 0, 0)";
             //timed loop for changing background color of the body
@@ -66,7 +66,17 @@ see LICENSE file for details.
 
             function draw() {
                 if (lane == 3){
-                    //sir robin out of the game with the time bonus, you wuss.
+                    gameOn = false;
+                    timeStopped = true;
+                    
+                    //change quit button text to 'reload'
+                    var sirrobin = document.getElementById("sirrobin");
+                    sirrobin.innerHTML = "Reload";
+                    //set quit button onclick to reload
+                    sirrobin.onclick = function() {
+                        document.location.reload();
+                    };
+
                     background(0);
                     fill(10, 255, 10);
                     textSize(32);
@@ -90,6 +100,13 @@ see LICENSE file for details.
                 if (lane==2){
                     timeStopped = true;
                     gameOn = false;
+                    //change quit button text to 'reload'
+                    var sirrobin = document.getElementById("sirrobin");
+                    sirrobin.innerHTML = "Reload";
+                    //set quit button onclick to reload
+                    sirrobin.onclick = function() {
+                        document.location.reload();
+                    };
                     //handle game over
                     background(0);
                     //delete balls
@@ -113,6 +130,13 @@ see LICENSE file for details.
                 } else if (lane==1){
                     timeStopped = true;
                     gameOn = false;
+                    //change quit button text to 'reload'
+                    var sirrobin = document.getElementById("sirrobin");
+                    sirrobin.innerHTML = "Reload";
+                    //set quit button onclick to reload
+                    sirrobin.onclick = function() {
+                        document.location.reload();
+                    };
                     //handle game over
                     background(0);
                     //delete balls
