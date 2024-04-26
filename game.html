@@ -44,8 +44,9 @@ see LICENSE file for details.
             //game stuff
             let cnv, cnvElt;
             var scoreText;
-            var bgcolor = 0;
             var lastScore = 0;
+            var hitMargin = 7; //mouse hit margin
+            var scoreTextDisappearanceCountDown = 93;
 
             var body = document.getElementsByTagName("body")[0];
             body.style.backgroundColor = "rgb(0, 0, 0)";
@@ -204,7 +205,14 @@ see LICENSE file for details.
                     
                     //draw balls
                     for (var i = 0; i < ball_amount; i++) {
-                        fill(255-ball_size[i]*2, 255-ball_size[i]*3, Math.abs(Math.round(ball_na[i]/32*255)));
+                        var ballR = 255 - ball_size[i]*5;
+                        var ballG = 255 - ball_size[i]*8;
+                        var ballB = Math.abs(Math.round(ball_na[i]/32*255));
+
+                        if (ballR < 0) {ballR = 255;}
+                        if (ballG < 0) {ballG = 255;}
+                        if (ballB < 0) {ballB = 255;}
+                        fill(ballR, ballG, ballB);
                         ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
                         if (hit){
                             fill(r, g, b);
@@ -226,10 +234,10 @@ see LICENSE file for details.
                         } else {
                             for (var i = 0; i < ball_amount; i++) {
                                 var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
-                                if (ball_size[i] < 10 && distance < ball_size[i] / 2 + 7) {
+                                if (ball_size[i] == 11 && distance < ball_size[i] / 2 + hitMargin) {
                                     nbaudio_playSample_timegain01();
                                 }
-                                if (distance < ball_size[i] / 2 + 7) {
+                                if (distance < ball_size[i] / 2 + hitMargin) {
                                     hit = true;
                                     splitBall(i);
                                     r = 255;
@@ -238,21 +246,21 @@ see LICENSE file for details.
                                     hitX = mouseX;
                                     hitY = mouseY;
                                     lastScore = Math.round(player_lastSplitPoints);
-                                    textDisappearanceCountDown = 48;
+                                    scoreTextDisappearanceCountDown = 13;
  
                                     setInterval(function tdcd() {
-                                        textDisappearanceCountDown--;
-                                        if (textDisappearanceCountDown <= 0){
+                                        scoreTextDisappearanceCountDown--;
+                                        if (scoreTextDisappearanceCountDown <= 0){
                                             clearInterval(tdcd);
                                             hit = false;
                                             return;
                                         }
-                                        r = r - 35/textDisappearanceCountDown * 2;
-                                        g = g - 22/textDisappearanceCountDown * 4
-                                        b = b - 20/textDisappearanceCountDown * 6;
-                                        if (r < 0) {r = 0;}
-                                        if (g < 0) {g = 0;}
-                                        if (b < 0) {b = 0;}
+                                        r = r - 135/scoreTextDisappearanceCountDown * 2;
+                                        g = g - 122/scoreTextDisappearanceCountDown * 4
+                                        b = b - 120/scoreTextDisappearanceCountDown * 6;
+                                        if (r < 0) {r = 255;}
+                                        if (g < 0) {g = 255;}
+                                        if (b < 0) {b = 255;}
                                     }, 100);
                                     // update score div
                                     var points = document.getElementById("points");

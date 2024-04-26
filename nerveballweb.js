@@ -21,6 +21,7 @@ var theBigBall = false;
 var player_points = 0;
 var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
+var collisionMargin = -6;
 
 //current ball amount
 var ball_amount = 1
@@ -57,7 +58,7 @@ for (var i = 0; i < ball_amount; i++) {
 //ball size
 var ball_size = [];
 for (var i = 0; i < ball_amount; i++) {
-    ball_size.push(100);
+    ball_size.push(93);
 }
 //ball color
 var ball_color = [];
@@ -186,7 +187,7 @@ function checkCollision() {
         for (var j = 0; j < ball_amount; j++) {
             if (i != j) {
                 var distance = nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
-                if (distance < ball_size[i] / 2 + ball_size[j] / 2) {
+                if (distance < ball_size[i] / 2 + ball_size[j] / 2 + collisionMargin) {
                     
                     // Calculate the angle of collision
                     var angle = nbhelper_getAngle(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
@@ -296,16 +297,16 @@ function addBall(i, oldSize, oldColor) {
     ball_y_speed.push(10);
     ball_direction.push(0);
     var newSize = 0;
-    if (oldSize == 100) {
-        newSize = 64;
-    } else if (oldSize == 64) {
-        newSize = 48;
-    } else if (oldSize == 48) {
+    if (oldSize == 93) {
+        newSize = 62;
+    } else if (oldSize == 62) {
+        newSize = 42;
+    } else if (oldSize == 42) {
         newSize = 32;
     } else if (oldSize == 32) {
-        newSize = 16;
-    } else if (oldSize == 16) {
-        newSize = 9;
+        newSize = 26;
+    } else if (oldSize == 26) {
+        newSize = 11;
     }
     ball_size.push(newSize);
     ball_color.push(oldColor);
@@ -339,7 +340,7 @@ function addBigBall() {
     ball_x_speed.push(10);
     ball_y_speed.push(10);
     ball_direction.push(0);
-    ball_size.push(100);
+    ball_size.push(93);
     ball_color.push(255);
     weights.push([]);
     for (var j = 0; j < ball_amount; j++) {
