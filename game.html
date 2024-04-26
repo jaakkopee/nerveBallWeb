@@ -8,6 +8,7 @@ see LICENSE file for details.
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <title>nerveBall</title>
         <link rel="stylesheet" type="text/css" href="nerveballweb.css">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -33,6 +34,7 @@ see LICENSE file for details.
 
             //game stuff
             let cnv, cnvElt;
+            var scoreText;
             var bgcolor = 0;
             
             var body = document.getElementsByTagName("body")[0];
@@ -49,7 +51,6 @@ see LICENSE file for details.
                 cnvElt.id = "nerveball";
                 cnvElt.style.display = "block";
                 cnvElt.style.margin = "auto";
-                cnvElt.style.marginTop = "50px";
                 background(0);
                 fill(255);
                 frameRate(60);
@@ -58,7 +59,7 @@ see LICENSE file for details.
                 nbaudio_bgmusic01.play();
                 setInterval(() => {
                     if (gameOn){nbaudio_bgmusic01.play();}
-                }, 255904); // 4 minutes 15 seconds
+                }, 255904); // 4 minutes 15 seconds;
             }
 
  
@@ -208,16 +209,22 @@ see LICENSE file for details.
                                 }
 
                                 if (distance < ball_size[i] / 2 + 7) {
+                                    fill(30, 200, 75);
+                                    textSize(32);
+                                    text("+" + Math.round(player_lastSplitPoints), ball_x[i], ball_y[i]);
                                     nbaudio_playSample_ballsplit01();
                                     splitBall(i);
                                     if (player_lastSplitPoints > 0){
                                         var scoreSoundPlayTimes = player_lastSplitPoints / 10000;
-                                        setInterval(function() {
-                                                if (scoreSoundPlayTimes > 0){
-                                                    nbaudio_playSample_scoregain01();
-                                                    scoreSoundPlayTimes--;
-                                                }
-                                            }, 100); // Delay in milliseconds
+                                        
+                                        var scoreCounter = setInterval(function() {
+                                            if (scoreSoundPlayTimes > 0){
+                                                nbaudio_playSample_scoregain01();
+                                                scoreSoundPlayTimes--;
+                                            } else {
+                                                clearInterval(scoreCounter);
+                                            }
+                                        }, 100); // Delay in milliseconds
                                     }
                                 }
                             }
@@ -229,7 +236,7 @@ see LICENSE file for details.
         </script>
         <div id="time" class="time">Time</div>
         <div id="points" class="points">Points</div>
-        <button id="fullscreen" class="fullscreen" onclick="toggleFullScreen()"> Toggle Fullscreen mode</button>
+        <button id="fullScreen" class="fullScreen" onclick="toggleFullScreen()"> Toggle Fullscreen mode</button>
         <button id="sirrobin" class="sirrobin" onclick="sirRobinOut()"> Quit </button>
     </body>
 </html>
