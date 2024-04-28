@@ -5,7 +5,8 @@ Licensed under GPL v3.
 see LICENSE file for details.
 */
 
-//globals
+/* globals */
+
 var lane = 0;
 var canvas_width = 800;
 var canvas_height = 800;
@@ -17,11 +18,11 @@ var mouse_down_y = 0;
 var timeStopped = false;
 var gameOn = false;
 var theBigBall = false;
-//player variables
+var collisionMargin = -6;
+var maxBalls = 16;
 var player_points = 0;
 var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
-var collisionMargin = -6;
 
 //current ball amount
 var ball_amount = 1
@@ -286,7 +287,7 @@ function splitBall(i) {
 }
 
 function addBall(i, oldSize, oldColor) {
-    if (ball_amount >= 24) {
+    if (ball_amount >= maxBalls) {
         return;
     }
     ball_amount += 1;
