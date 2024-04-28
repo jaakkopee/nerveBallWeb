@@ -265,6 +265,10 @@ see LICENSE file for details.
                                     // update score div
                                     var points = document.getElementById("points");
                                     points.innerHTML = "Points: " + Math.round(player_points) + " Last split: " + Math.round(player_lastSplitPoints);
+                                    // update ball amount div
+                                    var ballAmount = document.getElementById("ballAmount");
+                                    ballAmount.innerHTML = "Balls: " + ball_amount;
+                                    // play sound
                                     nbaudio_playSample_ballsplit01();
                                     
                                     if (player_lastSplitPoints > 0){
