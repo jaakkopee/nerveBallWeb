@@ -323,6 +323,10 @@ function addBall(i, oldSize, oldColor) {
     ball_x[ball_amount-1] += newSize + 10;
     ball_y[i] -= newSize + 10;
     ball_y[ball_amount-1] += newSize + 10;
+
+    // update ball amount div
+    var ballAmount = document.getElementById("ballAmount");
+    ballAmount.innerHTML = "Balls: " + ball_amount;
 }
 
 function addBigBall() {
