@@ -354,6 +354,9 @@ function addBigBall() {
     for (var j = 0; j < ball_amount; j++) {
         weights[j].push(1.0);
     }
+    // update ball amount div
+    var ballAmount = document.getElementById("ballAmount");
+    ballAmount.innerHTML = "Balls: " + ball_amount;
 }
 var secondsToBigBall = 93;
 setInterval(function() {
