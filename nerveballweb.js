@@ -18,8 +18,10 @@ var mouse_down_y = 0;
 var timeStopped = false;
 var gameOn = false;
 var theBigBall = false;
+var secondsToBigBall = 30;
 var collisionMargin = -6;
-var maxBalls = 16;
+var maxBalls = 4;
+var player_level = 1;
 var player_points = 0;
 var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
@@ -250,14 +252,15 @@ function checkWallCollision() {
     }
 }
 
+var levelUpText = false;
+var levelUpSound = false;
 function deleteBall(i) {
     //add points
-    player_lastSplitPoints = 32768 - ball_size[i]*256 + ball_x_speed[i] * ball_y_speed[i] * 1024;
+    player_lastSplitPoints = 32768 - ball_size[i]*256 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 1024;
     player_points += player_lastSplitPoints;
-    displayPoints();
 
     //delete ball
-    ball_amount -= 1;
+    if (ball_amount > 0) {ball_amount -= 1;}
     ball_na.splice(i, 1);
     ball_x.splice(i, 1);
     ball_y.splice(i, 1);
@@ -270,15 +273,341 @@ function deleteBall(i) {
     for (var j = 0; j < ball_amount; j++) {
         weights[j].splice(i, 1);
     }
+    if (ball_amount == 0 && player_level == 1) {
+        levelUpText = true;
+        levelUpSound = true;
+        
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        console.log("Level 1 Complete");
+        text("Level 1 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 60;
+
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 2) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 2 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 90;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 3) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 3 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 120;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 4) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 4 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 150;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 5) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 5 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 180;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 6) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 6 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 210;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 7) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 7 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 240;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 8) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 3000);
+
+        text("Level 8 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 270;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 9) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 9 Complete", 200, 200);
+        player_level += 1;
+        maxBalls += 4;
+        ball_amount = 1;
+        ball_na = [0.3];
+        ball_x = [200];
+        ball_y = [200];
+        ball_x_speed = [1];
+        ball_y_speed = [1];
+        ball_direction = [0.6];
+        ball_size = [93];
+        weights = [];
+        for (var i = 0; i < ball_amount; i++) {
+            weights.push([]);
+            for (var j = 0; j < ball_amount; j++) {
+                weights[i].push(1.0);
+            }
+        }
+        secondsToBigBall = 300;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }
+    if (ball_amount == 0 && player_level == 10) {
+        levelUpText = true;
+        levelUpSound = true;
+
+        setInterval(function() {
+            levelUpText = false;
+        }
+        , 6000);
+
+        text("Level 10 Complete", 200, 200);
+        lane = 2;
+        displayPoints();
+        displayBallAmount();
+        displayLevel();
+        displayTime();
+        return;
+    }   
+
 }
 
 function splitBall(i) {
     var oldSize = ball_size[i];
     var oldColor = ball_color[i];
 
-    if (oldSize < 10) {
+    if (ball_size[i] == 11) {
         deleteBall(i);
-        addToTime(60000);
+        addToTime(20000);
         return;
     }
     addBall(i, oldSize, oldColor);
@@ -288,8 +617,13 @@ function splitBall(i) {
 
 function addBall(i, oldSize, oldColor) {
     if (ball_amount >= maxBalls) {
+        displayBallAmount();
+        displayLevel();
+        displayPoints();
+        displayTime();
         return;
     }
+
     ball_amount += 1;
     ball_na.push(0.03);
     ball_x.push(ball_x[i]); // New ball is placed at the same x position as the old ball
@@ -323,10 +657,10 @@ function addBall(i, oldSize, oldColor) {
     ball_x[ball_amount-1] += newSize + 10;
     ball_y[i] -= newSize + 10;
     ball_y[ball_amount-1] += newSize + 10;
-
-    // update ball amount div
-    var ballAmount = document.getElementById("ballAmount");
-    ballAmount.innerHTML = "Balls: " + ball_amount;
+    displayBallAmount();
+    displayLevel();
+    displayPoints();
+    displayTime();
 }
 
 function addBigBall() {
@@ -336,8 +670,6 @@ function addBigBall() {
     player_points += player_lastSplitPoints;
     //time penalty of 1 minute
     player_time -= 60000;
-    displayPoints();
-    displayTime();
     ball_amount += 1;
     ball_na.push(0.03);
     ball_x.push(nbhelper_randomInt(50, canvas_width-50));
@@ -354,11 +686,12 @@ function addBigBall() {
     for (var j = 0; j < ball_amount; j++) {
         weights[j].push(1.0);
     }
-    // update ball amount div
-    var ballAmount = document.getElementById("ballAmount");
-    ballAmount.innerHTML = "Balls: " + ball_amount;
+    displayPoints();
+    displayTime();
+    displayLevel();
+    displayBallAmount();
 }
-var secondsToBigBall = 93;
+var secondsToBigBall = 30 * player_level;
 setInterval(function() {
     if (timeStopped) {
         return;
@@ -367,7 +700,7 @@ setInterval(function() {
         secondsToBigBall--;
         if (lane == 0 && secondsToBigBall == 0) {
             addBigBall();
-            secondsToBigBall = 93;
+            secondsToBigBall = 30 * player_level;
         }
     }
 }, 1000);
@@ -398,6 +731,14 @@ function displayPoints() {
     document.getElementById("points").innerHTML = Math.round(player_points) + " (" + Math.round(player_lastSplitPoints) + ")";
 }
 
+function displayLevel() {
+    document.getElementById("level").innerHTML = "Max Balls: " + maxBalls + " Level: " + player_level;
+}
+
+function displayBallAmount() {
+    document.getElementById("ballAmount").innerHTML = "Balls: " + ball_amount;
+}
+
 function addToTime(time) {
     player_time += time;
     displayTime();
@@ -419,6 +760,7 @@ let nbaudio_scoregain01;
 let nbaudio_timegain01;
 let nbaudio_bgmusic01;
 let nbaudio_TheBigBall;
+let nbaudio_levelUp;
 
 function nbaudio_playSample_ballsplit01() {
     nbaudio_ballsplit01.play();
@@ -434,6 +776,10 @@ function nbaudio_playSample_timegain01() {
 
 function nbaudio_playSample_TheBigBall() {
     nbaudio_TheBigBall.play();
+}
+
+function nbaudio_playSample_levelUp() {
+    nbaudio_levelUp.play();
 }
 
 //full screen

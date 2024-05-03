@@ -30,7 +30,9 @@ see LICENSE file for details.
                 nbaudio_timegain01 = loadSound('timegain01.mp3');
                 nbaudio_bgmusic01 = loadSound('bgmusic01.mp3');
                 nbaudio_TheBigBall = loadSound('TheBigBall.mp3');
+                nbaudio_levelUp = loadSound('levelUp.mp3');
                 //no loop
+                nbaudio_levelUp.setLoop(false);
                 nbaudio_ballsplit01.setLoop(false);
                 nbaudio_scoregain01.setLoop(false);
                 nbaudio_timegain01.setLoop(false);
@@ -74,11 +76,15 @@ see LICENSE file for details.
             var hit = false;
             var hitX = 0;
             var hitY = 0;
-            var r;
-            var g;
-            var b;
+            var r = 255;
+            var g = 255;
+            var b = 255;
             function draw() {
+                if (levelUpText){
+                    text("Level Up!", 200, 200);
+                }
                 if (theBigBall){nbaudio_TheBigBall.play();theBigBall = false;}
+
                 if (hit){
                     fill(r, g, b);
                     textSize(32);
@@ -100,8 +106,6 @@ see LICENSE file for details.
                     background(0);
                     fill(10, 255, 10);
                     textSize(32);
-                    //font courier new
-                    textFont('Courier New');
                     text("Sir Robin ran away.", 130, 30);
                     var timeBonus = Math.round(player_time);
                     var score = player_points + timeBonus;
@@ -134,8 +138,6 @@ see LICENSE file for details.
                     //draw text
                     fill(10, 255, 10);
                     textSize(32);
-                    //font courier new
-                    textFont('Courier New');
                     text("Game Over, Balls Destroyed.", 100, 30);
                     //
                     var timeBonus = Math.round(player_time);
@@ -164,8 +166,6 @@ see LICENSE file for details.
                     //draw text
                     fill(10, 255, 10);
                     textSize(32);
-                    //font courier new
-                    textFont('Courier New');
                     text("Game Over, Out of Time.", 100, 30);
                     //
                     var timeBonus = Math.round(player_time);
@@ -220,7 +220,7 @@ see LICENSE file for details.
                             text(lastScore, hitX, hitY)
                         }
                     }
-                    
+
                     /* DEBUG
                     //draw neural activations
                     fill(0, 255, 0)
@@ -229,9 +229,8 @@ see LICENSE file for details.
                     }*/
                     //handle mouse input
                     if (mouseIsPressed) {
-
-                        if (ball_amount == 0 && lane == 0){
-                            lane = 2;
+                        if (ball_amount == 0 && lane == 0 && level == 10){
+                            lane = 2; //game over, player wins
                         } else {
                             for (var i = 0; i < ball_amount; i++) {
                                 var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
@@ -241,13 +240,17 @@ see LICENSE file for details.
                                 if (distance < ball_size[i] / 2 + hitMargin) {
                                     hit = true;
                                     splitBall(i);
+                                    if (levelUpSound){
+                                        nbaudio_levelUp.play();
+                                        levelUpSound = false;
+                                    }
                                     r = 255;
                                     g = 255;
                                     b = 255;
                                     hitX = mouseX;
                                     hitY = mouseY;
                                     lastScore = Math.round(player_lastSplitPoints);
-                                    scoreTextDisappearanceCountDown = 13;
+                                    scoreTextDisappearanceCountDown = 82;
  
                                     setInterval(function tdcd() {
                                         scoreTextDisappearanceCountDown--;
@@ -263,10 +266,9 @@ see LICENSE file for details.
                                         if (g < 0) {g = 255;}
                                         if (b < 0) {b = 255;}
                                     }, 100);
-                                    // update score div
-                                    var points = document.getElementById("points");
-                                    points.innerHTML = "Points: " + Math.round(player_points) + " Last split: " + Math.round(player_lastSplitPoints);
-
+                                    if (ball_amount == 0 && lane == 0 && level == 10){
+                                        lane = 2; //game over, player wins
+                                    }
                                     // play sound
                                     nbaudio_playSample_ballsplit01();
                                     
@@ -294,6 +296,7 @@ see LICENSE file for details.
         <div id="time" class="time">Time</div>
         <div id="points" class="points">Points</div>
         <div id="ballAmount" class="ballAmount">Balls</div>
+        <div id="level" class="level">Level</div>
         <button id="fullScreen" class="fullScreen" onclick="toggleFullScreen()"> Toggle Fullscreen mode</button>
         <button id="sirrobin" class="sirrobin" onclick="sirRobinOut()"> Quit </button>
     </body>
