@@ -82,16 +82,7 @@ see LICENSE file for details.
             var g = 255;
             var b = 255;
             function draw() {
-                if (levelUpText){
-                    text("Level Up!", 200, 200);
-                }
                 if (theBigBall){nbaudio_TheBigBall.play();theBigBall = false;}
-
-                if (hit){
-                    fill(r, g, b);
-                    textSize(32);
-                    text(lastScore, hitX, hitY);
-                }
 
                 if (lane == 3){
                     gameOn = false;
@@ -192,6 +183,17 @@ see LICENSE file for details.
                     //clear canvas
                     background(0);
 
+                    if (levelUpText){
+                        fill(0, 200, 255);
+                        textSize(26);
+                        text("Level Up! "+ "level: " + player_level + "(Max Balls = "+ maxBalls + ")", 200, 200);
+                    }
+
+                    if (hit){
+                        fill(r, g, b);
+                        textSize(32);
+                        text(lastScore, hitX, hitY);
+                    }
                     //update ball neural activations
                     countActivations();
 

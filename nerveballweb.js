@@ -277,13 +277,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
         
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
 
-        console.log("Level 1 Complete");
-        text("Level 1 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -313,12 +311,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
 
-        text("Level 2 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -347,12 +344,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
 
-        text("Level 3 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -381,12 +377,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
 
-        text("Level 4 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -415,12 +410,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
 
-        text("Level 5 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -449,12 +443,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
 
-        text("Level 6 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -483,12 +476,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
 
-        text("Level 7 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -517,12 +509,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
-        , 3000);
+        , 6000);
 
-        text("Level 8 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -551,7 +542,7 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
@@ -585,12 +576,11 @@ function deleteBall(i) {
         levelUpText = true;
         levelUpSound = true;
 
-        setInterval(function() {
+        setTimeout(function() {
             levelUpText = false;
         }
         , 6000);
-
-        text("Level 10 Complete", 200, 200);
+        
         lane = 2;
         displayPoints();
         displayBallAmount();
