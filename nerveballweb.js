@@ -25,6 +25,8 @@ var player_level = 1;
 var player_points = 0;
 var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
+var levelUpText = false;
+var levelUpSound = false;
 
 //current ball amount
 var ball_amount = 1
@@ -252,8 +254,6 @@ function checkWallCollision() {
     }
 }
 
-var levelUpText = false;
-var levelUpSound = false;
 function deleteBall(i) {
     //add points
     player_lastSplitPoints = 32768 - ball_size[i]*256 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 1024;
