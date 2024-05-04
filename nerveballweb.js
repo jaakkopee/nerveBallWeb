@@ -18,7 +18,7 @@
 
 /* globals */
 
-var lane = 0;
+var lane = 4; //0 = game, 1 = time out, 2 = level up, 3 = sir robin, 4 = start screen
 var canvas_width = 800;
 var canvas_height = 800;
 var mouse_x = 0;

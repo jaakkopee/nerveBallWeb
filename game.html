@@ -23,8 +23,8 @@
         <title>nerveBall</title>
         <link rel="stylesheet" type="text/css" href="nerveballweb.css">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/addons/p5.sound.min.js"></script>
         <script src="nerveballweb.js"></script>
     </head>
     
@@ -80,12 +80,6 @@
                 background(0);
                 fill(255);
                 frameRate(60);
-                //play bg music
-                nbaudio_bgmusic.setVolume(0.3);
-                nbaudio_bgmusic.play();
-                setInterval(function() {
-                    nbaudio_bgmusic.play();
-                }, 253390);
             }
 
             //variables for score notification
@@ -97,6 +91,24 @@
             var b = 255;
             function draw() {
                 if (theBigBall){nbaudio_TheBigBall.play();theBigBall = false;}
+
+                if (lane == 4){
+                    textSize(32);
+                    fill(10, 255, 10);
+                    text("Welcome to nerveBall!", 200, 30);
+                    text("Click to start the game.", 200, 60);
+                    //wait for mouse click
+                    if (mouseIsPressed) {
+                         //play bg music
+                        nbaudio_bgmusic.setVolume(0.3);
+                        nbaudio_bgmusic.play();
+                        setInterval(function() {
+                            nbaudio_bgmusic.play();
+                        }, 253390);
+                        lane = 0;
+                    }
+                }
+
 
                 if (lane == 3){
                     gameOn = false;
