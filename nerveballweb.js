@@ -310,7 +310,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 60;
+        secondsToBigBall = 30*player_level;
 
         displayPoints();
         displayBallAmount();
@@ -344,7 +344,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 90;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -377,7 +377,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 120;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -410,7 +410,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 150;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -443,7 +443,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 180;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -476,7 +476,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 210;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -509,7 +509,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 240;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -542,7 +542,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 270;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -558,7 +558,6 @@ function deleteBall(i) {
         }
         , 6000);
 
-        text("Level 9 Complete", 200, 200);
         player_level += 1;
         maxBalls += 4;
         ball_amount = 1;
@@ -576,7 +575,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 300;
+        secondsToBigBall = 30*player_level;
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -609,11 +608,19 @@ function splitBall(i) {
     if (ball_size[i] == 11) {
         deleteBall(i);
         addToTime(20000);
+        displayBallAmount();
+        displayLevel();
+        displayPoints();
+        displayTime();
         return;
     }
     addBall(i, oldSize, oldColor);
     addBall(i, oldSize, oldColor);
     deleteBall(i);
+    displayBallAmount();
+    displayLevel();
+    displayPoints();
+    displayTime();
 }
 
 function addBall(i, oldSize, oldColor) {
@@ -692,7 +699,7 @@ function addBigBall() {
     displayLevel();
     displayBallAmount();
 }
-var secondsToBigBall = 30 * player_level;
+
 setInterval(function() {
     if (timeStopped) {
         return;

@@ -265,22 +265,24 @@
                                     hitX = mouseX;
                                     hitY = mouseY;
                                     lastScore = Math.round(player_lastSplitPoints);
-                                    scoreTextDisappearanceCountDown = 82;
- 
-                                    setInterval(function tdcd() {
-                                        scoreTextDisappearanceCountDown--;
-                                        if (scoreTextDisappearanceCountDown <= 0){
-                                            clearInterval(tdcd);
-                                            hit = false;
-                                            return;
+
+                                    setTimeout(function(){
+                                        hit = false;
+                                    }, 2000);
+
+                                    var colorInterval = setInterval(function(){
+                                        if (hit){
+                                            r -= 10;
+                                            g -= 20;
+                                            b -= 30;
+                                            if (r < 0) {r = 255;}
+                                            if (g < 0) {g = 255;}
+                                            if (b < 0) {b = 255;}
+                                        } else {
+                                            clearInterval(colorInterval);
                                         }
-                                        r = r - 135/scoreTextDisappearanceCountDown * 2;
-                                        g = g - 122/scoreTextDisappearanceCountDown * 4
-                                        b = b - 120/scoreTextDisappearanceCountDown * 6;
-                                        if (r < 0) {r = 255;}
-                                        if (g < 0) {g = 255;}
-                                        if (b < 0) {b = 255;}
                                     }, 100);
+
                                     if (ball_amount == 0 && lane == 0 && level == 10){
                                         lane = 2; //game over, player wins
                                     }
