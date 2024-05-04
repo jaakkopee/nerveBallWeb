@@ -36,18 +36,18 @@
             //audio stuff
 
             function preload() {
-                nbaudio_ballsplit01 = loadSound('ballsplit01.mp3');
-                nbaudio_scoregain01 = loadSound('scoregain01.mp3');
-                nbaudio_timegain01 = loadSound('timegain01.mp3');
-                nbaudio_bgmusic01 = loadSound('bgmusic01.mp3');
-                nbaudio_TheBigBall = loadSound('TheBigBall.mp3');
-                nbaudio_levelUp = loadSound('levelUp.mp3');
+                nbaudio_ballsplit = loadSound('ballsplit02.mp3');
+                nbaudio_scoregain = loadSound('scoregain02.mp3');
+                nbaudio_timegain = loadSound('timegain02.mp3');
+                nbaudio_bgmusic = loadSound('bgmusic02.mp3');
+                nbaudio_TheBigBall = loadSound('TheBigBall02.mp3');
+                nbaudio_levelUp = loadSound('levelUp02.mp3');
                 //no loop
                 nbaudio_levelUp.setLoop(false);
-                nbaudio_ballsplit01.setLoop(false);
-                nbaudio_scoregain01.setLoop(false);
-                nbaudio_timegain01.setLoop(false);
-                nbaudio_bgmusic01.setLoop(true);
+                nbaudio_ballsplit.setLoop(false);
+                nbaudio_scoregain.setLoop(false);
+                nbaudio_timegain.setLoop(false);
+                nbaudio_bgmusic.setLoop(false);
                 nbaudio_TheBigBall.setLoop(false);
             }
 
@@ -81,8 +81,11 @@
                 fill(255);
                 frameRate(60);
                 //play bg music
-                nbaudio_bgmusic01.setVolume(0.3);
-                nbaudio_bgmusic01.play();
+                nbaudio_bgmusic.setVolume(0.3);
+                nbaudio_bgmusic.play();
+                setInterval(function() {
+                    nbaudio_bgmusic.play();
+                }, 253390);
             }
 
             //variables for score notification
@@ -250,7 +253,7 @@
                             for (var i = 0; i < ball_amount; i++) {
                                 var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
                                 if (ball_size[i] == 11 && distance < ball_size[i] / 2 + hitMargin) {
-                                    nbaudio_playSample_timegain01();
+                                    nbaudio_playSample_timegain();
                                 }
                                 if (distance < ball_size[i] / 2 + hitMargin) {
                                     hit = true;
@@ -287,14 +290,14 @@
                                         lane = 2; //game over, player wins
                                     }
                                     // play sound
-                                    nbaudio_playSample_ballsplit01();
+                                    nbaudio_playSample_ballsplit();
                                     
                                     if (player_lastSplitPoints > 0){
                                         var scoreSoundPlayTimes = player_lastSplitPoints / 10000;
                                         
                                         var scoreCounter = setInterval(function() {
                                             if (scoreSoundPlayTimes > 0){
-                                                nbaudio_playSample_scoregain01();
+                                                nbaudio_playSample_scoregain();
                                                 scoreSoundPlayTimes--;
                                             } else {
                                                 clearInterval(scoreCounter);

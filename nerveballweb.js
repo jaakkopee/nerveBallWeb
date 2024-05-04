@@ -676,8 +676,7 @@ function addBigBall() {
     //score penalty of 1000000 points
     player_lastSplitPoints = -1000000;
     player_points += player_lastSplitPoints;
-    //time penalty of 1 minute
-    player_time -= 60000;
+    
     ball_amount += 1;
     ball_na.push(0.03);
     ball_x.push(nbhelper_randomInt(50, canvas_width-50));
@@ -770,16 +769,16 @@ let nbaudio_bgmusic01;
 let nbaudio_TheBigBall;
 let nbaudio_levelUp;
 
-function nbaudio_playSample_ballsplit01() {
-    nbaudio_ballsplit01.play();
+function nbaudio_playSample_ballsplit() {
+    nbaudio_ballsplit.play();
 }
 
-function nbaudio_playSample_scoregain01() {
-    nbaudio_scoregain01.play();
+function nbaudio_playSample_scoregain() {
+    nbaudio_scoregain.play();
 }
 
-function nbaudio_playSample_timegain01() {
-    nbaudio_timegain01.play();
+function nbaudio_playSample_timegain() {
+    nbaudio_timegain.play();
 }
 
 function nbaudio_playSample_TheBigBall() {
