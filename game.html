@@ -316,12 +316,15 @@
                         }
                     }
 
-                    /* DEBUG
-                    //draw neural activations
-                    fill(0, 255, 0)
-                    for (var i = 0; i < ball_amount; i++) {
-                        text(ball_na[i], ball_x[i], ball_y[i]);
-                    }*/
+                   if (DEBUG){
+                        //draw neural activations
+                        fill(0, 255, 0)
+                        textSize(20);
+                        for (var i = 0; i < ball_amount; i++) {
+                            text(ball_na[i], ball_x[i], ball_y[i]);
+                        }
+                    }
+
                     //handle mouse input
                     if (mouseIsPressed) {
                         if (ball_amount == 0 && lane == 0 && level == 10){
