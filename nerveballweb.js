@@ -37,7 +37,7 @@ var player_points = 0;
 var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
 var levelUpText = false;
-var levelUpSound = false;
+var playLevelUpSound = false;
 var speedCoeff = 0.1;
 
 //current ball amount
@@ -265,7 +265,7 @@ function checkWallCollision() {
 
 function deleteBall(i) {
     //add points
-    player_lastSplitPoints = 32768 - ball_size[i]*256 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 1024;
+    player_lastSplitPoints = 72000 - ball_size[i]*1600 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 256000;
     player_points += player_lastSplitPoints;
 
     //delete ball
@@ -284,7 +284,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 1) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
         
         setTimeout(function() {
             levelUpText = false;
@@ -318,7 +318,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 2) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -352,7 +352,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 3) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound= true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -386,7 +386,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 4) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -420,7 +420,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 5) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -454,7 +454,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 6) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -488,7 +488,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 7) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -522,7 +522,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 8) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -556,7 +556,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 9) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -590,7 +590,7 @@ function deleteBall(i) {
     }
     if (ball_amount == 0 && player_level == 10) {
         levelUpText = true;
-        levelUpSound = true;
+        playLevelUpSound = true;
 
         setTimeout(function() {
             levelUpText = false;
@@ -774,11 +774,11 @@ function sirRobinOut() {
     lane = 3; //sir robin
 }
 
-//audio department
-let nbaudio_ballsplit01;
-let nbaudio_scoregain01;
-let nbaudio_timegain01;
-let nbaudio_bgmusic01;
+/* deprecated audio department
+let nbaudio_ballsplit;
+let nbaudio_scoregain;
+let nbaudio_timegain;
+let nbaudio_bgmusic;
 let nbaudio_TheBigBall;
 let nbaudio_levelUp;
 
@@ -801,6 +801,10 @@ function nbaudio_playSample_TheBigBall() {
 function nbaudio_playSample_levelUp() {
     nbaudio_levelUp.play();
 }
+
+function nbaudio_playSample_bgmusic() {
+    nbaudio_bgmusic.play();
+}*/
 
 //full screen
 function goFullScreen() {

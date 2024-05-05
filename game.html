@@ -24,7 +24,7 @@
         <link rel="stylesheet" type="text/css" href="nerveballweb.css">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/addons/p5.sound.min.js"></script>
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/addons/p5.sound.min.js"></script-->
         <script src="nerveballweb.js"></script>
     </head>
     
@@ -32,8 +32,63 @@
 
         <script type="text/javascript">
 
-            
+
             //audio stuff
+            let audioContext;
+            let scoregainSound;
+            const scoregainUrl = 'scoregain02.mp3';
+            let timegainSound;
+            const timegainUrl = 'timegain02.mp3';
+            let ballsplitSound;
+            const ballsplitUrl = 'ballsplit02.mp3';
+            let bgmusicSound;
+            const bgmusicUrl = 'bgmusic02.mp3';
+            let TheBigBallSound;
+            const TheBigBallUrl = 'TheBigBall02.mp3';
+            let levelUpSound;
+            const levelUpUrl = 'levelUp02.mp3';
+
+            function initAudio() {
+                // Create an audio context
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Load the background music
+                bgmusicSound = loadAudio(bgmusicUrl);
+                bgmusicSound.then(source => {
+                    source.loop = true;
+                    source.start();
+                });
+
+            }
+
+            function loadAudio(url) {
+                return fetch(url)
+                    .then(response => response.arrayBuffer())
+                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                    .then(audioBuffer => {
+                        const source = audioContext.createBufferSource();
+                        source.buffer = audioBuffer;
+                        source.connect(audioContext.destination);
+                        return source;
+                    })
+                    .catch(error => console.error('Error loading audio:', error));
+            }
+
+            function playAudio(url) {
+                fetch(url)
+                    .then(response => response.arrayBuffer())
+                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                    .then(audioBuffer => {
+                        const source = audioContext.createBufferSource();
+                        source.buffer = audioBuffer;
+                        source.connect(audioContext.destination);
+                        source.start();
+                    })
+                    .catch(error => console.error('Error loading audio:', error));
+            }
+
+            
+            /*deprecated audio stuff
 
             function preload() {
                 nbaudio_ballsplit = loadSound('ballsplit02.mp3');
@@ -51,7 +106,7 @@
                 nbaudio_TheBigBall.setLoop(false);
             }
 
-
+            */
 
 
             //game stuff
@@ -61,7 +116,7 @@
             var hitMargin = 7; //mouse hit margin
             var scoreTextDisappearanceCountDown = 93;
             var levelUpText = false;
-            var levelUpSound = false;
+            var playLevelUpSound = false;
 
             var body = document.getElementsByTagName("body")[0];
             body.style.backgroundColor = "rgb(0, 0, 0)";
@@ -90,7 +145,6 @@
             var g = 255;
             var b = 255;
             function draw() {
-                if (theBigBall){nbaudio_TheBigBall.play();theBigBall = false;}
 
                 if (lane == 4){
                     textSize(32);
@@ -99,12 +153,7 @@
                     text("Click to start the game.", 200, 60);
                     //wait for mouse click
                     if (mouseIsPressed) {
-                         //play bg music
-                        nbaudio_bgmusic.setVolume(0.3);
-                        nbaudio_bgmusic.play();
-                        setInterval(function() {
-                            nbaudio_bgmusic.play();
-                        }, 253390);
+                        initAudio();
                         lane = 0;
                     }
                 }
@@ -205,6 +254,9 @@
                     } else if (keyIsDown(50)) {
                         lane = 2;
                     }
+
+                    if (theBigBall){playAudio(TheBigBallUrl); theBigBall = false;}
+
                     gameOn = true;
                     //clear canvas
                     background(0);
@@ -265,14 +317,14 @@
                             for (var i = 0; i < ball_amount; i++) {
                                 var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
                                 if (ball_size[i] == 11 && distance < ball_size[i] / 2 + hitMargin) {
-                                    nbaudio_playSample_timegain();
+                                    playAudio(timegainUrl);
                                 }
                                 if (distance < ball_size[i] / 2 + hitMargin) {
                                     hit = true;
                                     splitBall(i);
-                                    if (levelUpSound){
-                                        nbaudio_levelUp.play();
-                                        levelUpSound = false;
+                                    if (playLevelUpSound){
+                                        playAudio(levelUpUrl);
+                                        playLevelUpSound = false;
                                     }
                                     r = 255;
                                     g = 255;
@@ -302,14 +354,14 @@
                                         lane = 2; //game over, player wins
                                     }
                                     // play sound
-                                    nbaudio_playSample_ballsplit();
+                                    playAudio(ballsplitUrl);
                                     
                                     if (player_lastSplitPoints > 0){
                                         var scoreSoundPlayTimes = player_lastSplitPoints / 10000;
                                         
                                         var scoreCounter = setInterval(function() {
                                             if (scoreSoundPlayTimes > 0){
-                                                nbaudio_playSample_scoregain();
+                                                playAudio(scoregainUrl);
                                                 scoreSoundPlayTimes--;
                                             } else {
                                                 clearInterval(scoreCounter);
