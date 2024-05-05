@@ -38,6 +38,7 @@ var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
 var levelUpText = false;
 var levelUpSound = false;
+var speedCoeff = 0.1;
 
 //current ball amount
 var ball_amount = 1
@@ -127,17 +128,14 @@ function moveBall(i) {
     //get total activation
     var total_activation = 0.0;
     for (var j = 0; j < ball_amount; j++) {
-        total_activation += ball_na[j];
+        total_activation += Math.abs(ball_na[j]);
     }
-    //absolute value
-    if (total_activation < 0) {
-        total_activation = -total_activation;
-    }
+
     //avg over ball amount
     total_activation = total_activation / ball_amount;
     //modulate ball speed with total neural activation
-    ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * 0.333;
-    ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * 0.333;
+    ball_x_speed[i] = nbhelper_getX(ball_direction[i]) * total_activation * speedCoeff;
+    ball_y_speed[i] = nbhelper_getY(ball_direction[i]) * total_activation * speedCoeff;
     ball_x[i] += ball_x_speed[i];
     ball_y[i] += ball_y_speed[i];
 
@@ -311,7 +309,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
-
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -345,6 +343,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -378,6 +377,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -411,6 +411,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -444,6 +445,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -477,6 +479,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -510,6 +513,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -543,6 +547,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -576,6 +581,7 @@ function deleteBall(i) {
             }
         }
         secondsToBigBall = 30*player_level;
+        speedCoeff += 0.05
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -606,6 +612,12 @@ function splitBall(i) {
     var oldColor = ball_color[i];
 
     if (ball_size[i] == 11) {
+        for (var j = 0; j < ball_amount; j++) {
+            ball_na[j] += 10;
+            for (var k = 0; k < ball_amount; k++) {
+                weights[j][k] += 2.0;
+            }
+        }
         deleteBall(i);
         addToTime(20000);
         displayBallAmount();
@@ -624,7 +636,8 @@ function splitBall(i) {
 }
 
 function addBall(i, oldSize, oldColor) {
-    if (ball_amount >= maxBalls) {
+    if (ball_amount > maxBalls) {
+        ball_amount == maxBalls;
         displayBallAmount();
         displayLevel();
         displayPoints();
@@ -633,11 +646,11 @@ function addBall(i, oldSize, oldColor) {
     }
 
     ball_amount += 1;
-    ball_na.push(0.03);
+    ball_na.push(3);
     ball_x.push(ball_x[i]); // New ball is placed at the same x position as the old ball
     ball_y.push(ball_y[i]); // New ball is placed at the same y position as the old ball
-    ball_x_speed.push(10);
-    ball_y_speed.push(10);
+    ball_x_speed.push(0);
+    ball_y_speed.push(0);
     ball_direction.push(0);
     var newSize = 0;
     if (oldSize == 93) {
