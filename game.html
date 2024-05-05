@@ -139,6 +139,7 @@
 
             //variables for score notification
             var hit = false;
+            var hitBall = 0;
             var hitX = 0;
             var hitY = 0;
             var r = 255;
@@ -324,6 +325,7 @@
                                 }
                                 if (distance < ball_size[i] / 2 + hitMargin) {
                                     hit = true;
+                                    hitBall = i;
                                     splitBall(i);
                                     if (playLevelUpSound){
                                         playAudio(levelUpUrl);

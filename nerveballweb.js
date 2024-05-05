@@ -111,6 +111,10 @@ function nbhelper_getY(angle) {
     return Math.sin(angle);
 }
 
+function nbhelper_getSpeed(x, y) {
+    return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+}
+
 function getMousePos(evt) {
     var rect = canvas.getBoundingClientRect();
     return {
