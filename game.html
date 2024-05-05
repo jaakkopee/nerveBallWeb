@@ -264,7 +264,10 @@
                     if (levelUpText){
                         fill(0, 200, 255);
                         textSize(26);
-                        text("Level Up! "+ "level: " + player_level + "(Max Balls = "+ maxBalls + ")", 200, 200);
+                        text("Level Up!", 200, 30);
+                        text("Entered level "+player_level, 200, 60);
+                        text("New maximum ball amount: "+maxBalls, 200, 90);
+                        text("Balls speed up by 5% ", 200, 120);
                     }
 
                     if (hit){
@@ -357,7 +360,7 @@
                                     playAudio(ballsplitUrl);
                                     
                                     if (player_lastSplitPoints > 0){
-                                        var scoreSoundPlayTimes = player_lastSplitPoints / 10000;
+                                        var scoreSoundPlayTimes = player_lastSplitPoints / 20000;
                                         
                                         var scoreCounter = setInterval(function() {
                                             if (scoreSoundPlayTimes > 0){
@@ -381,7 +384,7 @@
         <div id="points" class="points">Points</div>
         <div id="ballAmount" class="ballAmount">Balls</div>
         <div id="level" class="level">Level</div>
-        <button id="fullScreen" class="fullScreen" onclick="toggleFullScreen()"> Toggle Fullscreen mode</button>
+        <button id="fullScreen" class="fullScreen" onclick="toggleFullScreen()">Full screen</button>
         <button id="sirrobin" class="sirrobin" onclick="sirRobinOut()"> Quit </button>
     </body>
 </html>

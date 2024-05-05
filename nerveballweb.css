@@ -23,7 +23,11 @@
     position: fixed;
     top: 5px;
     right: 5px;
-    background-color: #000000;
+    width: 50px;
+    height: 40px;
+    font-size: 12px;
+    background-color: #a11919;
+    color: #37c127;
     border: none;
     color: #0055aa;
     z-index: 1000;
