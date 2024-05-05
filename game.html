@@ -139,7 +139,7 @@
 
             //variables for score notification
             var hit = false;
-            var hitBall = 0;
+            var hitBallSpeed = 0;
             var hitX = 0;
             var hitY = 0;
             var r = 255;
@@ -281,6 +281,9 @@
                         fill(r, g, b);
                         textSize(32);
                         text(lastScore, hitX, hitY);
+                        /*fill(0, 200, 128)
+                        textSize(20);
+                        text("Speed: "+hitBallSpeed, hitX, hitY+30);*/
                     }
                     //update ball neural activations
                     countActivations();
@@ -331,7 +334,7 @@
                                 }
                                 if (distance < ball_size[i] / 2 + hitMargin) {
                                     hit = true;
-                                    hitBall = i;
+                                    hitBallSpeed = nbhelper_getSpeed(ball_x_speed[i], ball_y_speed[i]);
                                     splitBall(i);
                                     if (playLevelUpSound){
                                         playAudio(levelUpUrl);
