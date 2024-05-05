@@ -339,6 +339,7 @@ function deleteBall(i) {
         ball_y_speed = [1];
         ball_direction = [0.6];
         ball_size = [93];
+        ball_color = [255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -373,6 +374,7 @@ function deleteBall(i) {
         ball_y_speed = [1];
         ball_direction = [0.6];
         ball_size = [93];
+        ball_color = [255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -407,6 +409,7 @@ function deleteBall(i) {
         ball_y_speed = [1];
         ball_direction = [0.6];
         ball_size = [93];
+        ball_color = [255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -433,14 +436,15 @@ function deleteBall(i) {
 
         player_level += 1;
         maxBalls += 4;
-        ball_amount = 1;
-        ball_na = [0.3];
-        ball_x = [200];
-        ball_y = [200];
-        ball_x_speed = [1];
-        ball_y_speed = [1];
-        ball_direction = [0.6];
-        ball_size = [93];
+        ball_amount = 2;
+        ball_na = [0.3, 0.3];
+        ball_x = [200, 600];
+        ball_y = [200, 600];
+        ball_x_speed = [0.1, 0.1];
+        ball_y_speed = [0.1, 0.1];
+        ball_direction = [0.6, 0.6];
+        ball_size = [93, 93];
+        ball_color = [255, 255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -467,14 +471,15 @@ function deleteBall(i) {
 
         player_level += 1;
         maxBalls += 4;
-        ball_amount = 1;
-        ball_na = [0.3];
-        ball_x = [200];
-        ball_y = [200];
-        ball_x_speed = [1];
-        ball_y_speed = [1];
-        ball_direction = [0.6];
-        ball_size = [93];
+        ball_amount = 2;
+        ball_na = [0.3, 0.3];
+        ball_x = [200, 600];
+        ball_y = [200, 600];
+        ball_x_speed = [0.1, 0.1];
+        ball_y_speed = [0.1, 0.1];
+        ball_direction = [0.6, 0.6];
+        ball_size = [93, 93];
+        ball_color = [255, 255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -501,14 +506,15 @@ function deleteBall(i) {
 
         player_level += 1;
         maxBalls += 4;
-        ball_amount = 1;
-        ball_na = [0.3];
-        ball_x = [200];
-        ball_y = [200];
-        ball_x_speed = [1];
-        ball_y_speed = [1];
-        ball_direction = [0.6];
-        ball_size = [93];
+        ball_amount = 2;
+        ball_na = [0.3, 0.3];
+        ball_x = [200, 600];
+        ball_y = [200, 600];
+        ball_x_speed = [0.1, 0.1];
+        ball_y_speed = [0.1, 0.1];
+        ball_direction = [0.6, 0.6];
+        ball_size = [93, 93];
+        ball_color = [255, 255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -516,6 +522,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
+
         secondsToBigBall = 30*player_level;
         speedCoeff += 0.05
         displayPoints();
@@ -535,14 +542,15 @@ function deleteBall(i) {
 
         player_level += 1;
         maxBalls += 4;
-        ball_amount = 1;
-        ball_na = [0.3];
-        ball_x = [200];
-        ball_y = [200];
-        ball_x_speed = [1];
-        ball_y_speed = [1];
-        ball_direction = [0.6];
-        ball_size = [93];
+        ball_amount = 2;
+        ball_na = [0.3, 0.3];
+        ball_x = [200, 600];
+        ball_y = [200, 600];
+        ball_x_speed = [0.1, 0.1];
+        ball_y_speed = [0.1, 0.1];
+        ball_direction = [0.6, 0.6];
+        ball_size = [93, 93];
+        ball_color = [255, 255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -550,6 +558,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
+        
         secondsToBigBall = 30*player_level;
         speedCoeff += 0.05
         displayPoints();
@@ -569,14 +578,15 @@ function deleteBall(i) {
 
         player_level += 1;
         maxBalls += 4;
-        ball_amount = 1;
-        ball_na = [0.3];
-        ball_x = [200];
-        ball_y = [200];
-        ball_x_speed = [1];
-        ball_y_speed = [1];
-        ball_direction = [0.6];
-        ball_size = [93];
+        ball_amount = 3;
+        ball_na = [0.3, 0.3, 0.3];
+        ball_x = [200, 600, 400];
+        ball_y = [200, 600, 400];
+        ball_x_speed = [0.1, 0.1, 0.1];
+        ball_y_speed = [0.1, 0.1, 0.1];
+        ball_direction = [0.6, 0.6, 0.6];
+        ball_size = [93, 93, 93];
+        ball_color = [255, 255, 255];
         weights = [];
         for (var i = 0; i < ball_amount; i++) {
             weights.push([]);
@@ -584,6 +594,7 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
+
         secondsToBigBall = 30*player_level;
         speedCoeff += 0.05
         displayPoints();
@@ -616,10 +627,11 @@ function splitBall(i) {
     var oldColor = ball_color[i];
 
     if (ball_size[i] == 11) {
+        var dice = nbhelper_randomInt(-1, 1);
         for (var j = 0; j < ball_amount; j++) {
-            ball_na[j] += 10;
+            ball_na[j] += 10.0 * dice;
             for (var k = 0; k < ball_amount; k++) {
-                weights[j][k] += 2.0;
+                weights[j][k] += 2.0 * dice;
             }
         }
         deleteBall(i);
