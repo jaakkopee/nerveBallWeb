@@ -146,12 +146,18 @@
             var g = 255;
             var b = 255;
             function draw() {
-
                 if (lane == 4){
-                    textSize(32);
-                    fill(10, 255, 10);
-                    text("Welcome to nerveBall!", 200, 30);
-                    text("Click to start the game.", 200, 60);
+                    //draw intro screen
+                    background(0);
+                    var fontSize = 32 * Math.abs(Math.sin(Date.now() / 1000));
+                    textSize(fontSize); // Set the text size to fontSize
+
+                    var textX = (width - textWidth('Welcome to nerveBall')) / 2; // Center horizontally
+                    var textY = (height + fontSize) / 2; // Center vertically
+
+                    fill(Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))), Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))), Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))));
+                    text("Welcome to nerveBall!", textX, textY);
+                    text("Click to start the game.", textX, textY+30);
                     //wait for mouse click
                     if (mouseIsPressed) {
                         initAudio();
