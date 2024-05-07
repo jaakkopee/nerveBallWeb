@@ -39,6 +39,12 @@ var player_time = 120000;//2 minutes
 var player_lastSplitPoints = 0;
 var levelUpText = false;
 var playLevelUpSound = false;
+
+
+//neural network parameters
+var activationGain = 0.03; //neural activation gain
+var learningRate = 0.000333; //backpropagation learning rate
+
 var speedCoeff0 = 0.05; //initial total activation effect on speed
 var speedCoeff1 = 0.05; //initial individual activation effect on speed
 var directionCoeff0 = 0.00125; //total activation effect on direction
@@ -181,7 +187,7 @@ function moveBall(i) {
 function countActivations() {
     for (var i = 0; i < ball_amount; i++) {
         for (var j = 0; j < ball_amount; j++) {
-            ball_na[i] += scaleActivationSigmoid(ball_na[j])*weights[i][j];
+            ball_na[i] += activationGain * scaleActivationSigmoid(ball_na[j])*weights[i][j];
             if (ball_na[i] > 32) {
                 ball_na[i] = 32;
             }
@@ -196,7 +202,7 @@ function backPropagate(ball_index) {
     var error = 0.0;
     var target = 0.0;
     var delta = 0.0;
-    var lr = 0.000333;
+    var lr = learningRate;
     for (var i = 0; i < ball_amount; i++) {
         error = target - ball_na[i];
         delta = error * lr;
@@ -275,8 +281,6 @@ function checkWallCollision(i) {
         ball_y[i] = canvas_height - ball_size[i] / 2 - wallCollisionMargin - offset;
     }
 }
-
-
 function deleteBall(i) {
     //add points
     player_lastSplitPoints = 72000 - ball_size[i]*1600 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 256000;
@@ -325,6 +329,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -361,6 +370,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -397,6 +411,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -433,6 +452,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -469,6 +493,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -505,6 +534,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -542,6 +576,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -579,6 +618,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();
@@ -616,6 +660,11 @@ function deleteBall(i) {
         secondsToBigBall = 30*player_level;
         speedCoeff0 += 0.025;
         speedCoeff1 += 0.025;
+        directionCoeff0 += 0.00025;
+        directionCoeff1 += 0.00025;
+        activationGain += 0.0025;
+        learningRate += 0.000025;
+        
         displayPoints();
         displayBallAmount();
         displayLevel();

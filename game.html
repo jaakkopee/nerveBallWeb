@@ -159,6 +159,15 @@
                     fill(Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))), Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))), Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))));
                     text("Welcome to nerveBall!", textX, textY);
                     text("Click to start the game.", textX, textY+30);
+                    textSize(20);
+                    text("Level one, maximum ball amount: " + maxBalls, 30, 60);
+                    text("Network total activation effect on ball speed: " + speedCoeff0, 30, 90);
+                    text("Individual neuron activation effect on ball speed: " + speedCoeff1, 30, 120);
+                    text("Network total activation effect on ball direction: " + directionCoeff0, 30, 150);
+                    text("Individual neuron activation effect on ball direction: " + directionCoeff1, 30, 180);
+                    text("Neural activation gain: " + activationGain, 30, 210);
+                    text("Backpropagation learning rate: " + learningRate, 30, 240);
+
                     //wait for mouse click
                     if (mouseIsPressed) {
                         initAudio();
@@ -274,8 +283,14 @@
                         textSize(26);
                         text("Level Up!", 200, 30);
                         text("Entered level "+player_level, 200, 60);
+                        textSize(18);
                         text("New maximum ball amount: "+maxBalls, 200, 90);
-                        text("Balls speed up by 5% ", 200, 120);
+                        text("Network total activation effect on ball speed: " + speedCoeff0, 200, 120);
+                        text("Individual neuron activation effect on ball speed: " + speedCoeff1, 200, 150);
+                        text("Network total activation effect on ball direction: " + directionCoeff0, 200, 180);
+                        text("Individual neuron activation effect on ball direction: " + directionCoeff1, 200, 210);
+                        text("Neural activation gain: " + activationGain, 200, 240);
+                        text("Backpropagation learning rate: " + learningRate, 200, 270);
                     }
 
                     if (hit){
