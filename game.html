@@ -173,10 +173,7 @@
                         initAudio();
                         lane = 0;
                     }
-                }
-
-
-                if (lane == 3){
+                } else if (lane == 3){
                     gameOn = false;
                     timeStopped = true;
                     
@@ -205,8 +202,7 @@
                     if (keyIsDown(32)) {
                         document.location.reload();
                     }
-                } else
-                if (lane==2){
+                } else if (lane==2){
                     timeStopped = true;
                     gameOn = false;
                     //change quit button text to 'reload'
