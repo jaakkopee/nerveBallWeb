@@ -89,8 +89,8 @@ body {
     width: 120px;
     height: 60px;
     position: fixed;
-    top: 50px;
-    right: 5px;
+    bottom: 5px;
+    left: 5px;
     border: none;
 }
 
@@ -104,8 +104,8 @@ body {
     width: 120px;
     height: 60px;
     position: fixed;
-    top: 120px;
-    right: 5px;
+    bottom: 5px;
+    left: 130px;
     border: none;
 }
 
@@ -119,8 +119,8 @@ body {
     width: 120px;
     height: 60px;
     position: fixed;
-    top: 190px;
-    right: 5px;
+    bottom: 5px;
+    left: 260px;
     border: none;
 }
 
