@@ -30,7 +30,7 @@ var timeStopped = false;
 var gameOn = false;
 var theBigBall = false;
 var secondsToBigBall = 30;
-var collisionMargin = 0;
+var collisionMargin = 5;
 var wallCollisionMargin = 5;
 var maxBalls = 4;
 var player_level = 1;
@@ -230,7 +230,49 @@ function updateMouseDown(evt) {
     }
 }
 
+function nbhelper_normalizeVector(x, y) {
+    var length = nbhelper_length(x, y);
+    return {x: x / length, y: y / length};
+}
+
 function checkCollision(i) {
+    for (var j = 0; j < ball_amount; j++) {
+        if (i != j) {
+            if (nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]) < ball_size[i] / 2 + ball_size[j] / 2 + collisionMargin) {
+                //chack if balls are overlapping
+                var overlap = ball_size[i] / 2 + ball_size[j] / 2 - nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
+                var x1 = ball_x[i];
+                var y1 = ball_y[i];
+                var x2 = ball_x[j];
+                var y2 = ball_y[j];
+                var speedX1 = ball_x_speed[i];
+                var speedY1 = ball_y_speed[i];
+                var speedX2 = ball_x_speed[j];
+                var speedY2 = ball_y_speed[j];
+                ball_x[i] -= overlap / 2;
+                ball_y[i] -= overlap / 2;
+                ball_x[j] += overlap / 2;
+                ball_y[j] += overlap / 2;
+
+
+
+                var collision = {x: x1 - x2, y: y1 - y2};
+                collision = nbhelper_normalizeVector(collision.x, collision.y);   
+                
+                var aci = nbhelper_dotProduct(speedX1, speedY1, collision.x, collision.y);
+                var bci = nbhelper_dotProduct(speedX2, speedY2, collision.x, collision.y);
+                
+                var acf = bci;
+                var bcf = aci;
+
+                ball_x_speed[i] += collision.x * (acf - aci);
+                ball_y_speed[i] += collision.y * (acf - aci);
+                ball_x_speed[j] += collision.x * (bcf - bci);
+                ball_y_speed[j] += collision.y * (bcf - bci);
+
+            }
+        }
+    }
     return;
 }
 
