@@ -42,14 +42,16 @@ var playLevelUpSound = false;
 
 
 //neural network parameters
-var activationGain = 0.03; //neural activation gain
-var learningRate = 0.000333; //backpropagation learning rate
+var activationGain; //neural activation gain
+var learningRate; //backpropagation learning rate
 
-var speedCoeff0 = 0.05; //initial total activation effect on speed
-var speedCoeff1 = 0.05; //initial individual activation effect on speed
-var directionCoeff0 = 0.00125; //total activation effect on direction
-var directionCoeff1 = 0.000125; //individual activation effect on direction
+var speedCoeff0; //total activation effect on speed
+var speedCoeff1; //individual activation effect on speed
+var directionCoeff0; //total activation effect on direction
+var directionCoeff1; //individual activation effect on direction
 var DEBUG = false;
+
+setLevelAttributes();
 
 //current ball amount
 var ball_amount = 1
@@ -228,30 +230,30 @@ function updateMouseDown(evt) {
     }
 }
 
-
 function checkCollision(i) {
-    for (var j = 0; j < ball_amount; j++) {
-        if (i == j) {
-            continue;
-        }
-        if (nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]) < ball_size[i] / 2 + ball_size[j] / 2 + collisionMargin) {
-            //collision, invert directions
-            ball_direction[i] = Math.PI - ball_direction[i];
-            ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
-            ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
-            ball_direction[j] = Math.PI - ball_direction[j];
-            ball_x_speed[j] = nbhelper_getX(ball_direction[j]);
-            ball_y_speed[j] = nbhelper_getY(ball_direction[j]);
-
-            //update position
-            ball_x[i] += ball_x_speed[i];
-            ball_y[i] += ball_y_speed[i];
-            ball_x[j] += ball_x_speed[j];
-            ball_y[j] += ball_y_speed[j];
-
-        }
-    }
+    return;
 }
+
+function nbhelper_getAngle(x1, y1, x2, y2) {
+    return Math.atan2(y2 - y1, x2 - x1);
+}
+
+function nbhelper_rotateVector(x, y, angle) {
+    var newX = x * Math.cos(angle) - y * Math.sin(angle);
+    var newY = x * Math.sin(angle) + y * Math.cos(angle);
+    return [newX, newY];
+}
+
+// Helper function to calculate the dot product
+function nbhelper_dotProduct(v1x, v1y, v2x, v2y) {
+    return v1x * v2x + v1y * v2y;
+}
+
+// Helper function to calculate the magnitude of a vector
+function nbhelper_length(x, y) {
+    return Math.sqrt(x * x + y * y);
+}
+
 
 
 function checkWallCollision(i) {
@@ -326,18 +328,10 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
+        
+        setLevelAttributes();
+        displayLotsOfText();
 
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
         return;
     }
     if (ball_amount == 0 && player_level == 2) {
@@ -367,18 +361,9 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+        setLevelAttributes();
+        displayLotsOfText();
+
         return;
     }
     if (ball_amount == 0 && player_level == 3) {
@@ -408,18 +393,9 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+        setLevelAttributes();
+        displayLotsOfText();
+
         return;
     }
     if (ball_amount == 0 && player_level == 4) {
@@ -449,18 +425,9 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+        setLevelAttributes();
+        displayLotsOfText();
+
         return;
     }
     if (ball_amount == 0 && player_level == 5) {
@@ -490,18 +457,9 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+        setLevelAttributes();       
+        displayLotsOfText();
+
         return;
     }
     if (ball_amount == 0 && player_level == 6) {
@@ -531,18 +489,9 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+        setLevelAttributes(); 
+        displayLotsOfText();
+
         return;
     }
     if (ball_amount == 0 && player_level == 7) {
@@ -572,19 +521,9 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
+        setLevelAttributes();
+        displayLotsOfText();
 
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
         return;
     }
     if (ball_amount == 0 && player_level == 8) {
@@ -614,19 +553,10 @@ function deleteBall(i) {
                 weights[i].push(1.0);
             }
         }
+        setLevelAttributes();
         
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+        displayLotsOfText();
+
         return;
     }
     if (ball_amount == 0 && player_level == 9) {
@@ -657,18 +587,10 @@ function deleteBall(i) {
             }
         }
 
-        secondsToBigBall = 30*player_level;
-        speedCoeff0 += 0.025;
-        speedCoeff1 += 0.025;
-        directionCoeff0 += 0.00025;
-        directionCoeff1 += 0.00025;
-        activationGain += 0.0025;
-        learningRate += 0.000025;
-        
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+        setLevelAttributes();
+
+        displayLotsOfText();
+
         return;
     }
     if (ball_amount == 0 && player_level == 10) {
@@ -681,13 +603,22 @@ function deleteBall(i) {
         , 6000);
 
         lane = 2;
-        displayPoints();
-        displayBallAmount();
-        displayLevel();
-        displayTime();
+
+        displayLotsOfText();
+
         return;
     }   
 
+}
+
+function setLevelAttributes() {
+    secondsToBigBall = 30*player_level;
+    speedCoeff0 = 0.0125*player_level;
+    speedCoeff1 = 0.025*player_level;
+    directionCoeff0 = 0.00012*player_level;
+    directionCoeff1 = 0.00024*player_level;
+    activationGain = 0.156*player_level;
+    learningRate = 0.00012*player_level;
 }
 
 function splitBall(i) {
@@ -841,6 +772,43 @@ function displayLevel() {
 
 function displayBallAmount() {
     document.getElementById("ballAmount").innerHTML = "Balls: " + ball_amount;
+}
+
+function displayActivationGain() {
+    document.getElementById("activationGain").innerHTML = "Activation Gain: " + activationGain;
+}
+
+function displayLearningRate() {
+    document.getElementById("learningRate").innerHTML = "Learning Rate: " + learningRate;
+}
+
+function displayTAEOBS() {
+    document.getElementById("TAEOBS").innerHTML = "TotAct->Ball speed: " + speedCoeff0;
+}
+
+function displayIAEOBS() {
+    document.getElementById("IAEOBS").innerHTML = "IndAct->Ball Speed: " + speedCoeff1;
+}
+
+function displayTAEOBD() {
+    document.getElementById("TAEOBD").innerHTML = "TotAct->Ball Direction: " + directionCoeff0;
+}
+
+function displayIAEOBD() {
+    document.getElementById("IAEOBD").innerHTML = "IndAct->Ball Direction: " + directionCoeff1;
+}
+
+function displayLotsOfText() { 
+    displayPoints();
+    displayBallAmount();
+    displayLevel();
+    displayTime();
+    displayTAEOBS();
+    displayIAEOBS();
+    displayTAEOBD();
+    displayIAEOBD();
+    displayActivationGain();
+    displayLearningRate();
 }
 
 function addToTime(time) {

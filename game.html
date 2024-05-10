@@ -146,6 +146,7 @@
             var r = 255;
             var g = 255;
             var b = 255;
+
             function draw() {
                 if (lane == 4){
                     //draw intro screen
@@ -268,6 +269,8 @@
                         lane = 2;
                     }
 
+                    displayLotsOfText();
+                    
                     if (theBigBall){playAudio(TheBigBallUrl); theBigBall = false;}
 
                     gameOn = true;
@@ -410,6 +413,13 @@
         <div id="points" class="points">Points</div>
         <div id="ballAmount" class="ballAmount">Balls</div>
         <div id="level" class="level">Level</div>
+        <div id="TAEOBS" class="TAEOBS">TAEOBS:</div>
+        <div id="IAEOBS" class="IAEOBS">INEOBS:</div>
+        <div id="TAEOBD" class="TAEOBD">TAEOBD:</div>
+        <div id="IAEOBD" class="IAEOBD">INEOBD:</div>
+        <div id="activationGain" class="activationGain">Activation Gain:</div>
+        <div id="learningRate" class="learningRate">Learning Rate:</div>
+
         <button id="fullScreen" class="fullScreen" onclick="toggleFullScreen()">Full screen</button>
         <button id="sirrobin" class="sirrobin" onclick="sirRobinOut()"> Quit </button>
     </body>
