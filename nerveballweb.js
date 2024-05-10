@@ -231,15 +231,8 @@ function updateMouseDown(evt) {
 }
 
 function checkCollision(i) {
-    for (var j = 0; j < ball_amount; j++) {
-        if (i != j) {
-            if (nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]) < ball_size[i] / 2 + ball_size[j] / 2 + collisionMargin) {
-                //collision
-            }
-        }
-    }
+    return;
 }
-
 
 function nbhelper_getAngle(x1, y1, x2, y2) {
     return Math.atan2(y2 - y1, x2 - x1);
