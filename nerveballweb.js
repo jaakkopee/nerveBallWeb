@@ -45,9 +45,9 @@ var playLevelUpSound = false;
 var activationGain; //neural activation gain
 var learningRate; //backpropagation learning rate
 
-var speedCoeff0; //total activation effect on speed
+var speedCoeff0 = 0.001; //total activation effect on speed
 var speedCoeff1; //individual activation effect on speed
-var directionCoeff0; //total activation effect on direction
+var directionCoeff0 = 0.001 //total activation effect on direction
 var directionCoeff1; //individual activation effect on direction
 var DEBUG = false;
 
@@ -231,8 +231,15 @@ function updateMouseDown(evt) {
 }
 
 function checkCollision(i) {
-    return;
+    for (var j = 0; j < ball_amount; j++) {
+        if (i != j) {
+            if (nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]) < ball_size[i] / 2 + ball_size[j] / 2 + collisionMargin) {
+                //collision
+            }
+        }
+    }
 }
+
 
 function nbhelper_getAngle(x1, y1, x2, y2) {
     return Math.atan2(y2 - y1, x2 - x1);
@@ -613,10 +620,10 @@ function deleteBall(i) {
 
 function setLevelAttributes() {
     secondsToBigBall = 30*player_level;
-    speedCoeff0 = 0.0125*player_level;
+    speedCoeff0 -= 0.0001*player_level;
     speedCoeff1 = 0.025*player_level;
-    directionCoeff0 = 0.00012*player_level;
-    directionCoeff1 = 0.00024*player_level;
+    directionCoeff0 -= 0.0001*player_level;
+    directionCoeff1 = 0.00032*player_level;
     activationGain = 0.156*player_level;
     learningRate = 0.00012*player_level;
 }
@@ -630,11 +637,11 @@ function splitBall(i) {
         for (var j = 0; j < ball_amount; j++) {
             ball_na[j] += 10.0 * dice;
             for (var k = 0; k < ball_amount; k++) {
-                weights[j][k] += 2.0 * dice;
+                weights[j][k] += 0.3 * dice;
             }
         }
         deleteBall(i);
-        addToTime(20000);
+        addToTime(5000);
         displayBallAmount();
         displayLevel();
         displayPoints();
