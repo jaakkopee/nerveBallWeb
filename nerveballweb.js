@@ -30,8 +30,8 @@ var timeStopped = false;
 var gameOn = false;
 var theBigBall = false;
 var secondsToBigBall = 30;
-var collisionMargin = 0;
-var bounceFactor = 1.5;
+var collisionMargin = 5;
+var bounceFactor = 1.2;
 var wallCollisionMargin = 5;
 var maxBalls = 4;
 var player_level = 1;
@@ -241,7 +241,7 @@ function checkCollision(i) {
         if (i!= j) {
             var distance = nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
             var sumRadius = ball_size[i] / 2 + ball_size[j] / 2;
-            if (distance < sumRadius + collisionMargin) {
+            if (distance <= sumRadius + collisionMargin) {
                 var position1 = {x: ball_x[i], y: ball_y[i]};
                 var position2 = {x: ball_x[j], y: ball_y[j]};
                 var newPosition1 = {x: ball_x[i] + ball_x_speed[i], y: ball_y[i] + ball_y_speed[i]};
@@ -262,10 +262,10 @@ function checkCollision(i) {
                 ball_x_speed[j] = newXSpeed2;
                 ball_y_speed[j] = newYSpeed2;
                 //move balls away from each other
-                ball_x[i] += newXSpeed1;
-                ball_y[i] += newYSpeed1;
-                ball_x[j] += newXSpeed2;
-                ball_y[j] += newYSpeed2;
+                ball_x[i] += newXSpeed1 * bounceFactor;
+                ball_y[i] += newYSpeed1 * bounceFactor;
+                ball_x[j] += newXSpeed2 * bounceFactor;
+                ball_y[j] += newYSpeed2 * bounceFactor;
             }
         }
     }
