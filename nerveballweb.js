@@ -30,7 +30,8 @@ var timeStopped = false;
 var gameOn = false;
 var theBigBall = false;
 var secondsToBigBall = 30;
-var collisionMargin = 5;
+var collisionMargin = 0;
+var bounceFactor = 1.0;
 var wallCollisionMargin = 5;
 var maxBalls = 4;
 var player_level = 1;
@@ -237,44 +238,42 @@ function nbhelper_normalizeVector(x, y) {
 
 function checkCollision(i) {
     for (var j = 0; j < ball_amount; j++) {
-        if (i != j) {
-            if (nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]) < ball_size[i] / 2 + ball_size[j] / 2 + collisionMargin) {
-                //chack if balls are overlapping
-                var overlap = ball_size[i] / 2 + ball_size[j] / 2 - nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
-                var x1 = ball_x[i];
-                var y1 = ball_y[i];
-                var x2 = ball_x[j];
-                var y2 = ball_y[j];
-                var speedX1 = ball_x_speed[i];
-                var speedY1 = ball_y_speed[i];
-                var speedX2 = ball_x_speed[j];
-                var speedY2 = ball_y_speed[j];
-                ball_x[i] -= overlap / 2;
-                ball_y[i] -= overlap / 2;
-                ball_x[j] += overlap / 2;
-                ball_y[j] += overlap / 2;
+        if (i!= j) {
+            var distance = nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
+            var sumRadius = ball_size[i] / 2 + ball_size[j] / 2;
+            if (distance < sumRadius + collisionMargin) {
+                // Calculate the overlap
+                var overlap = sumRadius - distance;
+                var dx = ball_x[j] - ball_x[i];
+                var dy = ball_y[j] - ball_y[i];
+                var collisionNormal = {x: dx / distance, y: dy / distance};
 
+                // Calculate the relative velocity
+                var v1 = {x: ball_x_speed[i], y: ball_y_speed[i]};
+                var v2 = {x: ball_x_speed[j], y: ball_y_speed[j]};
+                var relativeVelocity = {x: v2.x - v1.x, y: v2.y - v1.y};
 
+                // Calculate the impulse
+                var impulse = 1 - (relativeVelocity.x * collisionNormal.x + relativeVelocity.y * collisionNormal.y) / (collisionNormal.x * collisionNormal.x + collisionNormal.y * collisionNormal.y);
 
-                var collision = {x: x1 - x2, y: y1 - y2};
-                collision = nbhelper_normalizeVector(collision.x, collision.y);   
-                
-                var aci = nbhelper_dotProduct(speedX1, speedY1, collision.x, collision.y);
-                var bci = nbhelper_dotProduct(speedX2, speedY2, collision.x, collision.y);
-                
-                var acf = bci;
-                var bcf = aci;
+                // Apply the impulse to adjust velocities, scaled by the bounce factor
+                ball_x_speed[i] += impulse * collisionNormal.x * bounceFactor;
+                ball_y_speed[i] += impulse * collisionNormal.y * bounceFactor;
+                ball_x_speed[j] -= impulse * collisionNormal.x * bounceFactor;
+                ball_y_speed[j] -= impulse * collisionNormal.y * bounceFactor;
 
-                ball_x_speed[i] += collision.x * (acf - aci);
-                ball_y_speed[i] += collision.y * (acf - aci);
-                ball_x_speed[j] += collision.x * (bcf - bci);
-                ball_y_speed[j] += collision.y * (bcf - bci);
-
+                // Adjust positions to prevent overlap
+                ball_x[i] += overlap * collisionNormal.x;
+                ball_y[i] += overlap * collisionNormal.y;
+                ball_x[j] -= overlap * collisionNormal.x;
+                ball_y[j] -= overlap * collisionNormal.y;
             }
         }
     }
-    return;
 }
+
+
+
 
 function nbhelper_getAngle(x1, y1, x2, y2) {
     return Math.atan2(y2 - y1, x2 - x1);
