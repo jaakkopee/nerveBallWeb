@@ -255,7 +255,6 @@ function checkCollision(i) {
                 var newSpeed1 = nbhelper_rotateVector(ball_x_speed[i], ball_y_speed[i], angle1);
                 var newSpeed2 = nbhelper_rotateVector(ball_x_speed[j], ball_y_speed[j], angle2);
 
-                // Correctly apply the bounce factor to the rotated velocities
                 ball_x_speed[i] = newSpeed1[0] * bounceFactor;
                 ball_y_speed[i] = newSpeed1[1] * bounceFactor;
                 ball_x_speed[j] = newSpeed2[0] * bounceFactor;
