@@ -30,8 +30,8 @@ var timeStopped = false;
 var gameOn = false;
 var theBigBall = false;
 var secondsToBigBall = 30;
-var collisionMargin = 2;
-var bounceFactor = 0.5;
+var collisionMargin = 0;
+var bounceFactor = 1.5;
 var wallCollisionMargin = 5;
 var maxBalls = 4;
 var player_level = 1;
@@ -252,13 +252,19 @@ function checkCollision(i) {
                 angle1 = Math.PI - angle1;
                 angle2 = Math.PI - angle2;
                 // Rotate vectors
-                var newSpeed1 = nbhelper_rotateVector(ball_x_speed[i], ball_y_speed[i], angle1);
-                var newSpeed2 = nbhelper_rotateVector(ball_x_speed[j], ball_y_speed[j], angle2);
-
-                ball_x_speed[i] = newSpeed1[0] * bounceFactor;
-                ball_y_speed[i] = newSpeed1[1] * bounceFactor;
-                ball_x_speed[j] = newSpeed2[0] * bounceFactor;
-                ball_y_speed[j] = newSpeed2[1] * bounceFactor;
+                var rotatedPos1 = nbhelper_rotateVector(newPosition1.x, newPosition1.y, angle1);
+                var rotatedPos2 = nbhelper_rotateVector(newPosition2.x, newPosition2.y, angle2);
+                //update ball speed
+                ball_x_speed[i] = rotatedPos1[0] - ball_x[i];
+                ball_y_speed[i] = rotatedPos1[1] - ball_y[i];
+                ball_x_speed[j] = rotatedPos2[0] - ball_x[j];
+                ball_y_speed[j] = rotatedPos2[1] - ball_y[j];
+                //update ball position
+                ball_x[i] += ball_x_speed[i];
+                ball_y[i] += ball_y_speed[i];
+                ball_x[j] += ball_x_speed[j];
+                ball_y[j] += ball_y_speed[j];
+                
             }
         }
     }
