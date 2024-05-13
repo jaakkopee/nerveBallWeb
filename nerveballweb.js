@@ -30,8 +30,8 @@ var timeStopped = false;
 var gameOn = false;
 var theBigBall = false;
 var secondsToBigBall = 30;
-var collisionMargin = 0;
-var bounceFactor = 0.005;
+var collisionMargin = 2;
+var bounceFactor = 0.5;
 var wallCollisionMargin = 5;
 var maxBalls = 4;
 var player_level = 1;
@@ -244,26 +244,37 @@ function checkCollision(i) {
             if (distance < sumRadius + collisionMargin) {
                 var position1 = {x: ball_x[i], y: ball_y[i]};
                 var position2 = {x: ball_x[j], y: ball_y[j]};
-                var newPosition1 = {x: ball_x[i]+ball_x_speed[i], y: ball_y[i]+ball_y_speed[i]};
-                var newPosition2 = {x: ball_x[j]+ball_x_speed[j], y: ball_y[j]+ball_y_speed[j]};
+                var newPosition1 = {x: ball_x[i] + ball_x_speed[i], y: ball_y[i] + ball_y_speed[i]};
+                var newPosition2 = {x: ball_x[j] + ball_x_speed[j], y: ball_y[j] + ball_y_speed[j]};
                 var angle1 = nbhelper_getAngle(position1.x, position1.y, newPosition1.x, newPosition1.y);
                 var angle2 = nbhelper_getAngle(position2.x, position2.y, newPosition2.x, newPosition2.y);
-                //invert angles
+                // Invert angles
                 angle1 = Math.PI - angle1;
                 angle2 = Math.PI - angle2;
-                //rotate vectors
+                // Rotate vectors
                 var newSpeed1 = nbhelper_rotateVector(ball_x_speed[i], ball_y_speed[i], angle1);
                 var newSpeed2 = nbhelper_rotateVector(ball_x_speed[j], ball_y_speed[j], angle2);
 
-                ball_x_speed[i] = newSpeed1[0];
-                ball_y_speed[i] = newSpeed1[1];
-                ball_x_speed[j] = newSpeed2[0];
-                ball_y_speed[j] = newSpeed2[1];
+                // Correctly apply the bounce factor to the rotated velocities
+                ball_x_speed[i] = newSpeed1[0] * bounceFactor;
+                ball_y_speed[i] = newSpeed1[1] * bounceFactor;
+                ball_x_speed[j] = newSpeed2[0] * bounceFactor;
+                ball_y_speed[j] = newSpeed2[1] * bounceFactor;
 
+                // Adjust positions to prevent overlap
+                var overlap = sumRadius - distance;
+                var dx = ball_x[j] - ball_x[i];
+                var dy = ball_y[j] - ball_y[i];
+                var collisionNormal = {x: dx / distance, y: dy / distance};
+                ball_x[i] += overlap * collisionNormal.x;
+                ball_y[i] += overlap * collisionNormal.y;
+                ball_x[j] -= overlap * collisionNormal.x;
+                ball_y[j] -= overlap * collisionNormal.y;
             }
         }
     }
 }
+
 
 
 
