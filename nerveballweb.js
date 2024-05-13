@@ -259,16 +259,6 @@ function checkCollision(i) {
                 ball_y_speed[i] = newSpeed1[1] * bounceFactor;
                 ball_x_speed[j] = newSpeed2[0] * bounceFactor;
                 ball_y_speed[j] = newSpeed2[1] * bounceFactor;
-
-                // Adjust positions to prevent overlap
-                var overlap = sumRadius - distance;
-                var dx = ball_x[j] - ball_x[i];
-                var dy = ball_y[j] - ball_y[i];
-                var collisionNormal = {x: dx / distance, y: dy / distance};
-                ball_x[i] += overlap * collisionNormal.x;
-                ball_y[i] += overlap * collisionNormal.y;
-                ball_x[j] -= overlap * collisionNormal.x;
-                ball_y[j] -= overlap * collisionNormal.y;
             }
         }
     }
