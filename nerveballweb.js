@@ -251,6 +251,7 @@ function checkCollision(i) {
                 // Invert angles
                 angle1 = Math.PI - angle1;
                 angle2 = Math.PI - angle2;
+                // calculate new speeds
                 newXSpeed1 = nbhelper_getX(angle1);
                 newYSpeed1 = nbhelper_getY(angle1);
                 newXSpeed2 = nbhelper_getX(angle2);
