@@ -251,28 +251,24 @@ function checkCollision(i) {
                 // Invert angles
                 angle1 = Math.PI - angle1;
                 angle2 = Math.PI - angle2;
-                // Rotate vectors
-                var rotatedPos1 = nbhelper_rotateVector(newPosition1.x, newPosition1.y, angle1);
-                var rotatedPos2 = nbhelper_rotateVector(newPosition2.x, newPosition2.y, angle2);
-                //update ball speed
-                ball_x_speed[i] = rotatedPos1[0] - ball_x[i];
-                ball_y_speed[i] = rotatedPos1[1] - ball_y[i];
-                ball_x_speed[j] = rotatedPos2[0] - ball_x[j];
-                ball_y_speed[j] = rotatedPos2[1] - ball_y[j];
-                //update ball position
-                ball_x[i] += ball_x_speed[i];
-                ball_y[i] += ball_y_speed[i];
-                ball_x[j] += ball_x_speed[j];
-                ball_y[j] += ball_y_speed[j];
-                
+                newXSpeed1 = nbhelper_getX(angle1);
+                newYSpeed1 = nbhelper_getY(angle1);
+                newXSpeed2 = nbhelper_getX(angle2);
+                newYSpeed2 = nbhelper_getY(angle2);
+                //update speeds
+                ball_x_speed[i] = newXSpeed1;
+                ball_y_speed[i] = newYSpeed1;
+                ball_x_speed[j] = newXSpeed2;
+                ball_y_speed[j] = newYSpeed2;
+                //move balls away from each other
+                ball_x[i] += newXSpeed1;
+                ball_y[i] += newYSpeed1;
+                ball_x[j] += newXSpeed2;
+                ball_y[j] += newYSpeed2;
             }
         }
     }
 }
-
-
-
-
 
 function nbhelper_getAngle(x1, y1, x2, y2) {
     return Math.atan2(y2 - y1, x2 - x1);
@@ -283,7 +279,7 @@ function nbhelper_rotateVector(x, y, angle) {
     var newY = x * Math.sin(angle) + y * Math.cos(angle);
     return [newX, newY];
 }
-
+ 
 // Helper function to calculate the dot product
 function nbhelper_dotProduct(v1x, v1y, v2x, v2y) {
     return v1x * v2x + v1y * v2y;
