@@ -242,30 +242,35 @@ function checkCollision(i) {
             var distance = nbhelper_getDistance(ball_x[i], ball_y[i], ball_x[j], ball_y[j]);
             var sumRadius = ball_size[i] / 2 + ball_size[j] / 2;
             if (distance <= sumRadius + collisionMargin) {
-                var position1 = {x: ball_x[i], y: ball_y[i]};
-                var position2 = {x: ball_x[j], y: ball_y[j]};
-                var newPosition1 = {x: ball_x[i] + ball_x_speed[i], y: ball_y[i] + ball_y_speed[i]};
-                var newPosition2 = {x: ball_x[j] + ball_x_speed[j], y: ball_y[j] + ball_y_speed[j]};
-                var angle1 = nbhelper_getAngle(position1.x, position1.y, newPosition1.x, newPosition1.y);
-                var angle2 = nbhelper_getAngle(position2.x, position2.y, newPosition2.x, newPosition2.y);
-                // Invert angles
-                angle1 = Math.PI - angle1;
-                angle2 = Math.PI - angle2;
-                // calculate new speeds
-                newXSpeed1 = nbhelper_getX(angle1);
-                newYSpeed1 = nbhelper_getY(angle1);
-                newXSpeed2 = nbhelper_getX(angle2);
-                newYSpeed2 = nbhelper_getY(angle2);
-                //update speeds
-                ball_x_speed[i] = newXSpeed1;
-                ball_y_speed[i] = newYSpeed1;
-                ball_x_speed[j] = newXSpeed2;
-                ball_y_speed[j] = newYSpeed2;
-                //move balls away from each other
-                ball_x[i] += newXSpeed1 * bounceFactor;
-                ball_y[i] += newYSpeed1 * bounceFactor;
-                ball_x[j] += newXSpeed2 * bounceFactor;
-                ball_y[j] += newYSpeed2 * bounceFactor;
+                var direction1 = ball_direction[i];
+                var direction2 = ball_direction[j];
+                if (ball_x[i] < ball_x[j] && ball_y[i] < ball_y[j]) {
+                    //ball 1 is top left of ball 2, so ball 1 is moving down and right and ball 2 is moving up and left
+                    direction1 = Math.PI/2 - direction1; //ball 1 is moving down
+                    direction2 = Math.PI/2 - direction2; //ball 2 is moving up
+                } else if (ball_x[i] < ball_x[j] && ball_y[i] > ball_y[j]) {
+                    //ball 1 is bottom left of ball 2, so ball 1 is moving up and right and ball 2 is moving down and left
+                    direction1 = -Math.PI/2 - direction1; //ball 1 is moving up
+                    direction2 = -Math.PI/2 - direction2; //ball 2 is moving down
+                } else if (ball_x[i] > ball_x[j] && ball_y[i] < ball_y[j]) {
+                    //ball 1 is top right of ball 2, so ball 1 is moving down and left and ball 2 is moving up and right
+                    direction1 = Math.PI/2 - direction1; //ball 1 is moving down
+                    direction2 = Math.PI/2 - direction2; //ball 2 is moving up
+                } else if (ball_x[i] > ball_x[j] && ball_y[i] > ball_y[j]) {
+                    //ball 1 is bottom right of ball 2, so ball 1 is moving up and left and ball 2 is moving down and right
+                    direction1 = -Math.PI/2 - direction1; //ball 1 is moving up
+                    direction2 = -Math.PI/2 - direction2; //ball 2 is moving down
+                }
+                ball_direction[i] = direction1;
+                ball_direction[j] = direction2;
+                ball_x_speed[i] = nbhelper_getX(direction1);
+                ball_y_speed[i] = nbhelper_getY(direction1);
+                ball_x_speed[j] = nbhelper_getX(direction2);
+                ball_y_speed[j] = nbhelper_getY(direction2);
+                ball_x[i] += ball_x_speed[i];
+                ball_y[i] += ball_y_speed[i];
+                ball_x[j] += ball_x_speed[j];
+                ball_y[j] += ball_y_speed[j];            
             }
         }
     }
