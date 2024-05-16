@@ -270,7 +270,7 @@
                     }
 
                     displayLotsOfText();
-                    
+
                     if (theBigBall){playAudio(TheBigBallUrl); theBigBall = false;}
 
                     gameOn = true;
@@ -389,8 +389,10 @@
                                     playAudio(ballsplitUrl);
                                     
                                     if (player_lastSplitPoints > 0){
-                                        var scoreSoundPlayTimes = player_lastSplitPoints / 20000;
-                                        
+                                        var scoreSoundPlayTimes = player_lastSplitPoints / 5000000;
+                                        if (scoreSoundPlayTimes <= 0){
+                                            scoreSoundPlayTimes = 0;
+                                        }
                                         var scoreCounter = setInterval(function() {
                                             if (scoreSoundPlayTimes > 0){
                                                 playAudio(scoregainUrl);

@@ -31,7 +31,7 @@ var gameOn = false;
 var theBigBall = false;
 var secondsToBigBall = 30;
 var collisionMargin = 5;
-var bounceFactor = 1.2;
+var bounceFactor = 1.0;
 var wallCollisionMargin = 5;
 var maxBalls = 4;
 var player_level = 1;
@@ -46,9 +46,9 @@ var playLevelUpSound = false;
 var activationGain; //neural activation gain
 var learningRate; //backpropagation learning rate
 
-var speedCoeff0 = 0.001; //total activation effect on speed
-var speedCoeff1; //individual activation effect on speed
-var directionCoeff0 = 0.001 //total activation effect on direction
+var speedCoeff0 = 0.0001; //total activation effect on speed
+var speedCoeff1  //individual activation effect on speed
+var directionCoeff0 = 0.0002 //total activation effect on direction
 var directionCoeff1; //individual activation effect on direction
 var DEBUG = false;
 
@@ -176,10 +176,17 @@ function moveBall(i) {
 
     //modulate ball direction with neural activation
     ball_direction[i] += total_activation * directionCoeff0 + ball_na[i] * directionCoeff1;
+    if (ball_direction[i] < 0) {
+        ball_direction[i] += 2*Math.PI;
+    }
+    if (ball_direction[i] > 2*Math.PI) {
+        ball_direction[i] -= 2*Math.PI;
+    }
 
     //update ball x and y speed
-    ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
-    ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+    speedVector = nbhelper_getVector(nbhelper_getSpeed(ball_x_speed[i], ball_y_speed[i]), ball_direction[i]);
+    ball_x_speed[i] = speedVector[0];
+    ball_y_speed[i] = speedVector[1];
     
     ball_x[i] += ball_x_speed[i]
     ball_y[i] += ball_y_speed[i]
@@ -244,36 +251,45 @@ function checkCollision(i) {
             if (distance <= sumRadius + collisionMargin) {
                 var direction1 = ball_direction[i];
                 var direction2 = ball_direction[j];
-                if (ball_x[i] < ball_x[j] && ball_y[i] < ball_y[j]) {
-                    //ball 1 is top left of ball 2, so ball 1 is moving down and right and ball 2 is moving up and left
-                    direction1 = Math.PI/2 - direction1; //ball 1 is moving down
-                    direction2 = Math.PI/2 - direction2; //ball 2 is moving up
-                } else if (ball_x[i] < ball_x[j] && ball_y[i] > ball_y[j]) {
-                    //ball 1 is bottom left of ball 2, so ball 1 is moving up and right and ball 2 is moving down and left
-                    direction1 = -Math.PI/2 - direction1; //ball 1 is moving up
-                    direction2 = -Math.PI/2 - direction2; //ball 2 is moving down
-                } else if (ball_x[i] > ball_x[j] && ball_y[i] < ball_y[j]) {
-                    //ball 1 is top right of ball 2, so ball 1 is moving down and left and ball 2 is moving up and right
-                    direction1 = Math.PI/2 - direction1; //ball 1 is moving down
-                    direction2 = Math.PI/2 - direction2; //ball 2 is moving up
-                } else if (ball_x[i] > ball_x[j] && ball_y[i] > ball_y[j]) {
-                    //ball 1 is bottom right of ball 2, so ball 1 is moving up and left and ball 2 is moving down and right
-                    direction1 = -Math.PI/2 - direction1; //ball 1 is moving up
-                    direction2 = -Math.PI/2 - direction2; //ball 2 is moving down
+                direction1 = Math.PI - direction1;
+                direction2 = Math.PI - direction2;
+                if (direction1 < 0) {
+                    direction1 += 2*Math.PI;
                 }
+                if (direction2 < 0) {
+                    direction2 += 2*Math.PI;
+                }
+                direction1 = direction1 % (2*Math.PI);
+                direction2 = direction2 % (2*Math.PI);
+                    
                 ball_direction[i] = direction1;
                 ball_direction[j] = direction2;
-                ball_x_speed[i] = nbhelper_getX(direction1);
-                ball_y_speed[i] = nbhelper_getY(direction1);
-                ball_x_speed[j] = nbhelper_getX(direction2);
-                ball_y_speed[j] = nbhelper_getY(direction2);
-                ball_x[i] += ball_x_speed[i];
-                ball_y[i] += ball_y_speed[i];
+                speedVector1 = nbhelper_getVector(nbhelper_getSpeed(ball_x_speed[i], ball_y_speed[i]), direction1);
+                speedVector2 = nbhelper_getVector(nbhelper_getSpeed(ball_x_speed[j], ball_y_speed[j]), direction2);
+                ball_x_speed[i] = speedVector1[0]*bounceFactor;
+                ball_y_speed[i] = speedVector1[1]*bounceFactor;
+                ball_x_speed[j] = speedVector2[0]*bounceFactor;
+                ball_y_speed[j] = speedVector2[1]*bounceFactor;
+                ball_x[i] += ball_x_speed[i]
+                ball_y[i] += ball_y_speed[i]
                 ball_x[j] += ball_x_speed[j];
                 ball_y[j] += ball_y_speed[j];            
             }
         }
     }
+}
+
+function nbhelper_vectorLength(x, y) {
+    return Math.sqrt(x * x + y * y);
+}
+
+function nbhelper_normalizeVector(x, y) {
+    var length = nbhelper_vectorLength(x, y);
+    return [x / length, y / length];
+}
+
+function nbhelper_getVector(length, angle) {
+    return [length * Math.cos(angle), length * Math.sin(angle)];
 }
 
 function nbhelper_getAngle(x1, y1, x2, y2) {
@@ -290,13 +306,6 @@ function nbhelper_rotateVector(x, y, angle) {
 function nbhelper_dotProduct(v1x, v1y, v2x, v2y) {
     return v1x * v2x + v1y * v2y;
 }
-
-// Helper function to calculate the magnitude of a vector
-function nbhelper_length(x, y) {
-    return Math.sqrt(x * x + y * y);
-}
-
-
 
 function checkWallCollision(i) {
     var offset = 2; // Change this value as needed
@@ -327,7 +336,7 @@ function checkWallCollision(i) {
 }
 function deleteBall(i) {
     //add points
-    player_lastSplitPoints = 72000 - ball_size[i]*1600 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 256000;
+    player_lastSplitPoints = 72000 - ball_size[i]*1600 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 2560;
     player_points += player_lastSplitPoints;
 
     //delete ball
@@ -655,10 +664,10 @@ function deleteBall(i) {
 
 function setLevelAttributes() {
     secondsToBigBall = 30*player_level;
-    speedCoeff0 -= 0.0001*player_level;
-    speedCoeff1 = 0.025*player_level;
-    directionCoeff0 -= 0.0001*player_level;
-    directionCoeff1 = 0.00032*player_level;
+    speedCoeff0 = 0.00001*player_level;
+    speedCoeff1 = 0.00125*player_level;
+    directionCoeff0 = 0.00001*player_level;
+    directionCoeff1 = 0.00016*player_level;
     activationGain = 0.156*player_level;
     learningRate = 0.00012*player_level;
 }
