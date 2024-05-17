@@ -46,9 +46,9 @@ var playLevelUpSound = false;
 var activationGain; //neural activation gain
 var learningRate; //backpropagation learning rate
 
-var speedCoeff0 = 0.0001; //total activation effect on speed
-var speedCoeff1  //individual activation effect on speed
-var directionCoeff0 = 0.0002 //total activation effect on direction
+var speedCoeff0; //total activation effect on speed
+var speedCoeff1;  //individual activation effect on speed
+var directionCoeff0; //total activation effect on direction
 var directionCoeff1; //individual activation effect on direction
 var DEBUG = false;
 
@@ -129,10 +129,6 @@ function nbhelper_getY(angle) {
     return Math.sin(angle);
 }
 
-function nbhelper_getSpeed(x, y) {
-    return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-}
-
 function getMousePos(evt) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -184,7 +180,7 @@ function moveBall(i) {
     }
 
     //update ball x and y speed
-    speedVector = nbhelper_getVector(nbhelper_getSpeed(ball_x_speed[i], ball_y_speed[i]), ball_direction[i]);
+    speedVector = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i]);
     ball_x_speed[i] = speedVector[0];
     ball_y_speed[i] = speedVector[1];
     
@@ -264,8 +260,8 @@ function checkCollision(i) {
                     
                 ball_direction[i] = direction1;
                 ball_direction[j] = direction2;
-                speedVector1 = nbhelper_getVector(nbhelper_getSpeed(ball_x_speed[i], ball_y_speed[i]), direction1);
-                speedVector2 = nbhelper_getVector(nbhelper_getSpeed(ball_x_speed[j], ball_y_speed[j]), direction2);
+                speedVector1 = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), direction1);
+                speedVector2 = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[j], ball_y_speed[j]), direction2);
                 ball_x_speed[i] = speedVector1[0]*bounceFactor;
                 ball_y_speed[i] = speedVector1[1]*bounceFactor;
                 ball_x_speed[j] = speedVector2[0]*bounceFactor;
@@ -311,26 +307,26 @@ function checkWallCollision(i) {
     var offset = 2; // Change this value as needed
     if (ball_x[i] < ball_size[i] / 2 + wallCollisionMargin) {
         ball_direction[i] = Math.PI - ball_direction[i];
-        ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
-        ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+        ball_x_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[0];
+        ball_y_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[1];
         ball_x[i] = ball_size[i] / 2 + wallCollisionMargin + offset;
     }
     if (ball_x[i] > canvas_width - ball_size[i] / 2 - wallCollisionMargin) {
         ball_direction[i] = Math.PI - ball_direction[i];
-        ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
-        ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+        ball_x_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[0];
+        ball_y_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[1];
         ball_x[i] = canvas_width - ball_size[i] / 2 - wallCollisionMargin - offset;
     }
     if (ball_y[i] < ball_size[i] / 2 + wallCollisionMargin) {
         ball_direction[i] = -ball_direction[i];
-        ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
-        ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+        ball_x_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[0];
+        ball_y_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[1];
         ball_y[i] = ball_size[i] / 2 + wallCollisionMargin + offset;
     }
     if (ball_y[i] > canvas_height - ball_size[i] / 2 - wallCollisionMargin) {
         ball_direction[i] = -ball_direction[i];
-        ball_x_speed[i] = nbhelper_getX(ball_direction[i]);
-        ball_y_speed[i] = nbhelper_getY(ball_direction[i]);
+        ball_x_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[0];
+        ball_y_speed[i] = nbhelper_getVector(nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]), ball_direction[i])[1];
         ball_y[i] = canvas_height - ball_size[i] / 2 - wallCollisionMargin - offset;
     }
 }
@@ -665,25 +661,16 @@ function deleteBall(i) {
 function setLevelAttributes() {
     secondsToBigBall = 30*player_level;
     speedCoeff0 = 0.00001*player_level;
-    speedCoeff1 = 0.00125*player_level;
-    directionCoeff0 = 0.00001*player_level;
-    directionCoeff1 = 0.00016*player_level;
-    activationGain = 0.156*player_level;
-    learningRate = 0.00012*player_level;
+    speedCoeff1 = 0.000125*player_level;
+    directionCoeff0 = 0.001*player_level;
+    directionCoeff1 = 0.016*player_level;
+    activationGain = 1.0;
+    learningRate = 0.001;
 }
 
 function splitBall(i) {
-    var oldSize = ball_size[i];
-    var oldColor = ball_color[i];
 
     if (ball_size[i] == 11) {
-        var dice = nbhelper_randomInt(-1, 1);
-        for (var j = 0; j < ball_amount; j++) {
-            ball_na[j] += 10.0 * dice;
-            for (var k = 0; k < ball_amount; k++) {
-                weights[j][k] += 0.3 * dice;
-            }
-        }
         deleteBall(i);
         addToTime(5000);
         displayBallAmount();
@@ -692,8 +679,26 @@ function splitBall(i) {
         displayTime();
         return;
     }
-    addBall(i, oldSize, oldColor);
-    addBall(i, oldSize, oldColor);
+    addBall(i, {size: ball_size[i],
+        color: ball_color[i],
+        x: ball_x[i],
+        y: ball_y[i],
+        xSpeed: ball_x_speed[i],
+        ySpeed: ball_y_speed[i],
+        direction: ball_direction[i],
+        na: ball_na[i],
+        weights: weights[i]});
+
+    addBall(i, {size: ball_size[i],
+        color: ball_color[i],
+        x: ball_x[i],
+        y: ball_y[i],
+        xSpeed: ball_x_speed[i],
+        ySpeed: ball_y_speed[i],
+        direction: ball_direction[i],
+        na: ball_na[i],
+        weights: weights[i]});
+
     deleteBall(i);
     displayBallAmount();
     displayLevel();
@@ -701,9 +706,8 @@ function splitBall(i) {
     displayTime();
 }
 
-function addBall(i, oldSize, oldColor) {
+function addBall(i, ballAttributes) {
     if (ball_amount > maxBalls) {
-        ball_amount == maxBalls;
         displayBallAmount();
         displayLevel();
         displayPoints();
@@ -712,38 +716,30 @@ function addBall(i, oldSize, oldColor) {
     }
 
     ball_amount += 1;
-    ball_na.push(3);
-    ball_x.push(ball_x[i]); // New ball is placed at the same x position as the old ball
-    ball_y.push(ball_y[i]); // New ball is placed at the same y position as the old ball
-    ball_x_speed.push(0);
-    ball_y_speed.push(0);
-    ball_direction.push(0);
-    var newSize = 0;
-    if (oldSize == 93) {
+    ball_na.push(ballAttributes.na);
+    ball_x.push(ballAttributes.x + nbhelper_randomInt(-10, 10));
+    ball_y.push(ballAttributes.y + nbhelper_randomInt(-10, 10));
+    ball_x_speed.push(ballAttributes.xSpeed);
+    ball_y_speed.push(ballAttributes.ySpeed);
+    ball_direction.push(ballAttributes.direction);
+    var newSize;
+    if (ballAttributes.size == 93) {
         newSize = 62;
-    } else if (oldSize == 62) {
+    } else if (ballAttributes.size == 62) {
         newSize = 42;
-    } else if (oldSize == 42) {
+    } else if (ballAttributes.size == 42) {
         newSize = 32;
-    } else if (oldSize == 32) {
+    } else if (ballAttributes.size == 32) {
         newSize = 26;
-    } else if (oldSize == 26) {
+    } else if (ballAttributes.size == 26) {
         newSize = 11;
+    } else {
+        newSize = ballAttributes.size; // Default case
     }
     ball_size.push(newSize);
-    ball_color.push(oldColor);
-    weights.push([]);
-    for (var j = 0; j < ball_amount; j++) {
-        weights[ball_amount-1].push(1.0);
-    }
-    for (var j = 0; j < ball_amount; j++) {
-        weights[j].push(1.0);
-    }
-    //move ball away from each other
-    ball_x[i] -= newSize + 10;
-    ball_x[ball_amount-1] += newSize + 10;
-    ball_y[i] -= newSize + 10;
-    ball_y[ball_amount-1] += newSize + 10;
+    ball_color.push(ballAttributes.color);
+    weights.push(ballAttributes.weights);
+
     displayBallAmount();
     displayLevel();
     displayPoints();
@@ -876,38 +872,6 @@ function sirRobinOut() {
     timeStopped = true;
     lane = 3; //sir robin
 }
-
-/* deprecated audio department
-let nbaudio_ballsplit;
-let nbaudio_scoregain;
-let nbaudio_timegain;
-let nbaudio_bgmusic;
-let nbaudio_TheBigBall;
-let nbaudio_levelUp;
-
-function nbaudio_playSample_ballsplit() {
-    nbaudio_ballsplit.play();
-}
-
-function nbaudio_playSample_scoregain() {
-    nbaudio_scoregain.play();
-}
-
-function nbaudio_playSample_timegain() {
-    nbaudio_timegain.play();
-}
-
-function nbaudio_playSample_TheBigBall() {
-    nbaudio_TheBigBall.play();
-}
-
-function nbaudio_playSample_levelUp() {
-    nbaudio_levelUp.play();
-}
-
-function nbaudio_playSample_bgmusic() {
-    nbaudio_bgmusic.play();
-}*/
 
 //full screen
 function goFullScreen() {

@@ -352,7 +352,7 @@
                                 }
                                 if (distance < ball_size[i] / 2 + hitMargin) {
                                     hit = true;
-                                    hitBallSpeed = nbhelper_getSpeed(ball_x_speed[i], ball_y_speed[i]);
+                                    hitBallSpeed = nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]);
                                     splitBall(i);
                                     if (playLevelUpSound){
                                         playAudio(levelUpUrl);
