@@ -31,6 +31,7 @@ var gameOn = false;
 var theBigBall = false;
 var secondsToBigBall = 30;
 var collisionMargin = 5;
+var hitMargin = 0;
 var bounceFactor = 1.0;
 var wallCollisionMargin = 5;
 var maxBalls = 4;
@@ -151,6 +152,7 @@ function moveBall(i) {
     for (var j = 0; j < ball_amount; j++) {
         total_activation += Math.abs(ball_na[j]);
     }
+
     //avg over ball amount
     total_activation = total_activation / ball_amount;
 
@@ -164,8 +166,10 @@ function moveBall(i) {
     }
 
     //modulate ball speed with neural activation
-    ball_x_speed[i] += (total_activation * speedCoeff0 + Math.abs(ball_na[i]) * speedCoeff1) * signx;
-    ball_y_speed[i] += (total_activation * speedCoeff0 + Math.abs(ball_na[i]) * speedCoeff1) * signy;
+    var speedVectorLength = nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]);
+    ball_x_speed[i] += speedVectorLength * total_activation * speedCoeff0 + Math.abs(ball_na[i]) * speedCoeff1;
+    ball_y_speed[i] += speedVectorLength * total_activation * speedCoeff0 + Math.abs(ball_na[i]) * speedCoeff1;
+    
 
     ball_x[i] += ball_x_speed[i]
     ball_y[i] += ball_y_speed[i]
@@ -669,7 +673,8 @@ function setLevelAttributes() {
 }
 
 function splitBall(i) {
-
+    console.log("Splitting ball " + i);
+    console.log("Ball size is " + ball_size[i]);
     if (ball_size[i] == 11) {
         deleteBall(i);
         addToTime(5000);
@@ -677,6 +682,7 @@ function splitBall(i) {
         displayLevel();
         displayPoints();
         displayTime();
+        console.log("Ball size is 11, destroying ball");
         return;
     }
     addBall(i, {size: ball_size[i],
@@ -689,6 +695,8 @@ function splitBall(i) {
         na: ball_na[i],
         weights: weights[i]});
 
+    console.log("Added ball with attributes: size: " + ball_size[i] + " color: " + ball_color[i] + " x:  " + ball_x[i] + " y: " + ball_y[i] + " x speed: " + ball_x_speed[i] + " y speed: " + ball_y_speed[i] + " direction: " + ball_direction[i] + " neural activation: " + ball_na[i] + " weigths: " + weights[i]);
+
     addBall(i, {size: ball_size[i],
         color: ball_color[i],
         x: ball_x[i],
@@ -699,7 +707,11 @@ function splitBall(i) {
         na: ball_na[i],
         weights: weights[i]});
 
+    console.log("Added ball with attributes: size: " + ball_size[i] + " color: " + ball_color[i] + " x:  " + ball_x[i] + " y: " + ball_y[i] + " x speed: " + ball_x_speed[i] + " y speed: " + ball_y_speed[i] + " direction: " + ball_direction[i] + " neural activation: " + ball_na[i] + " weigths: " + weights[i]);
+
     deleteBall(i);
+    console.log("Deleted ball " + i);
+
     displayBallAmount();
     displayLevel();
     displayPoints();
@@ -717,28 +729,39 @@ function addBall(i, ballAttributes) {
 
     ball_amount += 1;
     ball_na.push(ballAttributes.na);
-    ball_x.push(ballAttributes.x + nbhelper_randomInt(-10, 10));
-    ball_y.push(ballAttributes.y + nbhelper_randomInt(-10, 10));
+    ball_x.push(ballAttributes.x);
+    ball_y.push(ballAttributes.y);
     ball_x_speed.push(ballAttributes.xSpeed);
     ball_y_speed.push(ballAttributes.ySpeed);
     ball_direction.push(ballAttributes.direction);
     var newSize;
     if (ballAttributes.size == 93) {
         newSize = 62;
+        console.log("Ball size is 93, setting new size to 62");
     } else if (ballAttributes.size == 62) {
         newSize = 42;
+        console.log("Ball size is 62, setting new size to 42");
     } else if (ballAttributes.size == 42) {
         newSize = 32;
+        console.log("Ball size is 42, setting new size to 32");
     } else if (ballAttributes.size == 32) {
         newSize = 26;
+        console.log("Ball size is 32, setting new size to 26");
     } else if (ballAttributes.size == 26) {
         newSize = 11;
+        console.log("Ball size is 26, setting new size to 11");
     } else {
         newSize = ballAttributes.size; // Default case
+        console.log("Ball size is " + ballAttributes.size + ", setting new size to " + ballAttributes.size);
     }
     ball_size.push(newSize);
-    ball_color.push(ballAttributes.color);
-    weights.push(ballAttributes.weights);
+    ball_color.push(ballAttributes.color || 255);
+
+    var newWeights = [];
+    for (var i = 0; i < ball_amount; i++) {
+        newWeights.push(1.0);
+    }
+    weights.push(newWeights);
 
     displayBallAmount();
     displayLevel();

@@ -88,33 +88,12 @@
                     .catch(error => console.error('Error loading audio:', error));
             }
 
-            
-            /*deprecated audio stuff
-
-            function preload() {
-                nbaudio_ballsplit = loadSound('ballsplit02.mp3');
-                nbaudio_scoregain = loadSound('scoregain02.mp3');
-                nbaudio_timegain = loadSound('timegain02.mp3');
-                nbaudio_bgmusic = loadSound('bgmusic02.mp3');
-                nbaudio_TheBigBall = loadSound('TheBigBall02.mp3');
-                nbaudio_levelUp = loadSound('levelUp02.mp3');
-                //no loop
-                nbaudio_levelUp.setLoop(false);
-                nbaudio_ballsplit.setLoop(false);
-                nbaudio_scoregain.setLoop(false);
-                nbaudio_timegain.setLoop(false);
-                nbaudio_bgmusic.setLoop(false);
-                nbaudio_TheBigBall.setLoop(false);
-            }
-
-            */
 
 
             //game stuff
             let cnv, cnvElt;
             var scoreText;
             var lastScore = 0;
-            var hitMargin = 7; //mouse hit margin
             var scoreTextDisappearanceCountDown = 93;
             var levelUpText = false;
             var playLevelUpSound = false;
