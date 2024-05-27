@@ -343,6 +343,7 @@ function checkWallCollision(i) {
         ball_y[i] = canvas_height - ball_size[i] / 2 - wallCollisionMargin - offset;
     }
 }
+
 function deleteBall(i) {
     //add points
     player_lastSplitPoints = 72000 - ball_size[i]*1600 + Math.abs(ball_x_speed[i]) * Math.abs(ball_y_speed[i]) * 2560;
@@ -350,6 +351,7 @@ function deleteBall(i) {
 
     //delete ball
     if (ball_amount > 0) {ball_amount -= 1;}
+    console.log("Deleting ball " + i);
     ball_na.splice(i, 1);
     ball_x.splice(i, 1);
     ball_y.splice(i, 1);
@@ -367,7 +369,7 @@ function deleteBall(i) {
     displayTime();
     displayLevel();
     displayBallAmount();
-    
+
 
     if (ball_amount == 0 && player_level == 1) {
         levelUpText = true;
@@ -700,6 +702,17 @@ function splitBall(i) {
         return;
     }
 
+    // Store the attributes of the ball being split
+    var ballAttributes = {
+        size: ball_size[i],
+        color: ball_color[i],
+        xSpeed: ball_x_speed[i],
+        ySpeed: ball_y_speed[i],
+        direction: ball_direction[i],
+        na: ball_na[i],
+        weights: weights[i]
+    };
+
     // calculate new x and y for the new balls
     var angle1 = Math.random() * 2 * Math.PI;
     var angle2 = Math.random() * 2 * Math.PI;
@@ -710,33 +723,20 @@ function splitBall(i) {
     var x2 = ball_x[i] + vector2[0];
     var y2 = ball_y[i] + vector2[1];
 
+    console.log("Splitting ball " + i + " into balls at " + x1 + ", " + y1 + " and " + x2 + ", " + y2);
+
     deleteBall(i);
 
-    addBall({size: ball_size[i],
-        color: ball_color[i],
-        x: x1,
-        y: y1,
-        xSpeed: ball_x_speed[i],
-        ySpeed: ball_y_speed[i],
-        direction: ball_direction[i],
-        na: ball_na[i],
-        weights: weights[i]});
-                                
-    addBall({size: ball_size[i],
-        color: ball_color[i],
-        x: x2,
-        y: y2,
-        xSpeed: ball_x_speed[i],
-        ySpeed: ball_y_speed[i],
-        direction: ball_direction[i],
-        na: ball_na[i],
-        weights: weights[i]});
+    // Use the stored attributes when adding the new balls
+    addBall({...ballAttributes, x: x1, y: y1});
+    addBall({...ballAttributes, x: x2, y: y2});
 
     displayBallAmount();
     displayLevel();
     displayPoints();
     displayTime();
 }
+
 
 function addBall(ballAttributes) {
     if (ball_amount > maxBalls) {
