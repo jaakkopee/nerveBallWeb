@@ -36,6 +36,12 @@ function Ball(x, y, radiusIndex, color, target){
         this.weights.push(Math.random()*2-1);
     }
 
+    this.removeInput = function(input){
+        var index = this.inputs.indexOf(input);
+        this.inputs.splice(index, 1);
+        this.weights.splice(index, 1);
+    }
+
     this.update = function(){
         //first calculate the weighted sum of inputs. A basic perceptron.
         for (var i = 0; i < this.inputs.length; i++){
@@ -169,11 +175,26 @@ function splitBall(index){
     //create two new balls
     newBall1 = new Ball(ball.x, ball.y, ball.radiusIndex+1, ball.color, Math.random()*10-5);
     newBall2 = new Ball(ball.x, ball.y, ball.radiusIndex+1, ball.color, Math.random()*10-5);
+
+    //remove the old ball
+    balls.splice(index, 1);
+    
+    //remove inputs from other balls
+    for (var i = 0; i < balls.length; i++){
+        balls[i].removeInput(ball);
+    }
+    
     //add the inputs
     newBall1.addInput(newBall2);
     newBall2.addInput(newBall1);
-    //remove the old ball
-    balls.splice(index, 1);
+
+    for (var i = 0; i < balls.length; i++){
+        balls[i].addInput(newBall1);
+        balls[i].addInput(newBall2);
+        newBall1.addInput(balls[i]);
+        newBall2.addInput(balls[i]);
+    }
+
     //add the new balls
     balls.push(newBall1);
     balls.push(newBall2);
