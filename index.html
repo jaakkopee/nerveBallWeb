@@ -1,72 +1,207 @@
+<!--
+    nerveBall is an online ball game in which the trajectories of the balls are modulated by a neural network.
+    Copyright (C) 2024 Jaakko Prättälä
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>nerveBall</title>
-        <link rel="stylesheet" type="text/css" href="nerveballweb.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="nbwstyle.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.js"></script>
+        <script src="nerveballweb.js"></script>
     </head>
     <body>
-        <div id="main" class="welcome">
-            <h1>nerveBall</h1>
-            <p>
-                Welcome to nerveBall Web Site. nerveBall is an online ball game in which the trajectories of the balls are modulated by a neural network. nerveBall is under development and will be released in end of may 2024.
-                In the meantime, check out nerveBall repo on <a href="https://github.com/jaakkopee/nerveBallWeb">GitHub</a>.
-            </p>
-            <p>    
-                This site gathers no data, uses no cookies and has no ads. nerveBall is free software, licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3</a>.
-            </p>
-            <p>
-                Click to split the ball and gain points.
-                The smaller the ball, the more points you get.
-                The faster the ball, the more points you get.
-                Frequently The Big Ball appears
-                and you lose points.
-                The smallest balls do not split, but disappear and you gain play time.
-                The game has 10 levels that have different maximum ball amounts on playfield (multiples of 4).
-                The game ends when you run out of time or all balls are gone and levels are completed.
-            </p>
-        </div>
-        <button id="start" class="start">coming soon...</button>
-        <div id="license" class="license">nerveBall by Jaakko Prättälä 2024. <a href="SoftwareAndMusicLicenses.html">See software and audio licenses.</a></div>
-        <div id="bsa" class="bsa"></div>
-        <div id="dmbgoyn" class="dmbgoyn"></div>
-        <div id="copyright" class="copyright">
-            <p>
-                nerveBall by Jaakko Prättälä 2024. Licensed under GPL v3.
-            </p>
-        </div>
         <script type="text/javascript">
-            setInterval(function() {
-                //modulate background color blue channel with a sine wave
-                document.body.style.backgroundColor = "rgb(0, 0, " + Math.round(64 * Math.abs(Math.sin(Date.now() / 1000))) + ")";
-            }, 10);
-            var bsa = document.getElementById("bsa");
-            bsa.innerHTML = "Nerve Wrecking, Ball Splitting Action!";
-            bsa.style.position = "fixed";
-            bsa.style.bottom = "0";
-            bsa.style.right = "0";
-            bsa.style.fontSize = "24px";
 
-            var dmbgoyn = document.getElementById("dmbgoyn");
-            dmbgoyn.innerHTML = "Do My Balls Get On Your Nerves?";
-            dmbgoyn.style.position = "fixed";
-            dmbgoyn.style.bottom = "0";
-            dmbgoyn.style.left = "0";
-            dmbgoyn.style.fontSize = "24px";
+            // some global variables
+            var levelTextR = 0;
+            var levelTextG = 0;
+            var levelTextB = 0;
+            var introScreen = true;
 
-            setInterval(function() {
-                //modulate text color red, green and blue channels with sine waves
-                bsa.style.color = "rgb(" + Math.round(255 - 255 * Math.abs(Math.sin(Date.now() / 1000))) + ", " + Math.round(255 - 255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))) + ", " + Math.round(255 - 255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))) + ")";
-                //modulate vertical position with sine wave
-                bsa.style.bottom = Math.round(100 * Math.abs(Math.sin(Date.now() / 1024))) + "px";
-            }, 10);
-            setInterval(function() {
-                //modulate text color red, green and blue channels with sine waves
-                dmbgoyn.style.color = "rgb(" + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))) + ", " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))) + ", " + Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))) + ")";
-                //modulate vertical position with sine wave
-                dmbgoyn.style.bottom = Math.round(100 * Math.abs(Math.sin(Date.now() / 512))) + "px";
-            }, 10);
+            //audio stuff
+            let audioContext;
+            let scoregainSound;
+            const scoregainUrl = 'scoregain02.mp3';
+            let timegainSound;
+            const timegainUrl = 'timegain02.mp3';
+            let ballsplitSound;
+            const ballsplitUrl = 'ballsplit02.mp3';
+            let bgmusicSound;
+            const bgmusicUrl = 'bgmusic02.mp3';
+            let TheBigBallSound;
+            const TheBigBallUrl = 'TheBigBall02.mp3';
+            let levelUpSound;
+            const levelUpUrl = 'levelUp02.mp3';
+
+            function initAudio() {
+                // Create an audio context
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Load the background music
+                bgmusicSound = loadAudio(bgmusicUrl);
+                bgmusicSound.then(source => {
+                    source.loop = true;
+                    source.start();
+                });
+
+            }
+
+            function loadAudio(url) {
+                return fetch(url)
+                    .then(response => response.arrayBuffer())
+                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                    .then(audioBuffer => {
+                        const source = audioContext.createBufferSource();
+                        source.buffer = audioBuffer;
+                        source.connect(audioContext.destination);
+                        return source;
+                    })
+                    .catch(error => console.error('Error loading audio:', error));
+            }
+
+            function playAudio(url) {
+                fetch(url)
+                    .then(response => response.arrayBuffer())
+                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+                    .then(audioBuffer => {
+                        const source = audioContext.createBufferSource();
+                        source.buffer = audioBuffer;
+                        source.connect(audioContext.destination);
+                        source.start();
+                    })
+                    .catch(error => console.error('Error loading audio:', error));
+            }
+
+
+            function checkMouse(){
+                for (var i = 0; i < balls.length; i++){
+                    if (dist(mouseX, mouseY, balls[i].x, balls[i].y) < balls[i].radius+7){
+                        splitBall(i);
+                        if (timeGain){
+                            playAudio(timegainUrl);
+                            playAudio(ballsplitUrl)
+                            timeGain = false;
+                        }
+                        else{
+                            playAudio(ballsplitUrl);
+                        }
+                        if (balls.length <=0){
+                            levelUp();
+                        }
+                    }
+                }
+            }
+            function setup(){
+                cnv = createCanvas(cnvWidth, cnvHeight);
+                cnv.mouseClicked(checkMouse);
+                loop();
+                setTimeout(function(){
+                    showLevelUpText = false;
+                }, 10000);
+
+            }
+
+            function draw(){
+                if(introScreen){
+                    background(0);
+                    fill(0, 120, 170);
+                    textSize(20);
+                    text("Welcome to nerveBall!", 200, 200);
+                    text("Click to start the game.", 200, 240);
+                    if (mouseIsPressed){
+                        introScreen = false;
+                        initAudio();
+                        player.start();
+                    }
+                    return;
+                }
+
+                //handle keyboard input
+                //enter key is a cheat code to "win" the game
+                if (keyIsDown(ENTER)){
+                    playerWon = true;
+                    player.stop();
+                }
+
+                //space key is a cheat code to "lose" the game
+                if (keyIsDown(32)){
+                    playerRanOutOfTime = true;
+                    player.stop();
+                    player.time = 0;
+                }
+
+                if (playerRanOutOfTime){
+                    background(0);
+                    fill(0, 120, 170);
+                    textSize(20);
+                    text("Game over, you ran out of time!", 200, 200);
+                    text("Score: " + Math.round(player.score), 200, 220);
+                    return;
+                }
+
+                if (playerWon){
+                    background(0);
+                    fill(0, 120, 170);
+                    textSize(20);
+                    text("Game over, you won!", 200, 200);
+                    text("Score: " + Math.round(player.score), 200, 220);
+                    text("Time bonus: " + player.time, 200, 240);
+                    var totalScore = Math.round(player.score) + player.time;
+                    text("Total score: " + totalScore, 200, 260);
+                    return;
+                }
+                background(0);
+
+                fill(0, 120, 170);
+                textSize(16);
+                text("Score: " + Math.round(player.score) +"("+Math.round(player.lastSplitScore)+")", 10, 20);
+                text("Level: " + level, 10, 40);
+                text("Balls: " + balls.length + " / " + maxBalls, 10, 60);
+                text("Speed limit: " + maxSpeed, 10, 80);
+                text("Time: " + player.time, 10, 100);
+
+
+                if (showLevelUpText){
+                    levelTextR = levelTextR + 20;
+                    levelTextG = levelTextG + 40;
+                    levelTextB = levelTextB + 80;
+                    levelTextR = levelTextR % 255;
+                    levelTextG = levelTextG % 255;
+                    levelTextB = levelTextB % 255;
+                    fill(levelTextR, levelTextG, levelTextB);
+                    textSize(30);
+                    text("Level "+level, cnvWidth/2-50, cnvHeight/2);
+                }
+
+                if (playLevelUpSound){
+                    playAudio(levelUpUrl);
+                    playLevelUpSound = false;
+                }
+
+                for (let i = 0; i < balls.length; i++){
+                    balls[i].update();
+                    fill(balls[i].na*255, 255-balls[i].na*127, balls[i].na*160);
+                    ellipse(balls[i].x, balls[i].y, balls[i].radius*2, balls[i].radius*2);
+                }
+            }
+
         </script>
     </body>
 </html>

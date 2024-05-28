@@ -6,11 +6,14 @@ var radiusTable = [48, 36, 24, 18, 12, 9, 6];
 var level = 1;
 var maxBalls = 4;
 var maxSpeed = 3;
-var gameOn = true;
+var playerWon = false;
 var cnvWidth = 800;
 var cnvHeight = 800;
 var balls = [];
 var showLevelUpText = true;
+var playLevelUpSound = false;
+var playerRanOutOfTime = false;
+var timeGain = false;
 
 function Ball(x, y, radiusIndex, color, target){
     this.x = x;
@@ -64,10 +67,6 @@ function Ball(x, y, radiusIndex, color, target){
         this.speedX = Math.min(Math.max(this.speedX, -maxSpeed), maxSpeed);
         this.speedY = Math.min(Math.max(this.speedY, -maxSpeed), maxSpeed);
 
-        //and finally update the position
-        this.x += this.speedX;
-        this.y += this.speedY;
-
         //check for collisions with walls
         if (this.x > width-this.radius || this.x < this.radius){
             this.speedX *= -1;
@@ -106,21 +105,32 @@ function Ball(x, y, radiusIndex, color, target){
             }
 
             var overlap = Math.sqrt(Math.pow(this.x-balls[ii].x, 2) + Math.pow(this.y-balls[ii].y, 2));
-            if (overlap < this.radius + balls[ii].radius){
-                var angle = Math.atan2(this.y-balls[ii].y, this.x-balls[ii].x);
+            if (overlap <= this.radius + balls[ii].radius){
+                var angle = Math.atan2(this.y-balls[ii].y, this.x-balls[ii].x); 
                 this.speedX += Math.cos(angle);
                 this.speedY += Math.sin(angle);
                 balls[ii].speedX -= Math.cos(angle);
                 balls[ii].speedY -= Math.sin(angle);
             }
-        }    
-    }
+        }
+        //and finally update the position
+        this.x += this.speedX;
+        this.y += this.speedY;    
+    }//update
 } // Ball
 
 function levelUp(){
+
+    playLevelUpSound = true;
     level++;
+    if (level > 10){
+        playerWon = true;
+        player.stop();
+        return;
+    }
+
     maxBalls = level*4;
-    maxSpeed = 3+3*(level-1);
+    maxSpeed = 3+0.75*(level-1);
     showLevelUpText = true;
     setTimeout(function(){
         showLevelUpText = false;
@@ -142,9 +152,15 @@ function splitBall(index){
 
     var ball = balls[index];
 
+    //calculate the score
+    var ballSpeed = Math.sqrt(ball.speedX*ball.speedX + ball.speedY*ball.speedY);
+    player.updateScore(ballSpeed*1000 - ball.radius*10);
+
     //if the ball is too small, just remove it
     if (ball.radiusIndex >= radiusTable.length-1){
         balls.splice(index, 1);
+        player.time += 500;//add 5 seconds
+        timeGain = true;
         return;
     }
 
@@ -163,6 +179,33 @@ function splitBall(index){
     balls.push(newBall2);
 }
 
+function Player(){
+    this.score = 0;
+    this.lastSplitScore = 0;
+    this.time = 12000; //2 minutes for starters
+    var tcInterval;
+    this.start = function(){
+        tcInterval = setInterval(function(){
+            player.time--;
+            if (player.time <= 0){
+                playerRanOutOfTime = true;
+                this.stop();
+            }
+        }, 10);
+    }
+
+    this.stop = function(){
+        clearInterval(tcInterval);
+    }
+
+    this.updateScore = function(newScore){
+        this.lastSplitScore = newScore;
+        this.score += newScore;
+    }
+}
+
+// create player
+var player = new Player();
 // create a ball into the balls-array
 balls.push(new Ball(cnvWidth/2, cnvHeight/2, 0, 0, Math.random()*10-5));
 // the first ball has no inputs
