@@ -20,388 +20,57 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>nerveBall</title>
-        <meta name="viewport" content="width=device-width, initial-scale=0.9">
-        <link rel="stylesheet" type="text/css" href="nerveballweb.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="nbwstyle.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.js"></script>
-        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/addons/p5.sound.min.js"></script-->
         <script src="nerveballweb.js"></script>
     </head>
-    
-    <body> 
-
+    <body>
         <script type="text/javascript">
-
-
-            //audio stuff
-            let audioContext;
-            let scoregainSound;
-            const scoregainUrl = 'scoregain02.mp3';
-            let timegainSound;
-            const timegainUrl = 'timegain02.mp3';
-            let ballsplitSound;
-            const ballsplitUrl = 'ballsplit02.mp3';
-            let bgmusicSound;
-            const bgmusicUrl = 'bgmusic02.mp3';
-            let TheBigBallSound;
-            const TheBigBallUrl = 'TheBigBall02.mp3';
-            let levelUpSound;
-            const levelUpUrl = 'levelUp02.mp3';
-
-            function initAudio() {
-                // Create an audio context
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-                // Load the background music
-                bgmusicSound = loadAudio(bgmusicUrl);
-                bgmusicSound.then(source => {
-                    source.loop = true;
-                    source.start();
-                });
-
-            }
-
-            function loadAudio(url) {
-                return fetch(url)
-                    .then(response => response.arrayBuffer())
-                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-                    .then(audioBuffer => {
-                        const source = audioContext.createBufferSource();
-                        source.buffer = audioBuffer;
-                        source.connect(audioContext.destination);
-                        return source;
-                    })
-                    .catch(error => console.error('Error loading audio:', error));
-            }
-
-            function playAudio(url) {
-                fetch(url)
-                    .then(response => response.arrayBuffer())
-                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-                    .then(audioBuffer => {
-                        const source = audioContext.createBufferSource();
-                        source.buffer = audioBuffer;
-                        source.connect(audioContext.destination);
-                        source.start();
-                    })
-                    .catch(error => console.error('Error loading audio:', error));
-            }
-
-
-
-            //game stuff
-            let cnv, cnvElt;
-            var scoreText;
-            var lastScore = 0;
-            var scoreTextDisappearanceCountDown = 93;
-            var levelUpText = false;
-            var playLevelUpSound = false;
-
-            var body = document.getElementsByTagName("body")[0];
-            body.style.backgroundColor = "rgb(0, 0, 0)";
-            //timed loop for changing background color of the body
-            setInterval(function() {
-                //modulate background color blue channel with a sine wave
-                body.style.backgroundColor = "rgb(0, 0, " + Math.round(64 * Math.abs(Math.sin(Date.now() / 1000))) + ")";
-            }, 10);
-
-            function setup() {                
-                cnv = createCanvas(800, 800);
-                cnvElt = cnv.elt;
-                cnvElt.id = "nerveball";
-                cnvElt.style.display = "block";
-                cnvElt.style.margin = "auto";
-                background(0);
-                fill(255);
-                frameRate(60);
-            }
-
-            //variables for score notification
-            var hit = false;
-            var hitBallSpeed = 0;
-            var hitX = 0;
-            var hitY = 0;
-            var r = 255;
-            var g = 255;
-            var b = 255;
-
-            function draw() {
-                if (lane == 4){
-                    //draw intro screen
-                    background(0);
-                    var fontSize = 32 * Math.abs(Math.sin(Date.now() / 1000));
-                    textSize(fontSize); // Set the text size to fontSize
-
-                    var textX = (width - textWidth('Welcome to nerveBall')) / 2; // Center horizontally
-                    var textY = (height + fontSize) / 2; // Center vertically
-
-                    fill(Math.round(255 * Math.abs(Math.sin(Date.now() / 1000))), Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI / 2))), Math.round(255 * Math.abs(Math.sin(Date.now() / 1000 + Math.PI))));
-                    text("Welcome to nerveBall!", textX, textY);
-                    text("Click to start the game.", textX, textY+30);
-                    textSize(20);
-                    text("Level one, maximum ball amount: " + maxBalls, 30, 60);
-                    text("Network total activation effect on ball speed: " + speedCoeff0, 30, 90);
-                    text("Individual neuron activation effect on ball speed: " + speedCoeff1, 30, 120);
-                    text("Network total activation effect on ball direction: " + directionCoeff0, 30, 150);
-                    text("Individual neuron activation effect on ball direction: " + directionCoeff1, 30, 180);
-                    text("Neural activation gain: " + activationGain, 30, 210);
-                    text("Backpropagation learning rate: " + learningRate, 30, 240);
-
-                    //wait for mouse click
-                    if (mouseIsPressed) {
-                        initAudio();
-                        lane = 0;
-                    }
-                } else if (lane == 3){
-                    gameOn = false;
-                    timeStopped = true;
-                    
-                    //change quit button text to 'reload'
-                    var sirrobin = document.getElementById("sirrobin");
-                    sirrobin.innerHTML = "Reload";
-                    //set quit button onclick to reload
-                    sirrobin.onclick = function() {
-                        document.location.reload();
-                    };
-
-                    background(0);
-                    fill(10, 255, 10);
-                    textSize(32);
-                    text("Sir Robin ran away.", 130, 30);
-                    var timeBonus = Math.round(player_time);
-                    var score = player_points + timeBonus;
-                    text("Points: " + player_points, 200, 60);
-                    text("Time bonus: " + timeBonus, 200, 90);
-                    text("Score: " + score, 200, 120);
-
-                    if (player_points >= 0){player_points-=10000;}
-                    if (player_time >= 0){player_time-=10000;}
-
-                    //wait for space key
-                    if (keyIsDown(32)) {
-                        document.location.reload();
-                    }
-                } else if (lane==2){
-                    timeStopped = true;
-                    gameOn = false;
-                    //change quit button text to 'reload'
-                    var sirrobin = document.getElementById("sirrobin");
-                    sirrobin.innerHTML = "Reload";
-                    //set quit button onclick to reload
-                    sirrobin.onclick = function() {
-                        document.location.reload();
-                    };
-                    //handle game over
-                    background(0);
-                    //delete balls
-                    ball_amount = 0;
-                    //draw text
-                    fill(10, 255, 10);
-                    textSize(32);
-                    text("Game Over, Balls Destroyed.", 100, 30);
-                    //
-                    var timeBonus = Math.round(player_time);
-                    var score = player_points + timeBonus;
-                    text("Points: " + player_points, 200, 60);
-                    text("Time bonus: " + timeBonus, 200, 90);
-                    text("Score: " + score, 200, 120);
-                    //wait for space key
-                    if (keyIsDown(32)) {
-                        document.location.reload();
-                    }
-                } else if (lane==1){
-                    timeStopped = true;
-                    gameOn = false;
-                    //change quit button text to 'reload'
-                    var sirrobin = document.getElementById("sirrobin");
-                    sirrobin.innerHTML = "Reload";
-                    //set quit button onclick to reload
-                    sirrobin.onclick = function() {
-                        document.location.reload();
-                    };
-                    //handle game over
-                    background(0);
-                    //delete balls
-                    ball_amount = 0;
-                    //draw text
-                    fill(10, 255, 10);
-                    textSize(32);
-                    text("Game Over, Out of Time.", 100, 30);
-                    //
-                    var timeBonus = Math.round(player_time);
-                    var score = player_points + timeBonus;
-                    text("Points: " + player_points, 200, 60);
-                    text("Time bonus: " + timeBonus, 200, 90);
-                    text("Score: " + score, 200, 120);
-
-                    //wait for space key
-                    if (keyIsDown(32)) {
-                        document.location.reload();
-                    }
-                } else if (lane == 0){
-                    //DEBUG and TESTING
-                    //wait for number 1 or 2 key for lane selection
-                    if (keyIsDown(49)) {
-                        lane = 1;
-                    } else if (keyIsDown(50)) {
-                        lane = 2;
-                    }
-
-                    displayLotsOfText();
-
-                    if (theBigBall){playAudio(TheBigBallUrl); theBigBall = false;}
-
-                    gameOn = true;
-                    //clear canvas
-                    background(0);
-
-                    if (levelUpText){
-                        fill(0, 200, 255);
-                        textSize(26);
-                        text("Level Up!", 200, 30);
-                        text("Entered level "+player_level, 200, 60);
-                        textSize(18);
-                        text("New maximum ball amount: "+maxBalls, 200, 90);
-                        text("Network total activation effect on ball speed: " + speedCoeff0, 200, 120);
-                        text("Individual neuron activation effect on ball speed: " + speedCoeff1, 200, 150);
-                        text("Network total activation effect on ball direction: " + directionCoeff0, 200, 180);
-                        text("Individual neuron activation effect on ball direction: " + directionCoeff1, 200, 210);
-                        text("Neural activation gain: " + activationGain, 200, 240);
-                        text("Backpropagation learning rate: " + learningRate, 200, 270);
-                    }
-
-                    if (hit){
-                        fill(r, g, b);
-                        textSize(32);
-                        text(lastScore, hitX, hitY);
-                        /*fill(0, 200, 128)
-                        textSize(20);
-                        text("Speed: "+hitBallSpeed, hitX, hitY+30);*/
-                    }
-                    //update ball neural activations
-                    countActivations();
-
-                    //backpropagate
-                    for (var i = 0; i < ball_amount; i++) {
-                        backPropagate(i);
-                    }
-
-                    //move balls
-                    for (var i = 0; i < ball_amount; i++) {
-                        moveBall(i);
-                    }
-                    
-                    //draw balls
-                    for (var i = 0; i < ball_amount; i++) {
-                        var ballR = 255 - ball_size[i]*5;
-                        var ballG = 255 - ball_size[i]*8;
-                        var ballB = Math.abs(Math.round(ball_na[i]/32*255));
-
-                        if (ballR < 0) {ballR = 255;}
-                        if (ballG < 0) {ballG = 255;}
-                        if (ballB < 0) {ballB = 255;}
-                        fill(ballR, ballG, ballB);
-                        ellipse(ball_x[i], ball_y[i], ball_size[i], ball_size[i]);
-                        if (hit){
-                            fill(r, g, b);
-                            textSize(32);
-                            text(lastScore, hitX, hitY)
-                        }
-                    }
-
-                   if (DEBUG){
-                        //draw neural activations
-                        fill(0, 255, 0)
-                        textSize(20);
-                        for (var i = 0; i < ball_amount; i++) {
-                            text(ball_na[i], ball_x[i], ball_y[i]);
-                        }
-                    }
-
-                    //handle mouse input
-                    if (mouseIsPressed) {
-                        if (ball_amount == 0 && lane == 0 && level == 10){
-                            lane = 2; //game over, player wins
-                        } else {
-                            for (var i = 0; i < ball_amount; i++) {
-                                var distance = dist(mouseX, mouseY, ball_x[i], ball_y[i]);
-                                if (ball_size[i] == 11 && distance < ball_size[i] / 2 + hitMargin) {
-                                    playAudio(timegainUrl);
-                                }
-                                if (distance < ball_size[i] / 2 + hitMargin) {
-                                    hit = true;
-                                    hitBallSpeed = nbhelper_vectorLength(ball_x_speed[i], ball_y_speed[i]);
-                                    splitBall(i);
-                                    if (playLevelUpSound){
-                                        playAudio(levelUpUrl);
-                                        playLevelUpSound = false;
-                                    }
-                                    r = 255;
-                                    g = 255;
-                                    b = 255;
-                                    hitX = mouseX;
-                                    hitY = mouseY;
-                                    lastScore = Math.round(player_lastSplitPoints);
-
-                                    setTimeout(function(){
-                                        hit = false;
-                                    }, 2000);
-
-                                    var colorInterval = setInterval(function(){
-                                        if (hit){
-                                            r -= 10;
-                                            g -= 20;
-                                            b -= 30;
-                                            if (r < 0) {r = 255;}
-                                            if (g < 0) {g = 255;}
-                                            if (b < 0) {b = 255;}
-                                        } else {
-                                            clearInterval(colorInterval);
-                                        }
-                                    }, 100);
-
-                                    if (ball_amount == 0 && lane == 0 && level == 10){
-                                        lane = 2; //game over, player wins
-                                    }
-                                    // play sound
-                                    playAudio(ballsplitUrl);
-                                    
-                                    if (player_lastSplitPoints > 0){
-                                        var scoreSoundPlayTimes = player_lastSplitPoints / 5000000;
-                                        if (scoreSoundPlayTimes <= 0){
-                                            scoreSoundPlayTimes = 0;
-                                        }
-                                        var scoreCounter = setInterval(function() {
-                                            if (scoreSoundPlayTimes > 0){
-                                                playAudio(scoregainUrl);
-                                                scoreSoundPlayTimes--;
-                                            } else {
-                                                clearInterval(scoreCounter);
-                                            }
-                                        }, 100); // Delay in milliseconds
-                                    }
-                                }
-                            }
+            function checkMouse(){
+                for (var i = 0; i < balls.length; i++){
+                    console.log(dist(mouseX, mouseY, balls[i].x, balls[i].y));
+                    if (dist(mouseX, mouseY, balls[i].x, balls[i].y) < balls[i].radius+7){
+                        splitBall(i);
+                        if (balls.length <=0){
+                            levelUp();
                         }
                     }
                 }
             }
+            function setup(){
+                cnv = createCanvas(cnvWidth, cnvHeight);
+                cnv.mouseClicked(checkMouse);
+                loop();
+                setTimeout(function(){
+                    showLevelUpText = false;
+                }, 10000);
+            }
 
+            function draw(){
+                background(0);
+
+                if (showLevelUpText){
+                    fill(0, 120, 170);
+                    textSize(20);
+                    text("Level: " + level, 200, 200);
+                    text("Max balls: " + maxBalls, 200, 250);
+                    text("Speed limit: " + maxSpeed, 200, 300);
+                }
+
+                if(!gameOn){
+                    fill(0, 120, 170);
+                    textSize(20);
+                    text("Game over, you won!", 200, 200);
+                }
+                for (let i = 0; i < balls.length; i++){
+                    balls[i].update();
+                    fill(balls[i].na*255, 255-balls[i].na*127, balls[i].na*160);
+                    ellipse(balls[i].x, balls[i].y, balls[i].radius*2, balls[i].radius*2);
+                }
+            }
 
         </script>
-        <div id="time" class="time">Time</div>
-        <div id="points" class="points">Points</div>
-        <div id="ballAmount" class="ballAmount">Balls</div>
-        <div id="level" class="level">Level</div>
-        <div id="TAEOBS" class="TAEOBS">TAEOBS:</div>
-        <div id="IAEOBS" class="IAEOBS">INEOBS:</div>
-        <div id="TAEOBD" class="TAEOBD">TAEOBD:</div>
-        <div id="IAEOBD" class="IAEOBD">INEOBD:</div>
-        <div id="activationGain" class="activationGain">Activation Gain:</div>
-        <div id="learningRate" class="learningRate">Learning Rate:</div>
-
-        <button id="fullScreen" class="fullScreen" onclick="toggleFullScreen()">Full screen</button>
-        <button id="sirrobin" class="sirrobin" onclick="sirRobinOut()"> Quit </button>
     </body>
 </html>
