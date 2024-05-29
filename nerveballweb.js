@@ -144,9 +144,27 @@ function levelUp(){
 
     if (level < 6){
         balls.push(new Ball(cnvWidth/2, cnvHeight/2, 0, 0, Math.random()*10-5));
+    } else if (level < 10){
+        balls.push(new Ball(cnvWidth/2, cnvHeight/2, 0, 0, Math.random()*10-5));
+        balls.push(new Ball(cnvWidth/2, cnvHeight/2, 0, 0, Math.random()*10-5));
+        //connect the new balls to each other
+        balls[0].addInput(balls[1]);
+        balls[1].addInput(balls[0]);
     } else {
+        // 3 balls
         balls.push(new Ball(cnvWidth/2, cnvHeight/2, 0, 0, Math.random()*10-5));
         balls.push(new Ball(cnvWidth/2, cnvHeight/2, 0, 0, Math.random()*10-5));
+        balls.push(new Ball(cnvWidth/2, cnvHeight/2, 0, 0, Math.random()*10-5));
+        //connect the new balls each to each other
+        for (var i = 0; i < balls.length; i++){
+            for (var j = 0; j < balls.length; j++){
+                if (i != j){
+                    balls[i].addInput(balls[j]);
+                    balls[j].addInput(balls[i]);
+                }
+            }
+        }
+
     }
 }
 
